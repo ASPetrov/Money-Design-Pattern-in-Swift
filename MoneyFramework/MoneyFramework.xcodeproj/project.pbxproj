@@ -9,7 +9,12 @@
 /* Begin PBXBuildFile section */
 		9046832F1BE0CE2100EE830A /* MoneyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 9046832E1BE0CE2100EE830A /* MoneyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		904683361BE0CE2100EE830A /* MoneyFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9046832B1BE0CE2100EE830A /* MoneyFramework.framework */; };
-		9046833B1BE0CE2100EE830A /* MoneyFrameworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9046833A1BE0CE2100EE830A /* MoneyFrameworkTests.swift */; };
+		904683491BE0D0D300EE830A /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904683471BE0D0D300EE830A /* Currency.swift */; };
+		9046834A1BE0D0D300EE830A /* Money.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904683481BE0D0D300EE830A /* Money.swift */; };
+		9046834F1BE0D10700EE830A /* CurrencyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9046834D1BE0D10700EE830A /* CurrencyTests.swift */; };
+		904683501BE0D10700EE830A /* MoneyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9046834E1BE0D10700EE830A /* MoneyTests.swift */; };
+		904683511BE0D10E00EE830A /* Money.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904683481BE0D0D300EE830A /* Money.swift */; };
+		904683521BE0D11400EE830A /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904683471BE0D0D300EE830A /* Currency.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,8 +32,11 @@
 		9046832E1BE0CE2100EE830A /* MoneyFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MoneyFramework.h; sourceTree = "<group>"; };
 		904683301BE0CE2100EE830A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		904683351BE0CE2100EE830A /* MoneyFrameworkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MoneyFrameworkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		9046833A1BE0CE2100EE830A /* MoneyFrameworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoneyFrameworkTests.swift; sourceTree = "<group>"; };
 		9046833C1BE0CE2100EE830A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		904683471BE0D0D300EE830A /* Currency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
+		904683481BE0D0D300EE830A /* Money.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Money.swift; sourceTree = "<group>"; };
+		9046834D1BE0D10700EE830A /* CurrencyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencyTests.swift; sourceTree = "<group>"; };
+		9046834E1BE0D10700EE830A /* MoneyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoneyTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,7 +79,8 @@
 		9046832D1BE0CE2100EE830A /* MoneyFramework */ = {
 			isa = PBXGroup;
 			children = (
-				9046832E1BE0CE2100EE830A /* MoneyFramework.h */,
+				904683451BE0D0D300EE830A /* Classes */,
+				904683531BE0D1B200EE830A /* Headers */,
 				904683301BE0CE2100EE830A /* Info.plist */,
 			);
 			path = MoneyFramework;
@@ -80,10 +89,54 @@
 		904683391BE0CE2100EE830A /* MoneyFrameworkTests */ = {
 			isa = PBXGroup;
 			children = (
-				9046833A1BE0CE2100EE830A /* MoneyFrameworkTests.swift */,
+				9046834B1BE0D10700EE830A /* Tests */,
 				9046833C1BE0CE2100EE830A /* Info.plist */,
 			);
 			path = MoneyFrameworkTests;
+			sourceTree = "<group>";
+		};
+		904683451BE0D0D300EE830A /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				904683461BE0D0D300EE830A /* Swift */,
+			);
+			name = Classes;
+			path = ../../Classes;
+			sourceTree = "<group>";
+		};
+		904683461BE0D0D300EE830A /* Swift */ = {
+			isa = PBXGroup;
+			children = (
+				904683471BE0D0D300EE830A /* Currency.swift */,
+				904683481BE0D0D300EE830A /* Money.swift */,
+			);
+			path = Swift;
+			sourceTree = "<group>";
+		};
+		9046834B1BE0D10700EE830A /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				9046834C1BE0D10700EE830A /* Swift */,
+			);
+			name = Tests;
+			path = ../../Tests;
+			sourceTree = "<group>";
+		};
+		9046834C1BE0D10700EE830A /* Swift */ = {
+			isa = PBXGroup;
+			children = (
+				9046834D1BE0D10700EE830A /* CurrencyTests.swift */,
+				9046834E1BE0D10700EE830A /* MoneyTests.swift */,
+			);
+			path = Swift;
+			sourceTree = "<group>";
+		};
+		904683531BE0D1B200EE830A /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				9046832E1BE0CE2100EE830A /* MoneyFramework.h */,
+			);
+			name = Headers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -194,6 +247,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9046834A1BE0D0D300EE830A /* Money.swift in Sources */,
+				904683491BE0D0D300EE830A /* Currency.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -201,7 +256,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9046833B1BE0CE2100EE830A /* MoneyFrameworkTests.swift in Sources */,
+				9046834F1BE0D10700EE830A /* CurrencyTests.swift in Sources */,
+				904683521BE0D11400EE830A /* Currency.swift in Sources */,
+				904683511BE0D10E00EE830A /* Money.swift in Sources */,
+				904683501BE0D10700EE830A /* MoneyTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -376,6 +434,7 @@
 				904683411BE0CE2100EE830A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		904683421BE0CE2100EE830A /* Build configuration list for PBXNativeTarget "MoneyFrameworkTests" */ = {
 			isa = XCConfigurationList;
@@ -384,6 +443,7 @@
 				904683441BE0CE2100EE830A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

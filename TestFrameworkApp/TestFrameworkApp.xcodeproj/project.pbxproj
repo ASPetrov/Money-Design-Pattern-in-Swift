@@ -12,8 +12,8 @@
 		904682F91BE0CE0800EE830A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 904682F71BE0CE0800EE830A /* Main.storyboard */; };
 		904682FB1BE0CE0800EE830A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 904682FA1BE0CE0800EE830A /* Assets.xcassets */; };
 		904682FE1BE0CE0800EE830A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 904682FC1BE0CE0800EE830A /* LaunchScreen.storyboard */; };
-		904683091BE0CE0800EE830A /* TestFrameworkAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904683081BE0CE0800EE830A /* TestFrameworkAppTests.swift */; };
-		904683141BE0CE0800EE830A /* TestFrameworkAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904683131BE0CE0800EE830A /* TestFrameworkAppUITests.swift */; };
+		9046835B1BE0D3AD00EE830A /* MoneyFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9046835A1BE0D3AD00EE830A /* MoneyFramework.framework */; };
+		9046835C1BE0D3AD00EE830A /* MoneyFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9046835A1BE0D3AD00EE830A /* MoneyFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +33,20 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		9046835D1BE0D3AD00EE830A /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				9046835C1BE0D3AD00EE830A /* MoneyFramework.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		904682F01BE0CE0800EE830A /* TestFrameworkApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestFrameworkApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		904682F31BE0CE0800EE830A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -42,11 +56,10 @@
 		904682FD1BE0CE0800EE830A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		904682FF1BE0CE0800EE830A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		904683041BE0CE0800EE830A /* TestFrameworkAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestFrameworkAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		904683081BE0CE0800EE830A /* TestFrameworkAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestFrameworkAppTests.swift; sourceTree = "<group>"; };
 		9046830A1BE0CE0800EE830A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9046830F1BE0CE0800EE830A /* TestFrameworkAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestFrameworkAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		904683131BE0CE0800EE830A /* TestFrameworkAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestFrameworkAppUITests.swift; sourceTree = "<group>"; };
 		904683151BE0CE0800EE830A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9046835A1BE0D3AD00EE830A /* MoneyFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = MoneyFramework.framework; path = "/Users/aleksandar.petrov/Library/Developer/Xcode/DerivedData/MoneyDesignPattern-exbbvqooszlkdybtdofwzrkbaxbq/Build/Products/Debug-iphoneos/MoneyFramework.framework"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9046835B1BE0D3AD00EE830A /* MoneyFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,6 +91,7 @@
 		904682E71BE0CE0800EE830A = {
 			isa = PBXGroup;
 			children = (
+				9046835A1BE0D3AD00EE830A /* MoneyFramework.framework */,
 				904682F21BE0CE0800EE830A /* TestFrameworkApp */,
 				904683071BE0CE0800EE830A /* TestFrameworkAppTests */,
 				904683121BE0CE0800EE830A /* TestFrameworkAppUITests */,
@@ -97,11 +112,9 @@
 		904682F21BE0CE0800EE830A /* TestFrameworkApp */ = {
 			isa = PBXGroup;
 			children = (
-				904682F31BE0CE0800EE830A /* AppDelegate.swift */,
-				904682F51BE0CE0800EE830A /* ViewController.swift */,
-				904682F71BE0CE0800EE830A /* Main.storyboard */,
-				904682FA1BE0CE0800EE830A /* Assets.xcassets */,
-				904682FC1BE0CE0800EE830A /* LaunchScreen.storyboard */,
+				904683581BE0D23400EE830A /* Resources */,
+				904683551BE0D1E300EE830A /* Storyboards/Xibs */,
+				904683541BE0D1D200EE830A /* Classes */,
 				904682FF1BE0CE0800EE830A /* Info.plist */,
 			);
 			path = TestFrameworkApp;
@@ -110,7 +123,6 @@
 		904683071BE0CE0800EE830A /* TestFrameworkAppTests */ = {
 			isa = PBXGroup;
 			children = (
-				904683081BE0CE0800EE830A /* TestFrameworkAppTests.swift */,
 				9046830A1BE0CE0800EE830A /* Info.plist */,
 			);
 			path = TestFrameworkAppTests;
@@ -119,10 +131,59 @@
 		904683121BE0CE0800EE830A /* TestFrameworkAppUITests */ = {
 			isa = PBXGroup;
 			children = (
-				904683131BE0CE0800EE830A /* TestFrameworkAppUITests.swift */,
 				904683151BE0CE0800EE830A /* Info.plist */,
 			);
 			path = TestFrameworkAppUITests;
+			sourceTree = "<group>";
+		};
+		904683541BE0D1D200EE830A /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				904683571BE0D21A00EE830A /* Controllers */,
+				904683561BE0D21300EE830A /* Globals */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		904683551BE0D1E300EE830A /* Storyboards/Xibs */ = {
+			isa = PBXGroup;
+			children = (
+				904682F71BE0CE0800EE830A /* Main.storyboard */,
+				904682FC1BE0CE0800EE830A /* LaunchScreen.storyboard */,
+			);
+			name = Storyboards/Xibs;
+			sourceTree = "<group>";
+		};
+		904683561BE0D21300EE830A /* Globals */ = {
+			isa = PBXGroup;
+			children = (
+				904682F31BE0CE0800EE830A /* AppDelegate.swift */,
+			);
+			name = Globals;
+			sourceTree = "<group>";
+		};
+		904683571BE0D21A00EE830A /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				904682F51BE0CE0800EE830A /* ViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		904683581BE0D23400EE830A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				904683591BE0D23D00EE830A /* Images */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		904683591BE0D23D00EE830A /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				904682FA1BE0CE0800EE830A /* Assets.xcassets */,
+			);
+			name = Images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -135,6 +196,7 @@
 				904682EC1BE0CE0800EE830A /* Sources */,
 				904682ED1BE0CE0800EE830A /* Frameworks */,
 				904682EE1BE0CE0800EE830A /* Resources */,
+				9046835D1BE0D3AD00EE830A /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -265,7 +327,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				904683091BE0CE0800EE830A /* TestFrameworkAppTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -273,7 +334,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				904683141BE0CE0800EE830A /* TestFrameworkAppUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -484,6 +544,7 @@
 				9046831A1BE0CE0800EE830A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9046831B1BE0CE0800EE830A /* Build configuration list for PBXNativeTarget "TestFrameworkAppTests" */ = {
 			isa = XCConfigurationList;
@@ -492,6 +553,7 @@
 				9046831D1BE0CE0800EE830A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9046831E1BE0CE0800EE830A /* Build configuration list for PBXNativeTarget "TestFrameworkAppUITests" */ = {
 			isa = XCConfigurationList;
@@ -500,6 +562,7 @@
 				904683201BE0CE0800EE830A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
