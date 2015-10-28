@@ -11,7 +11,7 @@ import Foundation
 // Swift implementation of Martin Fowler Money Design Pattern
 // Example of typical calculations with monetary values, implemented with NSDecimalNumber.
 
-struct Money {
+public struct Money {
     
     //
     // MARK: Public
@@ -19,36 +19,36 @@ struct Money {
     
     // !!! value objects should be entirely immutable
     
-    private(set) var currency: Currency
-    private(set) var amount: NSDecimalNumber
+    public private(set) var currency: Currency
+    public private(set) var amount: NSDecimalNumber
     
     // default rounding handler
     private(set) var roundingHandler: NSDecimalNumberHandler
     
-    func isZero() -> Bool {
+    public func isZero() -> Bool {
         return self.amount.isZero()
     }
 
-    func isNegative() -> Bool {
+    public func isNegative() -> Bool {
         return self.amount.isNegative()
     }
 
-    func isPositive() -> Bool {
+    public func isPositive() -> Bool {
         return self.amount.isPositive()
     }
     
-    func absoluteAmount() -> NSDecimalNumber {
+    public func absoluteAmount() -> NSDecimalNumber {
         return self.isPositive() ? self.amount : self.amount.inverted()
     }
     
     // Subunits is a fraction of the base (ex. cents, stotinka, etc.)
 
-    func amountInSubunits() -> Int {
+    public func amountInSubunits() -> Int {
         let power = Int16(self.currency.maximumFractionDigits)
         return self.amount.decimalNumberByMultiplyingByPowerOf10(power).integerValue
     }
 
-    func oneSubunit() -> NSDecimalNumber {
+    public func oneSubunit() -> NSDecimalNumber {
         let exp = Int16(-self.currency.maximumFractionDigits)
         return NSDecimalNumber(mantissa: 1, exponent: exp, isNegative: false)
     }
@@ -59,7 +59,7 @@ struct Money {
     
     // !!! Works with currencies with decimal subunits
     
-    func allocate(n: Int) -> [Money] {
+    public func allocate(n: Int) -> [Money] {
         precondition(n > 0,
             "Recepients count should be presented as positive number, greater than zero.")
 
@@ -81,7 +81,7 @@ struct Money {
         return results.map { $0! }
     }
     
-    func allocate(ratios: [Int]) -> [Money] {
+    public func allocate(ratios: [Int]) -> [Money] {
         let total       = ratios.reduce(0, combine: +)
         var reminder    = self.amountInSubunits()
         var results     = [Money?](count: ratios.count, repeatedValue: nil)
@@ -107,12 +107,12 @@ struct Money {
     // Convert
     //
     
-    func convertTo(currency: Currency, usingExchangeRate multiplier: NSDecimalNumber) -> Money {
+    public func convertTo(currency: Currency, usingExchangeRate multiplier: NSDecimalNumber) -> Money {
         return self.convertTo(currency, usingExchangeRate: multiplier, strategy: NormalConvertStrategy())
     }
 
     // Don't forget to add unit test with your custom strategy
-    func convertTo(currency: Currency, usingExchangeRate multiplier: NSDecimalNumber, strategy: ConvertCurrenciesStrategy) -> Money {
+    public func convertTo(currency: Currency, usingExchangeRate multiplier: NSDecimalNumber, strategy: ConvertCurrenciesStrategy) -> Money {
         return strategy.convertTo(self, toCurrency: currency, usingExchangeRate: multiplier)
     }
     
@@ -120,7 +120,7 @@ struct Money {
     // MARK: Initialization
     //
     
-    init(amount: NSDecimalNumber = NSDecimalNumber.zero(), currency: Currency = Money.defaultCurrency()) {
+    public init(amount: NSDecimalNumber = NSDecimalNumber.zero(), currency: Currency = Money.defaultCurrency()) {
         self.currency           = currency
         
         // Since there is no error handling in Swift 1.0 all NSDecimalNumber exceptions are suppressed
@@ -136,7 +136,7 @@ struct Money {
             actualAmount.decimalNumberByRoundingAccordingToBehavior(self.roundingHandler)
     }
     
-    init(amount: String, currency: Currency = Money.defaultCurrency()) {
+    public init(amount: String, currency: Currency = Money.defaultCurrency()) {
         let actualAmount = Money.decimalNumberFromAmountString(amount, currency: currency)
         self.init(amount: actualAmount, currency: currency)
     }
@@ -168,7 +168,7 @@ extension Money {
     //
     
     // Default Currency is US Dollars(USD)
-    static func defaultCurrency() -> Currency {
+    public static func defaultCurrency() -> Currency {
         return Currency.currencyForLocaleIdentifier(localeIdentifier: "en_US")!
     }
     
@@ -193,7 +193,7 @@ extension Money {
 //
 
 extension Money: CustomStringConvertible {
-    var description: String {
+    public var description: String {
         let formatter   = currency.formatter
         let string      = formatter.stringFromNumber(self.amount)
         return string ?? ""
@@ -205,7 +205,7 @@ extension Money: CustomStringConvertible {
 //
 
 extension Money: Hashable {
-    var hashValue : Int {
+    public var hashValue : Int {
         get {
             return self.amount.hashValue ^ self.currency.hashValue
         }
@@ -218,13 +218,13 @@ extension Money: Hashable {
 
 extension Money {
     // value objects are equal if all their fields are equal
-    func equals(other: Money) -> Bool {
+    public func equals(other: Money) -> Bool {
         return ((self.currency == other.currency) &&
             self.amount.compare(other.amount) == .OrderedSame)
     }
 }
 
-func ==(lhs: Money, rhs: Money) -> Bool {
+public func ==(lhs: Money, rhs: Money) -> Bool {
     return lhs.equals(rhs)
 }
 
@@ -233,28 +233,28 @@ func ==(lhs: Money, rhs: Money) -> Bool {
 //
 
 extension Money: Comparable {
-    func compareTo(other: Money) -> NSComparisonResult {
+    public func compareTo(other: Money) -> NSComparisonResult {
         self.assertSameCurrencyAs(other)
         return self.amount.compare(other.amount)
     }
 }
 
-func <=(lhs: Money, rhs: Money) -> Bool {
+public func <=(lhs: Money, rhs: Money) -> Bool {
     let result = lhs.compareTo(rhs)
     return (result == .OrderedDescending || result == .OrderedSame)
 }
 
-func >=(lhs: Money, rhs: Money) -> Bool {
+public func >=(lhs: Money, rhs: Money) -> Bool {
     let result = lhs.compareTo(rhs)
     return (result == .OrderedAscending || result == .OrderedSame)
 }
 
-func >(lhs: Money, rhs: Money) -> Bool {
+public func >(lhs: Money, rhs: Money) -> Bool {
     let result = lhs.compareTo(rhs)
     return (result == .OrderedAscending)
 }
 
-func <(lhs: Money, rhs: Money) -> Bool {
+public func <(lhs: Money, rhs: Money) -> Bool {
     let result = lhs.compareTo(rhs)
     return (result == .OrderedDescending)
 }
@@ -273,12 +273,12 @@ extension Money {
     // Add Amount
     //
     
-    func add(money: Money) -> Money {
+    public func add(money: Money) -> Money {
         self.assertSameCurrencyAs(money)
         return self.add(money.amount)
     }
 
-    func add(amount: NSDecimalNumber) -> Money {
+    public func add(amount: NSDecimalNumber) -> Money {
         // if the left or the right side amount is nan result will be nan also
         let newAmount =
             self.amount.decimalNumberByAdding(amount, withBehavior: self.roundingHandler)
@@ -290,12 +290,12 @@ extension Money {
     // Subtract Amount
     //
 
-    func subtract(money: Money) -> Money {
+    public func subtract(money: Money) -> Money {
         self.assertSameCurrencyAs(money)
         return self.subtract(money.amount)
     }
 
-    func subtract(amount: NSDecimalNumber) -> Money {
+    public func subtract(amount: NSDecimalNumber) -> Money {
          // if the left or the right side amount is nan result will be nan also
         let newAmount =
             self.amount.decimalNumberBySubtracting(amount, withBehavior: self.roundingHandler)
@@ -307,7 +307,7 @@ extension Money {
     // Multiply Amount
     //
 
-    func multiply(multiplier: NSDecimalNumber) -> Money {
+    public func multiply(multiplier: NSDecimalNumber) -> Money {
         // if the multiplier or the amount is nan result will be nan also
         let newAmount   =
             self.amount.decimalNumberByMultiplyingBy(multiplier, withBehavior: self.roundingHandler)
@@ -344,7 +344,7 @@ extension Money {
 // Unary minus operator
 //
 
-prefix func -(value: Money) -> Money {
+public prefix func -(value: Money) -> Money {
     return value.multiply(NSDecimalNumber.negativeOne())
 }
 
@@ -352,47 +352,47 @@ prefix func -(value: Money) -> Money {
 // Add
 //
 
-func +(lhs: Money, rhs: Money) -> Money {
+public func +(lhs: Money, rhs: Money) -> Money {
     return lhs.add(rhs)
 }
 
-func +(lhs: Money, rhs: Int) -> Money {
+public func +(lhs: Money, rhs: Int) -> Money {
     return lhs.add(NSDecimalNumber(integer: rhs))
 }
 
-func +(lhs: Int, rhs: Money) -> Money {
+public func +(lhs: Int, rhs: Money) -> Money {
     return rhs.add(NSDecimalNumber(integer: lhs))
 }
 
-func +(lhs: Money, rhs: Float) -> Money {
+public func +(lhs: Money, rhs: Float) -> Money {
     return lhs.add(NSDecimalNumber(float: rhs))
 }
 
-func +(lhs: Float, rhs: Money) -> Money {
+public func +(lhs: Float, rhs: Money) -> Money {
     return rhs.add(NSDecimalNumber(float: lhs))
 }
 
-func +(lhs: Money, rhs: Double) -> Money {
+public func +(lhs: Money, rhs: Double) -> Money {
     return lhs.add(NSDecimalNumber(double: rhs))
 }
 
-func +(lhs: Double, rhs: Money) -> Money {
+public func +(lhs: Double, rhs: Money) -> Money {
     return rhs.add(NSDecimalNumber(double: lhs))
 }
 
-func +(lhs: Money, rhs: NSDecimalNumber) -> Money {
+public func +(lhs: Money, rhs: NSDecimalNumber) -> Money {
     return lhs.add(rhs)
 }
 
-func +(lhs: NSDecimalNumber, rhs: Money) -> Money {
+public func +(lhs: NSDecimalNumber, rhs: Money) -> Money {
     return rhs.add(lhs)
 }
 
-func +(lhs: Money, rhs: NSDecimal) -> Money {
+public func +(lhs: Money, rhs: NSDecimal) -> Money {
     return lhs.add(NSDecimalNumber(decimal: rhs))
 }
 
-func +(lhs: NSDecimal, rhs: Money) -> Money {
+public func +(lhs: NSDecimal, rhs: Money) -> Money {
     return rhs.add(NSDecimalNumber(decimal: lhs))
 }
 
@@ -400,47 +400,47 @@ func +(lhs: NSDecimal, rhs: Money) -> Money {
 // Subtract
 //
 
-func -(lhs: Money, rhs: Money) -> Money {
+public func -(lhs: Money, rhs: Money) -> Money {
     return lhs.subtract(rhs)
 }
 
-func -(lhs: Money, rhs: Int) -> Money {
+public func -(lhs: Money, rhs: Int) -> Money {
     return lhs.subtract(NSDecimalNumber(integer: rhs))
 }
 
-func -(lhs: Int, rhs: Money) -> Money {
+public func -(lhs: Int, rhs: Money) -> Money {
     return rhs.subtract(NSDecimalNumber(integer: lhs))
 }
 
-func -(lhs: Money, rhs: Float) -> Money {
+public func -(lhs: Money, rhs: Float) -> Money {
     return lhs.subtract(NSDecimalNumber(float: rhs))
 }
 
-func -(lhs: Float, rhs: Money) -> Money {
+public func -(lhs: Float, rhs: Money) -> Money {
     return rhs.subtract(NSDecimalNumber(float: lhs))
 }
 
-func -(lhs: Money, rhs: Double) -> Money {
+public func -(lhs: Money, rhs: Double) -> Money {
     return lhs.subtract(NSDecimalNumber(double: rhs))
 }
 
-func -(lhs: Double, rhs: Money) -> Money {
+public func -(lhs: Double, rhs: Money) -> Money {
     return rhs.subtract(NSDecimalNumber(double: lhs))
 }
 
-func -(lhs: Money, rhs: NSDecimalNumber) -> Money {
+public func -(lhs: Money, rhs: NSDecimalNumber) -> Money {
     return lhs.subtract(rhs)
 }
 
-func -(lhs: NSDecimalNumber, rhs: Money) -> Money {
+public func -(lhs: NSDecimalNumber, rhs: Money) -> Money {
     return rhs.subtract(lhs)
 }
 
-func -(lhs: Money, rhs: NSDecimal) -> Money {
+public func -(lhs: Money, rhs: NSDecimal) -> Money {
     return lhs.subtract(NSDecimalNumber(decimal: rhs))
 }
 
-func -(lhs: NSDecimal, rhs: Money) -> Money {
+public func -(lhs: NSDecimal, rhs: Money) -> Money {
     return rhs.subtract(NSDecimalNumber(decimal: lhs))
 }
 
@@ -448,43 +448,43 @@ func -(lhs: NSDecimal, rhs: Money) -> Money {
 // Multiply
 //
 
-func *(lhs: Money, rhs: Int) -> Money {
+public func *(lhs: Money, rhs: Int) -> Money {
     return lhs.multiply(NSDecimalNumber(integer: rhs))
 }
 
-func *(lhs: Int, rhs: Money) -> Money {
+public func *(lhs: Int, rhs: Money) -> Money {
     return rhs.multiply(NSDecimalNumber(integer: lhs))
 }
 
-func *(lhs: Money, rhs: Float) -> Money {
+public func *(lhs: Money, rhs: Float) -> Money {
     return lhs.multiply(NSDecimalNumber(float: rhs))
 }
 
-func *(lhs: Float, rhs: Money) -> Money {
+public func *(lhs: Float, rhs: Money) -> Money {
     return rhs.multiply(NSDecimalNumber(float: lhs))
 }
 
-func *(lhs: Money, rhs: Double) -> Money {
+public func *(lhs: Money, rhs: Double) -> Money {
     return lhs.multiply(NSDecimalNumber(double: rhs))
 }
 
-func *(lhs: Double, rhs: Money) -> Money {
+public func *(lhs: Double, rhs: Money) -> Money {
     return rhs.multiply(NSDecimalNumber(double: lhs))
 }
 
-func *(lhs: Money, rhs: NSDecimalNumber) -> Money {
+public func *(lhs: Money, rhs: NSDecimalNumber) -> Money {
     return lhs.multiply(rhs)
 }
 
-func *(lhs: NSDecimalNumber, rhs: Money) -> Money {
+public func *(lhs: NSDecimalNumber, rhs: Money) -> Money {
     return rhs.multiply(lhs)
 }
 
-func *(lhs: Money, rhs: NSDecimal) -> Money {
+public func *(lhs: Money, rhs: NSDecimal) -> Money {
     return lhs.multiply(NSDecimalNumber(decimal: rhs))
 }
 
-func *(lhs: NSDecimal, rhs: Money) -> Money {
+public func *(lhs: NSDecimal, rhs: Money) -> Money {
     return rhs.multiply(NSDecimalNumber(decimal: lhs))
 }
 
@@ -492,12 +492,12 @@ func *(lhs: NSDecimal, rhs: Money) -> Money {
 // MARK: Converter Strategy pattern Helper
 //
 
-protocol ConvertCurrenciesStrategy {
+public protocol ConvertCurrenciesStrategy {
     func convertTo(money: Money, toCurrency currency: Currency, usingExchangeRate multiplier: NSDecimalNumber) -> Money
 }
 
-class NormalConvertStrategy: ConvertCurrenciesStrategy {
-    func convertTo(money: Money, toCurrency currency: Currency, usingExchangeRate multiplier: NSDecimalNumber) -> Money {
+public class NormalConvertStrategy: ConvertCurrenciesStrategy {
+    public func convertTo(money: Money, toCurrency currency: Currency, usingExchangeRate multiplier: NSDecimalNumber) -> Money {
         precondition(money.currency != currency, "Cannot convert to the same currency")
         precondition(multiplier.isPositive(), "Cannot convert using a negative conversion multiplier")
         
@@ -510,24 +510,24 @@ class NormalConvertStrategy: ConvertCurrenciesStrategy {
 // MARK: NSDecimalNumber Helper Extension
 //
 
-extension NSDecimalNumber {
-    func isZero() -> Bool {
+public extension NSDecimalNumber {
+    public func isZero() -> Bool {
         return NSDecimalNumber.zero().compare(self) == .OrderedSame
     }
     
-    func isNegative() -> Bool {
+    public func isNegative() -> Bool {
         return NSDecimalNumber.zero().compare(self) == .OrderedDescending
     }
     
-    func isPositive() -> Bool {
+    public func isPositive() -> Bool {
         return NSDecimalNumber.zero().compare(self) == .OrderedAscending
     }
     
-    func inverted() -> NSDecimalNumber {
+    public func inverted() -> NSDecimalNumber {
         return self.decimalNumberByMultiplyingBy(NSDecimalNumber.negativeOne())
     }
     
-    class func negativeOne() -> NSDecimalNumber {
+    public class func negativeOne() -> NSDecimalNumber {
         return NSDecimalNumber(mantissa: 1, exponent: 0, isNegative: true)
     }
 }

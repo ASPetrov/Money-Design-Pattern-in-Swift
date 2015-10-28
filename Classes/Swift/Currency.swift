@@ -12,17 +12,21 @@ import Foundation
 // This class is simple NSNumberFormatter wrapper
 //
 
-class Currency {
+public class Currency {
+    
+    //
+    // MARK: Helpers
+    //
+    
+    static let availableDecimalSeparators  = Set<String>(["٫", ",", "."])
+    static let availableGroupingSeparators = Set<String>([",", "٬", " ", "’", "\'", "."])
 
     //
     // MARK: Public
     //
-    
-    static let  availableDecimalSeparators  = Set<String>(["٫", ",", "."])
-    static let  availableGroupingSeparators = Set<String>([",", "٬", " ", "’", "\'", "."])
 
     // Currency code
-    var code: String {
+    public var code: String {
         get {
             return self.formatter.currencyCode
         }
@@ -34,7 +38,7 @@ class Currency {
     }
 
     // Currency symbol
-    var symbol: String {
+    public var symbol: String {
         get {
             return self.formatter.currencySymbol ?? ""
         }
@@ -44,7 +48,7 @@ class Currency {
     }
 
     // Currency fraction digits
-    var maximumFractionDigits: Int {
+    public var maximumFractionDigits: Int {
         get {
             return self.formatter.maximumFractionDigits
         }
@@ -56,7 +60,7 @@ class Currency {
     }
 
     // Currency Decimal Separator
-    var decimalSeparator: String {
+    public var decimalSeparator: String {
         get {
             return self.formatter.currencyDecimalSeparator ?? ""
         }
@@ -68,7 +72,7 @@ class Currency {
     }
     
     // Currency Grouping Separator
-    var groupingSeparator: String? {
+    public var groupingSeparator: String? {
         get {
             return self.formatter.currencyGroupingSeparator
         }
@@ -80,20 +84,12 @@ class Currency {
         }
     }
     
-    // Currency formatter
-    lazy var formatter: NSNumberFormatter = {
-        var formatter           = NSNumberFormatter()
-        formatter.numberStyle   = .CurrencyStyle
-        formatter.locale        = self.locale
-        return formatter
-    }()
-    
     //
     // MARK: Initialization
     //
     
     // Set locale as constructor DI
-    init?(locale: NSLocale) {
+    public init?(locale: NSLocale) {
         // always set locale to avoid compiler errors
         self.locale = locale
         
@@ -104,9 +100,21 @@ class Currency {
     }
 
     // init with current locale
-    convenience init?() {
+    public convenience init?() {
         self.init(locale: NSLocale.currentLocale())
     }
+    
+    //
+    // MARK: Internal
+    //
+    
+    // Currency formatter
+    lazy var formatter: NSNumberFormatter = {
+        var formatter           = NSNumberFormatter()
+        formatter.numberStyle   = .CurrencyStyle
+        formatter.locale        = self.locale
+        return formatter
+    }()
     
     //
     // MARK: Private
@@ -121,8 +129,12 @@ class Currency {
 
 extension Currency {
     
+    //
+    // MARK: Public
+    //
+    
     // Try to create currency object from locale identifier
-    class func currencyForLocaleIdentifier(localeIdentifier string: String) -> Currency? {
+    public class func currencyForLocaleIdentifier(localeIdentifier string: String) -> Currency? {
         // Check for valid identifier
         if (NSLocale.availableLocaleIdentifiers() ).contains(string) == false {
             return nil
@@ -134,7 +146,7 @@ extension Currency {
     }
 
     // Try to create currency object from currency code
-    class func currencyWithCurrencyCode(currencyCode string: String) -> Currency? {
+    public class func currencyWithCurrencyCode(currencyCode string: String) -> Currency? {
         let availableLocaleIdentifiers: [String]    =
             NSLocale.availableLocaleIdentifiers() 
         
@@ -151,6 +163,10 @@ extension Currency {
         return nil
     }
     
+    //
+    // MARK: Internal
+    //
+    
     // Check if Locale object is Associated With Currency Code
     class func isLocaleAssociatedWithCurrencyCode(locale: NSLocale) -> Bool {
         let string  = locale.objectForKey(NSLocaleCurrencyCode) as? String
@@ -163,7 +179,7 @@ extension Currency {
 //
 
 extension Currency: CustomStringConvertible {
-    var description: String {
+    public var description: String {
         return "[code = \(self.code), symbol = \(self.symbol), " +
             "maximum fraction digits: \(self.maximumFractionDigits), " +
             "decimal separator = \(self.decimalSeparator), " +
@@ -176,7 +192,7 @@ extension Currency: CustomStringConvertible {
 //
 
 extension Currency: Hashable {
-    var hashValue : Int {
+    public var hashValue : Int {
         get {
             // decimal and grouping separator are only for presentation 
             // and should not be a part of equality check
@@ -192,7 +208,7 @@ extension Currency: Hashable {
 
 extension Currency {
     // value objects are equal if all their fields are equal
-    func equals(other: Currency) -> Bool {
+    public func equals(other: Currency) -> Bool {
         return self.locale == other.locale &&
             self.code == other.code &&
             self.symbol == other.symbol &&
@@ -200,6 +216,6 @@ extension Currency {
     }
 }
 
-func ==(lhs: Currency, rhs: Currency) -> Bool {
+public func ==(lhs: Currency, rhs: Currency) -> Bool {
     return lhs.equals(rhs)
 }
