@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "MoneyFramework"
-  s.version      = "1.0.2"
+  s.version      = "1.0.3"
   s.summary      = "Money Design Pattern in Swift"
 
   # This description is used to generate tags and improve search results.
@@ -92,7 +92,7 @@ Pod::Spec.new do |s|
   s.source_files  = "Classes/Swift/*"
   #s.exclude_files = "Classes/Exclude"
 
-  s.public_header_files = "MoneyFramework/MoneyFramework/MoneyFramework.h"
+  #s.public_header_files = "MoneyFramework/MoneyFramework/MoneyFramework.h"
 
 
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
