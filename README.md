@@ -11,5 +11,3 @@ To install add the following line to your Podfile:
     use_frameworks!
     pod 'MoneyFramework', '1.0.3'
 
-Collaboration
----
