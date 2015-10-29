@@ -12,8 +12,8 @@
 		904682F91BE0CE0800EE830A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 904682F71BE0CE0800EE830A /* Main.storyboard */; };
 		904682FB1BE0CE0800EE830A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 904682FA1BE0CE0800EE830A /* Assets.xcassets */; };
 		904682FE1BE0CE0800EE830A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 904682FC1BE0CE0800EE830A /* LaunchScreen.storyboard */; };
-		90693E791BE23F0900F92B5C /* MoneyFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90693E781BE23F0900F92B5C /* MoneyFramework.framework */; };
-		90693E7A1BE23F0900F92B5C /* MoneyFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 90693E781BE23F0900F92B5C /* MoneyFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		90693E881BE242E900F92B5C /* MoneyFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90693E871BE242E900F92B5C /* MoneyFramework.framework */; };
+		90693E8A1BE2430E00F92B5C /* MoneyFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 90693E871BE242E900F92B5C /* MoneyFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,13 +44,13 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 1;
 		};
-		90693E7B1BE23F0900F92B5C /* Embed Frameworks */ = {
+		90693E8B1BE2430E00F92B5C /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				90693E7A1BE23F0900F92B5C /* MoneyFramework.framework in Embed Frameworks */,
+				90693E8A1BE2430E00F92B5C /* MoneyFramework.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -69,7 +69,7 @@
 		9046830A1BE0CE0800EE830A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9046830F1BE0CE0800EE830A /* TestFrameworkAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestFrameworkAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		904683151BE0CE0800EE830A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		90693E781BE23F0900F92B5C /* MoneyFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MoneyFramework.framework; path = "../Build/MoneyFramework-Release-iphoneuniversal/MoneyFramework.framework"; sourceTree = "<group>"; };
+		90693E871BE242E900F92B5C /* MoneyFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MoneyFramework.framework; path = "../Build/MoneyFramework-Release-iphoneuniversal/MoneyFramework.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,7 +77,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				90693E791BE23F0900F92B5C /* MoneyFramework.framework in Frameworks */,
+				90693E881BE242E900F92B5C /* MoneyFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,7 +101,7 @@
 		904682E71BE0CE0800EE830A = {
 			isa = PBXGroup;
 			children = (
-				90693E781BE23F0900F92B5C /* MoneyFramework.framework */,
+				90693E871BE242E900F92B5C /* MoneyFramework.framework */,
 				904682F21BE0CE0800EE830A /* TestFrameworkApp */,
 				904683071BE0CE0800EE830A /* TestFrameworkAppTests */,
 				904683121BE0CE0800EE830A /* TestFrameworkAppUITests */,
@@ -207,7 +207,7 @@
 				904682ED1BE0CE0800EE830A /* Frameworks */,
 				904682EE1BE0CE0800EE830A /* Resources */,
 				90693E6E1BE22D2D00F92B5C /* Embed Frameworks */,
-				90693E7B1BE23F0900F92B5C /* Embed Frameworks */,
+				90693E8B1BE2430E00F92B5C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
