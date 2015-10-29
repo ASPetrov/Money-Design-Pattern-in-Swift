@@ -26,7 +26,7 @@ Pod::Spec.new do |s|
   #   * Finally, don't worry about the indent, CocoaPods strips it!
   s.description  = "Simple implementation of The Money Pattern, defined by Martin Fowler."
 
-  s.homepage       = "www.mentormate.bg"
+  s.homepage       = "http://mentormate.bg"
   # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
 
