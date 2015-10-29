@@ -1,0 +1,10 @@
+framework module MoneyFramework {
+  umbrella header "MoneyFramework.h"
+
+  export *
+  module * { export * }
+}
+
+module MoneyFramework.Swift {
+    header "MoneyFramework-Swift.h"
+}
