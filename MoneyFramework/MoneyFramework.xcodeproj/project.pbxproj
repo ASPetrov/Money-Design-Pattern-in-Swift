@@ -6,6 +6,21 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		90693E711BE234CE00F92B5C /* MoneyFramework-Universal */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 90693E741BE234CE00F92B5C /* Build configuration list for PBXAggregateTarget "MoneyFramework-Universal" */;
+			buildPhases = (
+				90693E751BE234FA00F92B5C /* ShellScript */,
+			);
+			dependencies = (
+				90693E771BE23B1400F92B5C /* PBXTargetDependency */,
+			);
+			name = "MoneyFramework-Universal";
+			productName = "MoneyFramework-Universal";
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		9046832F1BE0CE2100EE830A /* MoneyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 9046832E1BE0CE2100EE830A /* MoneyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		904683361BE0CE2100EE830A /* MoneyFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9046832B1BE0CE2100EE830A /* MoneyFramework.framework */; };
@@ -19,6 +34,13 @@
 
 /* Begin PBXContainerItemProxy section */
 		904683371BE0CE2100EE830A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 904683221BE0CE2100EE830A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9046832A1BE0CE2100EE830A;
+			remoteInfo = MoneyFramework;
+		};
+		90693E761BE23B1400F92B5C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 904683221BE0CE2100EE830A /* Project object */;
 			proxyType = 1;
@@ -205,6 +227,9 @@
 					904683341BE0CE2100EE830A = {
 						CreatedOnToolsVersion = 7.1;
 					};
+					90693E711BE234CE00F92B5C = {
+						CreatedOnToolsVersion = 7.1;
+					};
 				};
 			};
 			buildConfigurationList = 904683251BE0CE2100EE830A /* Build configuration list for PBXProject "MoneyFramework" */;
@@ -221,6 +246,7 @@
 			targets = (
 				9046832A1BE0CE2100EE830A /* MoneyFramework */,
 				904683341BE0CE2100EE830A /* MoneyFrameworkTests */,
+				90693E711BE234CE00F92B5C /* MoneyFramework-Universal */,
 			);
 		};
 /* End PBXProject section */
@@ -241,6 +267,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		90693E751BE234FA00F92B5C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "######################\n# Options\n######################\n\nREVEAL_ARCHIVE_IN_FINDER=false\n\nFRAMEWORK_NAME=\"${PROJECT_NAME}\"\n\nSIMULATOR_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${FRAMEWORK_NAME}.framework\"\n\nDEVICE_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${FRAMEWORK_NAME}.framework\"\n\nUNIVERSAL_LIBRARY_DIR=\"${BUILD_DIR}/${CONFIGURATION}-iphoneuniversal\"\n\nFRAMEWORK=\"${UNIVERSAL_LIBRARY_DIR}/${FRAMEWORK_NAME}.framework\"\n\n\n######################\n# Build Frameworks\n######################\n\nxcodebuild -workspace ${PROJECT_NAME}.xcworkspace -scheme ${PROJECT_NAME} -sdk iphonesimulator -configuration ${CONFIGURATION} clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphonesimulator 2>&1\n\nxcodebuild -workspace ${PROJECT_NAME}.xcworkspace -scheme ${PROJECT_NAME} -sdk iphoneos -configuration ${CONFIGURATION} clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphoneos 2>&1\n\n######################\n# Create directory for universal\n######################\n\nrm -rf \"${UNIVERSAL_LIBRARY_DIR}\"\n\nmkdir \"${UNIVERSAL_LIBRARY_DIR}\"\n\nmkdir \"${FRAMEWORK}\"\n\n\n######################\n# Copy files Framework\n######################\n\ncp -r \"${DEVICE_LIBRARY_PATH}/.\" \"${FRAMEWORK}\"\n\n\n######################\n# Make an universal binary\n######################\n\nlipo \"${SIMULATOR_LIBRARY_PATH}/${FRAMEWORK_NAME}\" \"${DEVICE_LIBRARY_PATH}/${FRAMEWORK_NAME}\" -create -output \"${FRAMEWORK}/${FRAMEWORK_NAME}\" | echo\n\n# For Swift framework, Swiftmodule needs to be copied in the universal framework\nif [ -d \"${SIMULATOR_LIBRARY_PATH}/Modules/${FRAMEWORK_NAME}.swiftmodule/\" ]; then\ncp -f ${SIMULATOR_LIBRARY_PATH}/Modules/${FRAMEWORK_NAME}.swiftmodule/* \"${FRAMEWORK}/Modules/${FRAMEWORK_NAME}.swiftmodule/\" | echo\n                                                                      fi\n                                                                      \n                                                                      if [ -d \"${DEVICE_LIBRARY_PATH}/Modules/${FRAMEWORK_NAME}.swiftmodule/\" ]; then\n                                                                      cp -f ${DEVICE_LIBRARY_PATH}/Modules/${FRAMEWORK_NAME}.swiftmodule/* \"${FRAMEWORK}/Modules/${FRAMEWORK_NAME}.swiftmodule/\" | echo\n                                                                      fi\n                                                                      \n                                                                      ######################\n                                                                      # On Release, copy the result to release directory\n                                                                      ######################\n                                                                      OUTPUT_DIR=\"../Build/${FRAMEWORK_NAME}-${CONFIGURATION}-iphoneuniversal/\"\n                                                                      \n                                                                      rm -rf \"$OUTPUT_DIR\"\n                                                                      mkdir -p \"$OUTPUT_DIR\"\n                                                                      \n                                                                      cp -r \"${FRAMEWORK}\" \"$OUTPUT_DIR\"\n                                                                      \n                                                                      if [ ${REVEAL_ARCHIVE_IN_FINDER} = true ]; then\n                                                                      open \"${OUTPUT_DIR}/\"\n                                                                      fi";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		904683261BE0CE2100EE830A /* Sources */ = {
@@ -270,6 +312,11 @@
 			isa = PBXTargetDependency;
 			target = 9046832A1BE0CE2100EE830A /* MoneyFramework */;
 			targetProxy = 904683371BE0CE2100EE830A /* PBXContainerItemProxy */;
+		};
+		90693E771BE23B1400F92B5C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9046832A1BE0CE2100EE830A /* MoneyFramework */;
+			targetProxy = 90693E761BE23B1400F92B5C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -415,6 +462,21 @@
 			};
 			name = Release;
 		};
+		90693E721BE234CE00F92B5C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		90693E731BE234CE00F92B5C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -444,6 +506,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		90693E741BE234CE00F92B5C /* Build configuration list for PBXAggregateTarget "MoneyFramework-Universal" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				90693E721BE234CE00F92B5C /* Debug */,
+				90693E731BE234CE00F92B5C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
