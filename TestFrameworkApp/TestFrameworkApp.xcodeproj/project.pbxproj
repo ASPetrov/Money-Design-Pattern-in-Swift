@@ -12,8 +12,9 @@
 		904682F91BE0CE0800EE830A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 904682F71BE0CE0800EE830A /* Main.storyboard */; };
 		904682FB1BE0CE0800EE830A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 904682FA1BE0CE0800EE830A /* Assets.xcassets */; };
 		904682FE1BE0CE0800EE830A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 904682FC1BE0CE0800EE830A /* LaunchScreen.storyboard */; };
-		90693E641BE226C800F92B5C /* MoneyFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90693E631BE226C800F92B5C /* MoneyFramework.framework */; };
-		90693E651BE226C800F92B5C /* MoneyFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 90693E631BE226C800F92B5C /* MoneyFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		90693E6B1BE22CB600F92B5C /* MoneyFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90693E6A1BE22CB600F92B5C /* MoneyFramework.framework */; };
+		90693E6C1BE22D2D00F92B5C /* MoneyFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90693E6A1BE22CB600F92B5C /* MoneyFramework.framework */; };
+		90693E6D1BE22D2D00F92B5C /* MoneyFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 90693E6A1BE22CB600F92B5C /* MoneyFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,13 +35,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		90693E661BE226C800F92B5C /* Embed Frameworks */ = {
+		90693E6E1BE22D2D00F92B5C /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				90693E651BE226C800F92B5C /* MoneyFramework.framework in Embed Frameworks */,
+				90693E6D1BE22D2D00F92B5C /* MoneyFramework.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -59,7 +60,7 @@
 		9046830A1BE0CE0800EE830A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9046830F1BE0CE0800EE830A /* TestFrameworkAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestFrameworkAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		904683151BE0CE0800EE830A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		90693E631BE226C800F92B5C /* MoneyFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = MoneyFramework.framework; path = "/Users/aleksandar.petrov/Library/Developer/Xcode/DerivedData/MoneyDesignPattern-exbbvqooszlkdybtdofwzrkbaxbq/Build/Products/Debug-iphoneos/MoneyFramework.framework"; sourceTree = "<absolute>"; };
+		90693E6A1BE22CB600F92B5C /* MoneyFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MoneyFramework.framework; path = "../../../../Library/Developer/Xcode/DerivedData/MoneyDesignPattern-exbbvqooszlkdybtdofwzrkbaxbq/Build/Products/Debug-iphoneos/MoneyFramework.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,7 +68,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				90693E641BE226C800F92B5C /* MoneyFramework.framework in Frameworks */,
+				90693E6C1BE22D2D00F92B5C /* MoneyFramework.framework in Frameworks */,
+				90693E6B1BE22CB600F92B5C /* MoneyFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,7 +93,7 @@
 		904682E71BE0CE0800EE830A = {
 			isa = PBXGroup;
 			children = (
-				90693E631BE226C800F92B5C /* MoneyFramework.framework */,
+				90693E6A1BE22CB600F92B5C /* MoneyFramework.framework */,
 				904682F21BE0CE0800EE830A /* TestFrameworkApp */,
 				904683071BE0CE0800EE830A /* TestFrameworkAppTests */,
 				904683121BE0CE0800EE830A /* TestFrameworkAppUITests */,
@@ -196,7 +198,7 @@
 				904682EC1BE0CE0800EE830A /* Sources */,
 				904682ED1BE0CE0800EE830A /* Frameworks */,
 				904682EE1BE0CE0800EE830A /* Resources */,
-				90693E661BE226C800F92B5C /* Embed Frameworks */,
+				90693E6E1BE22D2D00F92B5C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
