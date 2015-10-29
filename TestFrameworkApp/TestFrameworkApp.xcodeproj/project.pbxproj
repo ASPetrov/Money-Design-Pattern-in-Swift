@@ -12,8 +12,7 @@
 		904682F91BE0CE0800EE830A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 904682F71BE0CE0800EE830A /* Main.storyboard */; };
 		904682FB1BE0CE0800EE830A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 904682FA1BE0CE0800EE830A /* Assets.xcassets */; };
 		904682FE1BE0CE0800EE830A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 904682FC1BE0CE0800EE830A /* LaunchScreen.storyboard */; };
-		9046835B1BE0D3AD00EE830A /* MoneyFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9046835A1BE0D3AD00EE830A /* MoneyFramework.framework */; };
-		9046835C1BE0D3AD00EE830A /* MoneyFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9046835A1BE0D3AD00EE830A /* MoneyFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		90693E5D1BE2213300F92B5C /* MoneyFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90693E5C1BE2213300F92B5C /* MoneyFramework.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,20 +32,6 @@
 		};
 /* End PBXContainerItemProxy section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		9046835D1BE0D3AD00EE830A /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				9046835C1BE0D3AD00EE830A /* MoneyFramework.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		904682F01BE0CE0800EE830A /* TestFrameworkApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestFrameworkApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		904682F31BE0CE0800EE830A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -59,8 +44,7 @@
 		9046830A1BE0CE0800EE830A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9046830F1BE0CE0800EE830A /* TestFrameworkAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestFrameworkAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		904683151BE0CE0800EE830A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9046835A1BE0D3AD00EE830A /* MoneyFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = MoneyFramework.framework; path = "/Users/aleksandar.petrov/Library/Developer/Xcode/DerivedData/MoneyDesignPattern-exbbvqooszlkdybtdofwzrkbaxbq/Build/Products/Debug-iphoneos/MoneyFramework.framework"; sourceTree = "<absolute>"; };
-		9046836A1BE0F85A00EE830A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		90693E5C1BE2213300F92B5C /* MoneyFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MoneyFramework.framework; path = "../../../../Library/Developer/Xcode/DerivedData/MoneyDesignPattern-exbbvqooszlkdybtdofwzrkbaxbq/Build/Products/Debug-iphoneos/MoneyFramework.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,7 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9046835B1BE0D3AD00EE830A /* MoneyFramework.framework in Frameworks */,
+				90693E5D1BE2213300F92B5C /* MoneyFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -92,8 +76,7 @@
 		904682E71BE0CE0800EE830A = {
 			isa = PBXGroup;
 			children = (
-				9046836A1BE0F85A00EE830A /* QuartzCore.framework */,
-				9046835A1BE0D3AD00EE830A /* MoneyFramework.framework */,
+				90693E5C1BE2213300F92B5C /* MoneyFramework.framework */,
 				904682F21BE0CE0800EE830A /* TestFrameworkApp */,
 				904683071BE0CE0800EE830A /* TestFrameworkAppTests */,
 				904683121BE0CE0800EE830A /* TestFrameworkAppUITests */,
@@ -198,7 +181,6 @@
 				904682EC1BE0CE0800EE830A /* Sources */,
 				904682ED1BE0CE0800EE830A /* Frameworks */,
 				904682EE1BE0CE0800EE830A /* Resources */,
-				9046835D1BE0D3AD00EE830A /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

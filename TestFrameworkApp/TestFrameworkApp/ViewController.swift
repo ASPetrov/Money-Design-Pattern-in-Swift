@@ -288,7 +288,9 @@ extension ViewController {
         if let url = NSURL(string: urlString) {
             NSURLSession.sharedSession().dataTaskWithURL(url) { data, response, error in
                 if error != nil {
-                    completion(result: nil)
+                    dispatch_async(dispatch_get_main_queue()) {
+                        completion(result: nil)
+                    }
                     return;
                 }
                 
@@ -302,15 +304,15 @@ extension ViewController {
                             completion(result: nil)
                             return;
                     }
-                    
-                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-                        dispatch_async(dispatch_get_main_queue()) {
-                            let result = NSDecimalNumber(string: exchangeRate)
-                            completion(result: result)
-                        }
+
+                    dispatch_async(dispatch_get_main_queue()) {
+                        let result = NSDecimalNumber(string: exchangeRate)
+                        completion(result: result)
                     }
                 } catch {
-                    completion(result: nil)
+                    dispatch_async(dispatch_get_main_queue()) {
+                        completion(result: nil)
+                    }
                 }
             }.resume()
         }
