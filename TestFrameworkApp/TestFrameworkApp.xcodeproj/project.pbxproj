@@ -12,8 +12,8 @@
 		904682F91BE0CE0800EE830A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 904682F71BE0CE0800EE830A /* Main.storyboard */; };
 		904682FB1BE0CE0800EE830A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 904682FA1BE0CE0800EE830A /* Assets.xcassets */; };
 		904682FE1BE0CE0800EE830A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 904682FC1BE0CE0800EE830A /* LaunchScreen.storyboard */; };
-		90693E881BE242E900F92B5C /* MoneyFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90693E871BE242E900F92B5C /* MoneyFramework.framework */; };
-		90693E8A1BE2430E00F92B5C /* MoneyFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 90693E871BE242E900F92B5C /* MoneyFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		90693EA41BE2457F00F92B5C /* MoneyFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90693E931BE244AC00F92B5C /* MoneyFramework.framework */; };
+		90693EA51BE2458100F92B5C /* MoneyFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 90693E931BE244AC00F92B5C /* MoneyFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,26 +31,51 @@
 			remoteGlobalIDString = 904682EF1BE0CE0800EE830A;
 			remoteInfo = TestFrameworkApp;
 		};
+		90693E921BE244AC00F92B5C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 90693E8C1BE244AC00F92B5C /* MoneyFramework.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9046832B1BE0CE2100EE830A;
+			remoteInfo = MoneyFramework;
+		};
+		90693E941BE244AC00F92B5C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 90693E8C1BE244AC00F92B5C /* MoneyFramework.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 904683351BE0CE2100EE830A;
+			remoteInfo = MoneyFrameworkTests;
+		};
+		90693E961BE244C500F92B5C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 90693E8C1BE244AC00F92B5C /* MoneyFramework.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 9046832A1BE0CE2100EE830A;
+			remoteInfo = MoneyFramework;
+		};
+		90693E9B1BE2451600F92B5C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 90693E8C1BE244AC00F92B5C /* MoneyFramework.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 9046832A1BE0CE2100EE830A;
+			remoteInfo = MoneyFramework;
+		};
+		90693EA11BE2456200F92B5C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 90693E8C1BE244AC00F92B5C /* MoneyFramework.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 9046832A1BE0CE2100EE830A;
+			remoteInfo = MoneyFramework;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		90693E6E1BE22D2D00F92B5C /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 8;
-			dstPath = "";
-			dstSubfolderSpec = 16;
-			files = (
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 1;
-		};
-		90693E8B1BE2430E00F92B5C /* Embed Frameworks */ = {
+		90693EA31BE2456200F92B5C /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				90693E8A1BE2430E00F92B5C /* MoneyFramework.framework in Embed Frameworks */,
+				90693EA51BE2458100F92B5C /* MoneyFramework.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -69,7 +94,7 @@
 		9046830A1BE0CE0800EE830A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9046830F1BE0CE0800EE830A /* TestFrameworkAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestFrameworkAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		904683151BE0CE0800EE830A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		90693E871BE242E900F92B5C /* MoneyFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MoneyFramework.framework; path = "../Build/MoneyFramework-Release-iphoneuniversal/MoneyFramework.framework"; sourceTree = "<group>"; };
+		90693E8C1BE244AC00F92B5C /* MoneyFramework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MoneyFramework.xcodeproj; path = ../MoneyFramework/MoneyFramework.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,7 +102,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				90693E881BE242E900F92B5C /* MoneyFramework.framework in Frameworks */,
+				90693EA41BE2457F00F92B5C /* MoneyFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,11 +126,11 @@
 		904682E71BE0CE0800EE830A = {
 			isa = PBXGroup;
 			children = (
-				90693E871BE242E900F92B5C /* MoneyFramework.framework */,
 				904682F21BE0CE0800EE830A /* TestFrameworkApp */,
 				904683071BE0CE0800EE830A /* TestFrameworkAppTests */,
 				904683121BE0CE0800EE830A /* TestFrameworkAppUITests */,
 				904682F11BE0CE0800EE830A /* Products */,
+				90693E8C1BE244AC00F92B5C /* MoneyFramework.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -196,6 +221,15 @@
 			name = Images;
 			sourceTree = "<group>";
 		};
+		90693E8D1BE244AC00F92B5C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				90693E931BE244AC00F92B5C /* MoneyFramework.framework */,
+				90693E951BE244AC00F92B5C /* MoneyFrameworkTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -206,12 +240,14 @@
 				904682EC1BE0CE0800EE830A /* Sources */,
 				904682ED1BE0CE0800EE830A /* Frameworks */,
 				904682EE1BE0CE0800EE830A /* Resources */,
-				90693E6E1BE22D2D00F92B5C /* Embed Frameworks */,
-				90693E8B1BE2430E00F92B5C /* Embed Frameworks */,
+				90693EA31BE2456200F92B5C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				90693E971BE244C500F92B5C /* PBXTargetDependency */,
+				90693E9C1BE2451600F92B5C /* PBXTargetDependency */,
+				90693EA21BE2456200F92B5C /* PBXTargetDependency */,
 			);
 			name = TestFrameworkApp;
 			productName = TestFrameworkApp;
@@ -288,6 +324,12 @@
 			mainGroup = 904682E71BE0CE0800EE830A;
 			productRefGroup = 904682F11BE0CE0800EE830A /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 90693E8D1BE244AC00F92B5C /* Products */;
+					ProjectRef = 90693E8C1BE244AC00F92B5C /* MoneyFramework.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				904682EF1BE0CE0800EE830A /* TestFrameworkApp */,
@@ -296,6 +338,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		90693E931BE244AC00F92B5C /* MoneyFramework.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = MoneyFramework.framework;
+			remoteRef = 90693E921BE244AC00F92B5C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		90693E951BE244AC00F92B5C /* MoneyFrameworkTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = MoneyFrameworkTests.xctest;
+			remoteRef = 90693E941BE244AC00F92B5C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		904682EE1BE0CE0800EE830A /* Resources */ = {
@@ -360,6 +419,21 @@
 			isa = PBXTargetDependency;
 			target = 904682EF1BE0CE0800EE830A /* TestFrameworkApp */;
 			targetProxy = 904683101BE0CE0800EE830A /* PBXContainerItemProxy */;
+		};
+		90693E971BE244C500F92B5C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = MoneyFramework;
+			targetProxy = 90693E961BE244C500F92B5C /* PBXContainerItemProxy */;
+		};
+		90693E9C1BE2451600F92B5C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = MoneyFramework;
+			targetProxy = 90693E9B1BE2451600F92B5C /* PBXContainerItemProxy */;
+		};
+		90693EA21BE2456200F92B5C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = MoneyFramework;
+			targetProxy = 90693EA11BE2456200F92B5C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -470,6 +544,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = TestFrameworkApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "MentorMate-LLC.TestFrameworkApp";
@@ -481,6 +556,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = TestFrameworkApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "MentorMate-LLC.TestFrameworkApp";
