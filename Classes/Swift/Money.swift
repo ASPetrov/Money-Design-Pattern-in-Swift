@@ -14,7 +14,7 @@ import Foundation
 public struct Money {
     
     //
-    // MARK: Public
+    // MARK: - Public
     //
     
     // !!! value objects should be entirely immutable
@@ -96,7 +96,7 @@ public struct Money {
             reminder        -= cents
         }
 
-        for var index = 0; index < reminder; index++ {
+        for index in 0..<reminder {
             results[index]!.add(self.oneSubunit())
         }
 
@@ -117,7 +117,7 @@ public struct Money {
     }
     
     //
-    // MARK: Initialization
+    // MARK: - Initialization
     //
     
     public init(amount: NSDecimalNumber = NSDecimalNumber.zero(), currency: Currency = Money.defaultCurrency()) {
@@ -142,7 +142,7 @@ public struct Money {
     }
     
     //
-    // MARK: Private
+    // MARK: - Private
     //
     
     private func assertSameCurrencyAs(other: Money) {
@@ -158,13 +158,13 @@ public struct Money {
 }
 
 //
-// MARK: Class functions extension
+// MARK: - Class functions extension
 //
 
 extension Money {
     
     //
-    // MARK: Public
+    // MARK: - Public
     //
     
     // Default Currency is US Dollars(USD)
@@ -173,7 +173,7 @@ extension Money {
     }
     
     //
-    // MARK: Private
+    // MARK: - Private
     //
     
     // Parse Input String Helper
@@ -189,7 +189,7 @@ extension Money {
 }
 
 //
-// MARK: Implement Printable
+// MARK: - Implement Printable
 //
 
 extension Money: CustomStringConvertible {
@@ -201,7 +201,7 @@ extension Money: CustomStringConvertible {
 }
 
 //
-// MARK: Implement Hashable
+// MARK: - Implement Hashable
 //
 
 extension Money: Hashable {
@@ -213,7 +213,7 @@ extension Money: Hashable {
 }
 
 //
-// MARK: Implement Equatable
+// MARK: - Implement Equatable
 //
 
 extension Money {
@@ -229,7 +229,7 @@ public func ==(lhs: Money, rhs: Money) -> Bool {
 }
 
 //
-// MARK: Implement Comparable
+// MARK: - Implement Comparable
 //
 
 extension Money: Comparable {
@@ -260,13 +260,13 @@ public func <(lhs: Money, rhs: Money) -> Bool {
 }
 
 //
-// MARK: Arithmetic Operators
+// MARK: - Arithmetic Operators
 //
 
 extension Money {
     
     //
-    // MARK: DRY Helpers
+    // MARK: - DRY Helpers
     //
     
     //
@@ -489,7 +489,7 @@ public func *(lhs: NSDecimal, rhs: Money) -> Money {
 }
 
 //
-// MARK: Converter Strategy pattern Helper
+// MARK: - Converter Strategy pattern Helper
 //
 
 public protocol ConvertCurrenciesStrategy {
@@ -507,7 +507,7 @@ public class NormalConvertStrategy: ConvertCurrenciesStrategy {
 }
 
 //
-// MARK: NSDecimalNumber Helper Extension
+// MARK: - NSDecimalNumber Helper Extension
 //
 
 public extension NSDecimalNumber {

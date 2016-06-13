@@ -12,7 +12,7 @@ import XCTest
 class CurrencyTests: XCTestCase {
     
     //
-    // MARK: Test Initialization
+    // MARK: - Test Initialization
     //
     
     func testCanCreateCurrencyFromLocaleWithAssociatedCurrency() {
@@ -33,7 +33,7 @@ class CurrencyTests: XCTestCase {
     }
     
     //
-    // MARK: Class Methods
+    // MARK: - Class Methods
     //
     
     func testCanCreateCurrencyWithLocaleIdentifier() {
@@ -59,7 +59,7 @@ class CurrencyTests: XCTestCase {
     }
     
     //
-    // MARK: Properties
+    // MARK: - Properties
     //
     
     func testCurrencyCodeMatch() {
@@ -142,7 +142,7 @@ class CurrencyTests: XCTestCase {
     }
     
     //
-    // MARK: Equal
+    // MARK: - Equal
     //
     
     func testTwoCurrencyObjectsAreEqual() {
@@ -161,7 +161,7 @@ class CurrencyTests: XCTestCase {
     }
     
     //
-    // MARK: Test Performance
+    // MARK: - Test Performance
     //
     
     func testCreateCurrencyWithLocaleIdentifierPerformance() {

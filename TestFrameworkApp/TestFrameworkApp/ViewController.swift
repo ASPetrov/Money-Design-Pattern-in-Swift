@@ -41,7 +41,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var resultContainerView: UIView!
     
     //
-    // MARK: Actions
+    // MARK: - Actions
     //
     
     func doneButtonAction() {
@@ -58,7 +58,7 @@ class ViewController: UIViewController {
     }
     
     //
-    // MARK: Lifecycle
+    // MARK: - Lifecycle
     //
 
     override func viewDidLoad() {
@@ -72,7 +72,7 @@ class ViewController: UIViewController {
     }
 
     //
-    // MARK: Private
+    // MARK: - Private
     //
     
     let maximumWholeDigits : Int = 10
@@ -163,7 +163,7 @@ class ViewController: UIViewController {
                 target: nil, action: nil)
         let done: UIBarButtonItem =
             UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done,
-                target: self, action: Selector("doneButtonAction"))
+                target: self, action: .doneButtonSelector)
         
         let items = [flexSpace, done]
         
@@ -274,7 +274,7 @@ extension ViewController : UITextFieldDelegate {
 }
 
 //
-// MARK: Communication
+// MARK: - Communication
 //
 
 extension ViewController {
@@ -319,3 +319,10 @@ extension ViewController {
     }
 }
 
+// 
+// MARK: - Helper
+//
+
+private extension Selector {
+    static let doneButtonSelector = #selector(ViewController.doneButtonAction)
+}

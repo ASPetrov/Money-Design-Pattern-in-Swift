@@ -15,14 +15,14 @@ import Foundation
 public class Currency {
     
     //
-    // MARK: Helpers
+    // MARK: - Helpers
     //
     
     static let availableDecimalSeparators  = Set<String>(["٫", ",", "."])
     static let availableGroupingSeparators = Set<String>([",", "٬", " ", "’", "\'", "."])
 
     //
-    // MARK: Public
+    // MARK: - Public
     //
 
     // Currency code
@@ -85,7 +85,7 @@ public class Currency {
     }
     
     //
-    // MARK: Initialization
+    // MARK: - Initialization
     //
     
     // Set locale as constructor DI
@@ -105,7 +105,7 @@ public class Currency {
     }
     
     //
-    // MARK: Internal
+    // MARK: - Internal
     //
     
     // Currency formatter
@@ -117,7 +117,7 @@ public class Currency {
     }()
     
     //
-    // MARK: Private
+    // MARK: - Private
     //
     
     private let locale: NSLocale
@@ -130,7 +130,7 @@ public class Currency {
 extension Currency {
     
     //
-    // MARK: Public
+    // MARK: - Public
     //
     
     // Try to create currency object from locale identifier
@@ -164,7 +164,7 @@ extension Currency {
     }
     
     //
-    // MARK: Internal
+    // MARK: - Internal
     //
     
     // Check if Locale object is Associated With Currency Code
@@ -175,7 +175,7 @@ extension Currency {
 }
 
 //
-// MARK: Implement Printable
+// MARK: - Implement Printable
 //
 
 extension Currency: CustomStringConvertible {
@@ -203,7 +203,7 @@ extension Currency: Hashable {
 }
 
 //
-// MARK: Implement Equatable
+// MARK: - Implement Equatable
 //
 
 extension Currency {

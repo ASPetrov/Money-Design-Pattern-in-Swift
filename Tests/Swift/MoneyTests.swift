@@ -12,7 +12,7 @@ import XCTest
 class MoneyTests: XCTestCase {
 
     // 
-    // Mark: Test Public Read Only Properties
+    // MARK: - Test Public Read Only Properties
     //
     
     func testCanReadCurrency() {
@@ -32,7 +32,7 @@ class MoneyTests: XCTestCase {
     }
     
     //
-    // Mark: Test NSDecimalNumber/amount Facade Methods
+    // MARK: - Test NSDecimalNumber/amount Facade Methods
     //
     
     func testIsZeroReturnsTrue() {
@@ -72,7 +72,7 @@ class MoneyTests: XCTestCase {
     }
     
     //
-    // MARK: Test Public Static Methods
+    // MARK: - Test Public Static Methods
     //
     
     func testDefaultCurrencyIsUSD() {
@@ -81,7 +81,7 @@ class MoneyTests: XCTestCase {
     }
     
     //
-    // MARK: Test Other Public Methods
+    // MARK: - Test Other Public Methods
     //
     
     func testAmountInSubunits() {
@@ -96,7 +96,7 @@ class MoneyTests: XCTestCase {
     }
     
     //
-    // MARK: Allocate
+    // MARK: - Allocate
     //
     
     func testAllocateToRecepients() {
@@ -122,7 +122,7 @@ class MoneyTests: XCTestCase {
     // ??? Test with Zero Ratios (throws "Division by zero")
     
     //
-    // MARK: Convert
+    // MARK: - Convert
     //
     
     func testConvertEurosToDollars() {
@@ -144,7 +144,7 @@ class MoneyTests: XCTestCase {
     // (throws "Cannot convert using a negative conversion multiplier")
     
     //
-    // MARK: Initialization
+    // MARK: - Initialization
     //
     
     func testCanCreateMoney() {
@@ -211,7 +211,7 @@ class MoneyTests: XCTestCase {
     }
     
     //
-    // MARK: Equal
+    // MARK: - Equal
     //
     
     // opertator == is using equals method (??? - no need to be tested)
@@ -252,7 +252,7 @@ class MoneyTests: XCTestCase {
     }
     
     //
-    // MARK: Comparable
+    // MARK: - Comparable
     //
     
     // opertators <=, >=, >, <  are using compare method (??? - no need to be tested)
@@ -284,7 +284,7 @@ class MoneyTests: XCTestCase {
     }
     
     //
-    // MARK: Arithmetic
+    // MARK: - Arithmetic
     //
     
     func testAddMoney() {
