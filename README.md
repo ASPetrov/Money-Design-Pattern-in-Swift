@@ -9,7 +9,5 @@ Money Framework is available through [CocoaPods](http://cocoapods.org).
 To install add the following line to your Podfile:
 
 ``` Ruby
-use_frameworks!
-
 pod 'MoneyFramework'
 ```
