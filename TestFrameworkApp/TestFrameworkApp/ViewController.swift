@@ -12,18 +12,13 @@ import MoneyFramework
 
 // Dummy Data Source
 enum CurrencyTypes: String {
-    case
-    
-    USDollar = "USD",
-    EuropeanEuro = "EUR",
-    BulgarianLev = "BGN",
-    JapaneseYen = "JPY"
+    case usd = "USD"
+    case euro = "EUR"
+    case lev = "BGN"
+    case yen = "JPY"
     
     static func allValues() -> [String] {
-        return [USDollar.rawValue,
-            EuropeanEuro.rawValue,
-            BulgarianLev.rawValue,
-            JapaneseYen.rawValue]
+        return [usd.rawValue, euro.rawValue, lev.rawValue, yen.rawValue]
     }
 }
 
@@ -41,24 +36,24 @@ class ViewController: UIViewController {
     @IBOutlet weak var resultContainerView: UIView!
     
     //
-    // MARK: - Actions
+    //MARK: - Actions
     //
     
     func doneButtonAction() {
         self.amountTextField.resignFirstResponder()
     }
     
-    @IBAction func fromCurrencyChanged(sender: UISegmentedControl) {
+    @IBAction func fromCurrencyChanged(_ sender: UISegmentedControl) {
         self.clearAmountFractionIfNeeded()
         self.convert()
     }
     
-    @IBAction func toCurrencyChanged(sender: UISegmentedControl) {
+    @IBAction func toCurrencyChanged(_ sender: UISegmentedControl) {
         self.convert()
     }
     
     //
-    // MARK: - Lifecycle
+    //MARK: - Lifecycle
     //
 
     override func viewDidLoad() {
@@ -72,20 +67,10 @@ class ViewController: UIViewController {
     }
 
     //
-    // MARK: - Private
+    //MARK: - Helpers
     //
     
-    let maximumWholeDigits : Int = 10
-    
-    var maximumFractionDigits : Int {
-        get {
-            let fromCurrency =
-                self.currencyForSegmentControlSelectedIndex(self.fromCurrencySegmentControl)
-            return fromCurrency!.maximumFractionDigits
-        }
-    }
-    
-    func convert() {
+    fileprivate func convert() {
         if self.amountTextField.text == nil || self.amountTextField.text!.characters.count == 0 {
             return
         }
@@ -121,23 +106,22 @@ class ViewController: UIViewController {
         }
     }
     
-    func currencyForSegmentControlSelectedIndex(control: UISegmentedControl) -> Currency? {
-        let currencyTypeRaw = CurrencyTypes.allValues()[control.selectedSegmentIndex]
-        return Currency.currencyWithCurrencyCode(currencyCode: currencyTypeRaw)
-    }
-    
-    func clearAmountFractionIfNeeded() {
+    fileprivate func clearAmountFractionIfNeeded() {
         let decimalSeparator: String =
-            NSLocale.currentLocale().objectForKey(NSLocaleDecimalSeparator) as! String
-        let separatorRange = self.amountTextField.text?.rangeOfString(decimalSeparator)
-        if separatorRange != .None && self.maximumFractionDigits == 0 {
-            let range = separatorRange!.startIndex..<self.amountTextField.text!.endIndex
+            (Locale.current as NSLocale).object(forKey: NSLocale.Key.decimalSeparator) as! String
+        let separatorRange = self.amountTextField.text?.range(of: decimalSeparator)
+        if separatorRange != .none && self.maximumFractionDigits == 0 {
+            let range = separatorRange!.lowerBound..<self.amountTextField.text!.endIndex
             let substr = self.amountTextField.text![range]
-            self.amountTextField.text = self.amountTextField.text?.stringByReplacingOccurrencesOfString(substr, withString: "")
+            self.amountTextField.text = self.amountTextField.text?.replacingOccurrences(of: substr, with: "")
         }
     }
     
-    func setup() {
+    //
+    //MARK: - Setup
+    //
+    
+    private func setup() {
         self.navigationItem.title = NSLocalizedString("Currency Converter", comment: "App Title")
         
         self.setupAmountTextField()
@@ -148,26 +132,68 @@ class ViewController: UIViewController {
         self.resultLabel.text = NSLocalizedString("...", comment: "Final Conversion Amount Label")
     }
     
-    func setupAmountTextField() {
+    private func setupAmountTextField() {
         self.addDoneButtonOnKeyboard()
         self.amountTextField.delegate = self
         self.amountTextField.placeholder =
             NSLocalizedString("Enter Amount ", comment: "Placeholder text")
     }
     
-    func addDoneButtonOnKeyboard() {
-        let doneToolbar: UIToolbar = UIToolbar(frame: CGRectMake(0, 0, 320, 50))
-
+    func setupNavigationController() {
+        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.navigationBar.barStyle = .black
+        self.navigationController?.navigationBar.titleTextAttributes =
+            [NSForegroundColorAttributeName : UIColor.white]
+    }
+    
+    func setupResultContainerView() {
+        self.resultContainerView.layer.borderColor = UIColor.white.cgColor
+        self.resultContainerView.layer.borderWidth = 2.0 / UIScreen.main.scale
+        self.resultContainerView.layer.cornerRadius = 8.0
+    }
+    
+    //
+    //MARK: - Segment Controls
+    //
+    
+    private func setupCurrencySegmentControls() {
+        self.setupCurrencySegmentControl(self.toCurrencySegmentControl)
+        self.setupCurrencySegmentControl(self.fromCurrencySegmentControl)
+        
+        self.fromCurrencySegmentControl.selectedSegmentIndex = 0
+    }
+    
+    private func setupCurrencySegmentControl(_ control: UISegmentedControl) {
+        control.tintColor = UIColor.white
+        
+        control.removeAllSegments()
+        for (index, code) in CurrencyTypes.allValues().enumerated() {
+            control.insertSegment(withTitle: code, at: index, animated: false)
+        }
+    }
+    
+    func currencyForSegmentControlSelectedIndex(_ control: UISegmentedControl) -> LocaleCurrency? {
+        let currencyTypeRaw = CurrencyTypes.allValues()[control.selectedSegmentIndex]
+        return LocaleCurrency.create(with: currencyTypeRaw)
+    }
+    
+    //
+    //MARK: - Keyboard
+    //
+    
+    private func addDoneButtonOnKeyboard() {
+        let doneToolbar: UIToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 320, height: 50))
+        
         let flexSpace =
-            UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace,
-                target: nil, action: nil)
+            UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
+                            target: nil, action: nil)
         let done: UIBarButtonItem =
-            UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done,
-                target: self, action: .doneButtonSelector)
+            UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.done,
+                            target: self, action: .doneButtonSelector)
         
         let items = [flexSpace, done]
         
-        doneToolbar.barStyle = UIBarStyle.BlackTranslucent
+        doneToolbar.barStyle = UIBarStyle.blackTranslucent
         doneToolbar.items = items
         doneToolbar.sizeToFit()
         
@@ -175,43 +201,30 @@ class ViewController: UIViewController {
         
     }
     
-    func setupNavigationController() {
-        self.navigationController?.navigationBar.translucent = true
-        self.navigationController?.navigationBar.barStyle = .Black
-        self.navigationController?.navigationBar.titleTextAttributes =
-            [NSForegroundColorAttributeName : UIColor.whiteColor()]
-    }
+    //
+    //MARK: - TextField Helpers
+    //
     
-    func setupResultContainerView() {
-        self.resultContainerView.layer.borderColor = UIColor.whiteColor().CGColor
-        self.resultContainerView.layer.borderWidth = 2.0 / UIScreen.mainScreen().scale
-        self.resultContainerView.layer.cornerRadius = 8.0
-    }
+    fileprivate let maximumWholeDigits : Int = 10
     
-    func setupCurrencySegmentControls() {
-        self.setupCurrencySegmentControl(self.toCurrencySegmentControl)
-        self.setupCurrencySegmentControl(self.fromCurrencySegmentControl)
-        
-        self.fromCurrencySegmentControl.selectedSegmentIndex = 0
-    }
-    
-    func setupCurrencySegmentControl(control: UISegmentedControl) {
-        control.tintColor = UIColor.whiteColor()
-        
-        control.removeAllSegments()
-        for (index, code) in CurrencyTypes.allValues().enumerate() {
-            control.insertSegmentWithTitle(code, atIndex: index, animated: false)
+    fileprivate var maximumFractionDigits : Int {
+        get {
+            let fromCurrency =
+                self.currencyForSegmentControlSelectedIndex(self.fromCurrencySegmentControl)
+            return fromCurrency!.exponent
         }
     }
+    
 }
 
 extension ViewController : UITextFieldDelegate {
-    func textFieldShouldReturn(textField: UITextField) -> Bool {        
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {        
         self.convert()
         return true;
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         // Allowing Backspace and other non-visible characters
         if range.length > 0 && string.characters.count == 0 {
             return true
@@ -219,7 +232,7 @@ extension ViewController : UITextFieldDelegate {
         
         // Decimal separator should not be first
         let decimalSeparator: String =
-            NSLocale.currentLocale().objectForKey(NSLocaleDecimalSeparator) as! String
+            (Locale.current as NSLocale).object(forKey: NSLocale.Key.decimalSeparator) as! String
         if self.maximumFractionDigits == 0 && string == decimalSeparator {
             return false
         }
@@ -230,10 +243,10 @@ extension ViewController : UITextFieldDelegate {
         
         // Allowing only a specified set of characters to be entered into a given text field
         let validCharacters: String = "0123456789\(decimalSeparator)"
-        let disallowedCharacterSet: NSCharacterSet =
-            NSCharacterSet(charactersInString: validCharacters).invertedSet
+        let disallowedCharacterSet: CharacterSet =
+            CharacterSet(charactersIn: validCharacters).inverted
         let replacementStringIsLegal: Bool =
-            (string.rangeOfCharacterFromSet(disallowedCharacterSet) == .None)
+            (string.rangeOfCharacter(from: disallowedCharacterSet) == .none)
         if !replacementStringIsLegal {
             return false;
         }
@@ -245,82 +258,82 @@ extension ViewController : UITextFieldDelegate {
         }
         
         // Limiting the number of characters that can be entered into a given text field
-        let prospectiveText: String = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
-        let separatorRange = prospectiveText.rangeOfString(decimalSeparator)
-        let maxTextLenght = self.maximumWholeDigits + ((separatorRange == .None) ? 0 : (1 + self.maximumFractionDigits))
+        let prospectiveText: String = (textField.text! as NSString).replacingCharacters(in: range, with: string)
+        let separatorRange = prospectiveText.range(of: decimalSeparator)
+        let maxTextLenght = self.maximumWholeDigits + ((separatorRange == .none) ? 0 : (1 + self.maximumFractionDigits))
         let resultingStringLengthIsLegal: Bool = (prospectiveText.characters.count <= maxTextLenght)
         if !resultingStringLengthIsLegal {
             return false
         }
         
         // Limiting the number of characters that can be entered  after the decimal separator
-        if separatorRange != .None {
+        if separatorRange != .none {
             let fractionalCharactersCountIsLegal: Bool =
-                (range.location <= (prospectiveText.startIndex.distanceTo(separatorRange!.startIndex) + self.maximumFractionDigits));
+                (range.location <= (prospectiveText.characters.distance(from: prospectiveText.startIndex, to: separatorRange!.lowerBound) + self.maximumFractionDigits));
             if !fractionalCharactersCountIsLegal {
                 return false;
             }
         }
         
         // Confirming that the value entered into a text field is numeric
-        let scanner: NSScanner = NSScanner(string: prospectiveText)
-        let resultingTextIsNumeric: Bool = (scanner.scanDecimal(nil) && scanner.atEnd)
+        let scanner: Scanner = Scanner(string: prospectiveText)
+        let resultingTextIsNumeric: Bool = (scanner.scanDecimal(nil) && scanner.isAtEnd)
         if !resultingTextIsNumeric {
             return false;
         }
         
         return true
     }
+    
 }
 
-//
-// MARK: - Communication
-//
 
 extension ViewController {
-    func exchangeRate(fromCurrency: String, toCurrency: String, completion: ((result: NSDecimalNumber?) -> Void)!) {
+    
+    //
+    //MARK: - Communication
+    //
+
+    func exchangeRate(_ fromCurrency: String, toCurrency: String, completion: ((_ result: NSDecimalNumber?) -> Void)!) {
         let baseURL = "https://query.yahooapis.com/v1/public/yql?q="
         let query = "select * from yahoo.finance.xchange where pair in (\"\(fromCurrency)\(toCurrency)\")" +
             "&format=json&env=store://datatables.org/alltableswithkeys&callback="
         
-        let urlString = baseURL + query.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
+        let urlString = baseURL + query.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
         
-        if let url = NSURL(string: urlString) {
-            NSURLSession.sharedSession().dataTaskWithURL(url) { data, response, error in
+        if let url = URL(string: urlString) {
+            URLSession.shared.dataTask(with: url, completionHandler: { data, response, error in
                 if error != nil {
-                    dispatch_async(dispatch_get_main_queue()) {
-                        completion(result: nil)
-                    }
+                    DispatchQueue.main.async { completion(nil) }
                     return;
                 }
                 
                 do {
                     guard let serverData = data,
-                          let jsonDictionary = try NSJSONSerialization.JSONObjectWithData(serverData, options: NSJSONReadingOptions(rawValue: 0)) as? NSDictionary,
+                          let jsonDictionary = try JSONSerialization.jsonObject(with: serverData, options: JSONSerialization.ReadingOptions(rawValue: 0)) as? NSDictionary,
                           let queryResults = jsonDictionary["query"] as? NSDictionary,
                           let results = queryResults["results"] as? NSDictionary,
                           let rate = results["rate"] as? NSDictionary,
                           let exchangeRate = rate["Rate"] as? String else {
-                            completion(result: nil)
+                            completion(nil)
                             return;
                     }
 
-                    dispatch_async(dispatch_get_main_queue()) {
+                    DispatchQueue.main.async {
                         let result = NSDecimalNumber(string: exchangeRate)
-                        completion(result: result)
+                        completion(result)
                     }
                 } catch {
-                    dispatch_async(dispatch_get_main_queue()) {
-                        completion(result: nil)
-                    }
+                    DispatchQueue.main.async { completion(nil) }
                 }
-            }.resume()
+            }) .resume()
         }
     }
+    
 }
 
 // 
-// MARK: - Helper
+// Helper
 //
 
 private extension Selector {

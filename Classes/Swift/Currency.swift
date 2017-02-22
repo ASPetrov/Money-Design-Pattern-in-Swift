@@ -8,214 +8,214 @@
 
 import Foundation
 
+public protocol Currency: CurrencyFormatter, CustomStringConvertible, Hashable {
+    // Currency code
+    var code: String { get }
+    // Currency symbol
+    var symbol: String { get }
+    // Currency fraction digits
+    var exponent: Int { get }
+    // Currency Decimal Separator - character between the whole and fraction amounts
+    var separator: String { get }
+    // Currency Grouping Separator - character between each thousands place
+    var delimiter: String? { get }
+}
+
+extension Currency {
+    
+    //
+    //MARK: - CustomStringConvertible
+    //
+    
+    public var description: String {
+        return "[code = \(self.code), symbol = \(self.symbol), " +
+            "exponent: \(self.exponent), " +
+            "decimal separator = \(self.separator), " +
+        "grouping separator = \(self.delimiter)]"
+    }
+    
+}
+
+extension Currency {
+    
+    //
+    //MARK: - Hashable
+    //
+    
+    public var hashValue : Int {
+        get {
+            return self.code.hashValue
+        }
+    }
+    
+}
+
+extension Currency {
+    
+    //
+    //MARK: - Equatable
+    //
+    
+    public func equals(_ other: Self) -> Bool {
+        // ??? Should we check something else
+        return self.code == other.code
+    }
+    
+    public static func ==(lhs: Self, rhs: Self) -> Bool {
+        return lhs.equals(rhs)
+    }
+    
+}
+
+//
+
+public protocol CurrencyFormatter {
+    // Returns a string containing the formatted value of the provided number object.
+    func string(from number: NSNumber) -> String?
+    // Returns an NSNumber object created by parsing a given string.
+    func number(from string: String) -> NSNumber?
+}
+
 //
 // This class is simple NSNumberFormatter wrapper
 //
 
-public class Currency {
+public final class LocaleCurrency: Currency {
     
     //
-    // MARK: - Helpers
+    //MARK: - Initialization
     //
     
-    static let availableDecimalSeparators  = Set<String>(["٫", ",", "."])
-    static let availableGroupingSeparators = Set<String>([",", "٬", " ", "’", "\'", "."])
+    // Set locale as constructor DI
+    public init?(_ locale: Locale = Locale.current) {
+        // fail if we can't get currency code from locale
+        if locale.currencyCode == nil {
+            return nil
+        }
 
+        formatter               = NumberFormatter()
+        formatter.numberStyle   = .currency
+        formatter.locale        = locale
+    }
+    
     //
-    // MARK: - Public
+    //MARK: - Properties
     //
+    
+    // Currency formatter
+    private(set) var formatter: NumberFormatter
+    
+}
 
-    // Currency code
+extension LocaleCurrency {
+    
+    //
+    //MARK: - Currency
+    //
+    
     public var code: String {
         get {
             return self.formatter.currencyCode
         }
-        set {
-            if (NSLocale.ISOCurrencyCodes() ).contains(newValue) == true {
-                self.formatter.currencyCode = newValue
-            }
-        }
     }
-
-    // Currency symbol
+    
     public var symbol: String {
         get {
             return self.formatter.currencySymbol ?? ""
         }
-        set {
-            self.formatter.currencySymbol = newValue
-        }
     }
-
-    // Currency fraction digits
-    public var maximumFractionDigits: Int {
+    
+    public var exponent: Int {
         get {
             return self.formatter.maximumFractionDigits
         }
-        set {
-            if newValue > 0 && newValue <= 3 {
-                self.formatter.maximumFractionDigits = newValue
-            }
-        }
     }
-
-    // Currency Decimal Separator
-    public var decimalSeparator: String {
+    
+    public var separator: String {
         get {
             return self.formatter.currencyDecimalSeparator ?? ""
         }
-        set {
-            if Currency.availableDecimalSeparators.contains(newValue) {
-                self.formatter.currencyDecimalSeparator = newValue
-            }
-        }
     }
-    
-    // Currency Grouping Separator
-    public var groupingSeparator: String? {
+
+    public var delimiter: String? {
         get {
             return self.formatter.currencyGroupingSeparator
         }
-        set {
-            if newValue == nil || Currency.availableGroupingSeparators.contains((newValue!)) {
-                self.formatter.currencyDecimalSeparator = newValue
-                self.formatter.usesGroupingSeparator    = (newValue != nil)
-            }
-        }
     }
     
-    //
-    // MARK: - Initialization
-    //
-    
-    // Set locale as constructor DI
-    public init?(locale: NSLocale) {
-        // always set locale to avoid compiler errors
-        self.locale = locale
-        
-        // fail if we can't get currency code from locale
-        if !Currency.isLocaleAssociatedWithCurrencyCode(locale) {
-            return nil
-        }        
-    }
-
-    // init with current locale
-    public convenience init?() {
-        self.init(locale: NSLocale.currentLocale())
-    }
-    
-    //
-    // MARK: - Internal
-    //
-    
-    // Currency formatter
-    lazy var formatter: NSNumberFormatter = {
-        var formatter           = NSNumberFormatter()
-        formatter.numberStyle   = .CurrencyStyle
-        formatter.locale        = self.locale
-        return formatter
-    }()
-    
-    //
-    // MARK: - Private
-    //
-    
-    private let locale: NSLocale
 }
 
-//
-// Class functions extension
-//
-
-extension Currency {
+extension LocaleCurrency {
     
     //
-    // MARK: - Public
+    //MARK: - CurrencyFormatter
+    //
+    
+    public func string(from number: NSNumber) -> String? {
+        return formatter.string(from: number)
+    }
+    
+    public func number(from string: String) -> NSNumber? {
+        return formatter.number(from: string)
+    }
+    
+}
+
+extension LocaleCurrency {
+    
+    //
+    //MARK: - Factory Methods
     //
     
     // Try to create currency object from locale identifier
-    public class func currencyForLocaleIdentifier(localeIdentifier string: String) -> Currency? {
+    public class func create(from localeIdentifier: String) -> LocaleCurrency? {
         // Check for valid identifier
-        if (NSLocale.availableLocaleIdentifiers() ).contains(string) == false {
+        if !Locale.availableIdentifiers.contains(localeIdentifier) {
             return nil
         }
         
-        let locale = NSLocale(localeIdentifier: string)
-        let currency = Currency(locale: locale)
+        let localeCanonicalIdentifier = Locale.canonicalIdentifier(from: localeIdentifier)
+        let locale = Locale(identifier: localeCanonicalIdentifier)
+        let currency = LocaleCurrency(locale)
         return currency
     }
 
     // Try to create currency object from currency code
-    public class func currencyWithCurrencyCode(currencyCode string: String) -> Currency? {
-        let availableLocaleIdentifiers: [String]    =
-            NSLocale.availableLocaleIdentifiers() 
-        
-        for localeIdentifier in availableLocaleIdentifiers {
-            let locale = NSLocale(localeIdentifier: localeIdentifier)
-            
-            // check if locale currency code is equal to filter
-            if let localeCurrencyCode = locale.objectForKey(NSLocaleCurrencyCode) as? String
-                where localeCurrencyCode == string {
-                    return Currency(locale: locale)
-            }            
+    public class func create(with currencyCode: String) -> LocaleCurrency? {
+        // Check for valid code
+        if !Locale.isoCurrencyCodes.contains(currencyCode) {
+            return nil
         }
         
-        return nil
+        let components = [NSLocale.Key.currencyCode.rawValue : currencyCode]
+        let localeIdentifier = Locale.identifier(fromComponents: components)
+        let localeCanonicalIdentifier = Locale.canonicalIdentifier(from: localeIdentifier)
+        let locale = Locale(identifier: localeCanonicalIdentifier)
+        let currency = LocaleCurrency(locale)
+        return currency
     }
+
+}
+
+extension LocaleCurrency {
     
     //
-    // MARK: - Internal
+    //MARK: - Default Currency 
     //
     
-    // Check if Locale object is Associated With Currency Code
-    class func isLocaleAssociatedWithCurrencyCode(locale: NSLocale) -> Bool {
-        let string  = locale.objectForKey(NSLocaleCurrencyCode) as? String
-        return (string != nil && !string!.isEmpty)
-    }
+    // Default Currency is US Dollars(USD)
+    public static var `default` = LocaleCurrency.create(with: "USD")!
+    
 }
 
-//
-// MARK: - Implement Printable
-//
+// Currently not used
 
-extension Currency: CustomStringConvertible {
-    public var description: String {
-        return "[code = \(self.code), symbol = \(self.symbol), " +
-            "maximum fraction digits: \(self.maximumFractionDigits), " +
-            "decimal separator = \(self.decimalSeparator), " +
-            "grouping separator = \(self.groupingSeparator)]"
-    }
-}
-
-//
-// Implement Hashable
-//
-
-extension Currency: Hashable {
-    public var hashValue : Int {
-        get {
-            // decimal and grouping separator are only for presentation 
-            // and should not be a part of equality check
-            return self.locale.hashValue ^ self.code.hashValue ^
-                self.symbol.hashValue ^ self.maximumFractionDigits
-        }
-    }
-}
-
-//
-// MARK: - Implement Equatable
-//
-
-extension Currency {
-    // value objects are equal if all their fields are equal
-    public func equals(other: Currency) -> Bool {
-        return self.locale == other.locale &&
-            self.code == other.code &&
-            self.symbol == other.symbol &&
-            self.maximumFractionDigits == other.maximumFractionDigits
-    }
-}
-
-public func ==(lhs: Currency, rhs: Currency) -> Bool {
-    return lhs.equals(rhs)
+extension NumberFormatter {
+    
+    //
+    //MARK: - NumberFormatter Helper Extension
+    //
+    
+    static let availableDecimalSeparators  = Set<String>(["٫", ",", "."])
+    static let availableGroupingSeparators = Set<String>([",", "٬", " ", "’", "\'", "."])
 }

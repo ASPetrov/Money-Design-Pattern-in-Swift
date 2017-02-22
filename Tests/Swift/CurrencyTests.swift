@@ -12,167 +12,166 @@ import XCTest
 class CurrencyTests: XCTestCase {
     
     //
-    // MARK: - Test Initialization
+    //MARK: - Test Initialization
     //
     
     func testCanCreateCurrencyFromLocaleWithAssociatedCurrency() {
-        let locale      = NSLocale(localeIdentifier: "fr_FR")
-        let currency    = Currency(locale: locale)
+        let locale      = Locale(identifier: "fr_FR")
+        let currency    = LocaleCurrency(locale)
         XCTAssertNotNil(currency, "Could not create currency from locale")
     }
     
     func testCanNotCreateCurrencFromLocaleWithoutAssociatedCurrency() {
-        let locale      = NSLocale(localeIdentifier: "en")
-        let currency    = Currency(locale: locale)
+        let locale      = Locale(identifier: "en")
+        let currency    = LocaleCurrency(locale)
         XCTAssertNil(currency, "Should not create currency from locale")
     }
     
     func testCanCreateCurrencyFromCurrentLocale() {
-        let currency    = Currency()
+        let currency    = LocaleCurrency()
         XCTAssertNotNil(currency, "Could not create currency from current locale")
     }
     
     //
-    // MARK: - Class Methods
+    //MARK: - Class Methods
     //
     
     func testCanCreateCurrencyWithLocaleIdentifier() {
-        let currency    = Currency.currencyForLocaleIdentifier(localeIdentifier: "en_US")
+        let currency    = LocaleCurrency.create(from: "en_US")
         XCTAssertNotNil(currency, "Could not create currency from locale")
     }
     
     func testCanNotCreateCurrencyWithInvalidLocaleIdentifier() {
-        let currency    =
-            Currency.currencyForLocaleIdentifier(localeIdentifier: "randomString")
+        let currency    = LocaleCurrency.create(from: "randomString")
         XCTAssertNil(currency, "Should not create currency from invalid locale Identifier")
     }
     
     func testCanCreateCurrencyWithCurrencyCode() {
-        let currency    = Currency.currencyWithCurrencyCode(currencyCode: "EUR")
+        let currency    = LocaleCurrency.create(with: "EUR")
         XCTAssertNotNil(currency, "Could not create currency with currency code")
     }
     
     func testCanNotCreateCurrencyWithInvalidCurrencyCode() {
-        let currency    =
-            Currency.currencyWithCurrencyCode(currencyCode: "randomString")
+        let currency    = LocaleCurrency.create(with: "randomString")
         XCTAssertNil(currency, "Should not create currency with invalid currency code")
     }
     
     //
-    // MARK: - Properties
+    //MARK: - Properties
     //
     
     func testCurrencyCodeMatch() {
-        let currency    = Currency.currencyWithCurrencyCode(currencyCode: "EUR")!
+        let currency    = LocaleCurrency.create(with: "EUR")!
         XCTAssertEqual(currency.code, "EUR", "Currency code should match")
     }
     
     func testCurrencyCodeNotMatch() {
-        let currency    =
-            Currency.currencyForLocaleIdentifier(localeIdentifier: "en_US")!
+        let currency    = LocaleCurrency.create(from: "en_US")!
         XCTAssertNotEqual(currency.code, "EUR", "Currency code should not match")
     }
     
     func testCurrencySymbolMatch() {
-        let currency    =
-            Currency.currencyForLocaleIdentifier(localeIdentifier: "en_US")!
+        let currency    = LocaleCurrency.create(from: "en_US")!
         XCTAssertEqual(currency.symbol, "$", "Currency symbol should match")
     }
     
     func testCurrencySymbolNotMatch() {
-        let currency    = Currency.currencyWithCurrencyCode(currencyCode: "EUR")!
+        let currency    = LocaleCurrency.create(with: "EUR")!
         XCTAssertNotEqual(currency.symbol, "$", "Currency symbol should not match")
     }
     
     func testCurrencyMaximumFractionDigitsMatch() {
-        let currency    =
-            Currency.currencyForLocaleIdentifier(localeIdentifier: "fr_TN")!
-        XCTAssertEqual(currency.maximumFractionDigits, 3, "Currency maximum fraction digits should match")
+        let currency    = LocaleCurrency.create(from: "fr_TN")!
+        XCTAssertEqual(currency.exponent, 3, "Currency maximum fraction digits should match")
     }
     
     func testCurrencyMaximumFractionDigitsNotMatch() {
-        let currency    = Currency.currencyWithCurrencyCode(currencyCode: "EUR")!
-        XCTAssertNotEqual(currency.maximumFractionDigits, 3, "Currency maximum fraction digits should not match")
+        let currency    = LocaleCurrency.create(with: "EUR")!
+        XCTAssertNotEqual(currency.exponent, 3, "Currency maximum fraction digits should not match")
     }
     
-    func testCanSetNewCurrencyCode() {
-        let currency    = Currency()!
-        currency.code   = "EUR"
-        XCTAssertEqual(currency.code, "EUR", "Currency code should match")
-    }
-    
-    func testCanSetNewCurrencySymbol() {
-        let currency    = Currency()!
-        currency.symbol = "%"
-        XCTAssertEqual(currency.symbol, "%", "Currency symbol should match")
-    }
-    
-    func testCanSetNewCurrencyMaximumFractionDigits() {
-        let currency    = Currency()!
-        currency.maximumFractionDigits = 1
-        XCTAssertEqual(currency.maximumFractionDigits, 1, "Currency maximum fraction digits should match")
-    }
-    
-    func testCanNotSetNewCurrencyMaximumFractionDigits() {
-        let currency    = Currency()!
-        currency.maximumFractionDigits = 5
-        XCTAssertNotEqual(currency.maximumFractionDigits, 5, "Currency maximum fraction digits should not match")
-    }
+//    func testCanSetNewCurrencyCode() {
+//        let currency    = LocaleCurrency()!
+//        currency.code   = "EUR"
+//        XCTAssertEqual(currency.code, "EUR", "Currency code should match")
+//    }
+//    
+//    func testCanSetNewCurrencySymbol() {
+//        let currency    = LocaleCurrency()!
+//        currency.symbol = "%"
+//        XCTAssertEqual(currency.symbol, "%", "Currency symbol should match")
+//    }
+//    
+//    func testCanSetNewCurrencyMaximumFractionDigits() {
+//        let currency    = LocaleCurrency()!
+//        currency.exponent = 1
+//        XCTAssertEqual(currency.exponent, 1, "Currency maximum fraction digits should match")
+//    }
+//    
+//    func testCanNotSetNewCurrencyMaximumFractionDigits() {
+//        let currency    = LocaleCurrency()!
+//        currency.exponent = 5
+//        XCTAssertNotEqual(currency.exponent, 5, "Currency maximum fraction digits should not match")
+//    }
     
     func testCurrencDecimalSeparatorMatch() {
-        let currency    =
-            Currency.currencyForLocaleIdentifier(localeIdentifier: "de_DE")!
-        XCTAssertEqual(currency.decimalSeparator, ",", "Currency decimal separator should match")
+        let currency    = LocaleCurrency.create(from: "de_DE")!
+        XCTAssertEqual(currency.separator, ",", "Currency decimal separator should match")
     }
     
     func testCurrencyDecimalSeparatorNotMatch() {
-        let currency    = Currency.currencyForLocaleIdentifier(localeIdentifier: "en_US")!
-        XCTAssertNotEqual(currency.decimalSeparator, ",", "Currency decimal separator should not match")
+        let currency    = LocaleCurrency.create(from: "en_US")!
+        XCTAssertNotEqual(currency.separator, ",", "Currency decimal separator should not match")
     }
     
     func testCurrencGroupingSeparatorMatch() {
-        let currency    =
-            Currency.currencyForLocaleIdentifier(localeIdentifier: "en_US")!
-        XCTAssertEqual(currency.groupingSeparator, ",", "Currency grouping separator should match")
+        let currency    = LocaleCurrency.create(from: "en_US")!
+        XCTAssertEqual(currency.delimiter, ",", "Currency grouping separator should match")
     }
     
     func testCurrencyGroupingSeparatorNotMatch() {
-        let currency    = Currency.currencyForLocaleIdentifier(localeIdentifier: "de_DE")!
-        XCTAssertNotEqual(currency.groupingSeparator, ",", "Currency grouping separator should not match")
+        let currency    = LocaleCurrency.create(from: "de_DE")!
+        XCTAssertNotEqual(currency.delimiter, ",", "Currency grouping separator should not match")
     }
     
     //
-    // MARK: - Equal
+    //MARK: - Test Public Static Methods
+    //
+    
+    func testDefaultCurrencyIsUSD() {
+        let currency            = LocaleCurrency.default
+        XCTAssertEqual(currency.code, "USD", "Currency code should match")
+    }
+    
+    //
+    //MARK: - Equal
     //
     
     func testTwoCurrencyObjectsAreEqual() {
-        let currencyLHS =
-            Currency.currencyForLocaleIdentifier(localeIdentifier: "en_US")!
-        let currencyRHS = Currency.currencyForLocaleIdentifier(localeIdentifier: "en_US")!
+        let currencyLHS = LocaleCurrency.create(from: "en_US")!
+        let currencyRHS = LocaleCurrency.create(from: "en_US")!
         XCTAssertEqual(currencyLHS == currencyRHS, true, "Currencies should match")
     }
     
     func testTwoCurrencyObjectsAreNotEqual() {
-        let currencyLHS =
-            Currency.currencyForLocaleIdentifier(localeIdentifier: "en_US")!
-        let currencyRHS =
-            Currency.currencyForLocaleIdentifier(localeIdentifier: "fr_TN")!
+        let currencyLHS = LocaleCurrency.create(from: "en_US")!
+        let currencyRHS = LocaleCurrency.create(from: "fr_TN")!
         XCTAssertEqual(currencyLHS == currencyRHS, false, "Currencies should not match")
     }
     
     //
-    // MARK: - Test Performance
+    //MARK: - Test Performance
     //
     
     func testCreateCurrencyWithLocaleIdentifierPerformance() {
-        self.measureBlock() {
-            Currency.currencyForLocaleIdentifier(localeIdentifier: "en_US")
+        self.measure() {
+            _ = LocaleCurrency.create(from: "en_US")
         }
     }
     
     func testCreateCurrencyWithCurrencyCodePerformance() {
-        self.measureBlock() {
-            Currency.currencyWithCurrencyCode(currencyCode: "EUR")
+        self.measure() {
+            _ = LocaleCurrency.create(with: "EUR")
         }
     }
 
