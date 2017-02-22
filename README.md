@@ -11,5 +11,5 @@ To install add the following line to your Podfile:
 ``` Ruby
 use_frameworks!
 
-pod 'MoneyFramework', '1.0.3'
+pod 'MoneyFramework'
 ```
