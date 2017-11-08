@@ -379,11 +379,11 @@ extension Money {
 
 public protocol ConvertCurrenciesStrategy {
     // work only with one actual implementation of Currency
-    func convertTo<T: Currency>(_ money: Money<T>, toCurrency currency: T, usingExchangeRate multiplier: NSDecimalNumber) -> Money<T>
+    func convertTo<T>(_ money: Money<T>, toCurrency currency: T, usingExchangeRate multiplier: NSDecimalNumber) -> Money<T>
 }
 
 public final class NormalConvertStrategy: ConvertCurrenciesStrategy {
-    public func convertTo<T: Currency>(_ money: Money<T>, toCurrency currency: T, usingExchangeRate multiplier: NSDecimalNumber) -> Money<T> {
+    public func convertTo<T>(_ money: Money<T>, toCurrency currency: T, usingExchangeRate multiplier: NSDecimalNumber) -> Money<T> {
         precondition(money.currency != currency, "Cannot convert to the same currency")
         precondition(multiplier.isPositive, "Cannot convert using a negative conversion multiplier")
         

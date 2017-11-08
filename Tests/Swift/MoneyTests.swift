@@ -87,7 +87,7 @@ class MoneyTests: XCTestCase {
     
     func testOneSubunit() {
         let money               = Money(currency: LocaleCurrency.default)
-        let oneSubunit          = NSDecimalNumber(string: "0.01");
+        let oneSubunit          = NSDecimalNumber(string: "0.01")
         XCTAssertEqual(money.oneSubunit, oneSubunit, "Smallest subunit should match")
     }
     

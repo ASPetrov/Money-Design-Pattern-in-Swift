@@ -39,7 +39,7 @@ class ViewController: UIViewController {
     //MARK: - Actions
     //
     
-    func doneButtonAction() {
+    @objc func doneButtonAction() {
         self.amountTextField.resignFirstResponder()
     }
     
@@ -71,34 +71,31 @@ class ViewController: UIViewController {
     //
     
     fileprivate func convert() {
-        if self.amountTextField.text == nil || self.amountTextField.text!.characters.count == 0 {
+        guard let amount = self.amountTextField.text, !amount.isEmpty else {
             return
         }
         
-        if self.fromCurrencySegmentControl.selectedSegmentIndex == UISegmentedControlNoSegment {
+        guard let fromCurrency = self.currencyForSegmentControlSelectedIndex(self.fromCurrencySegmentControl) else {
             return
         }
         
-        if self.toCurrencySegmentControl.selectedSegmentIndex == UISegmentedControlNoSegment {
+        guard let toCurrency = self.currencyForSegmentControlSelectedIndex(self.toCurrencySegmentControl) else {
             return
         }
         
-        let toCurrency = self.currencyForSegmentControlSelectedIndex(self.toCurrencySegmentControl)
-        let fromCurrency = self.currencyForSegmentControlSelectedIndex(self.fromCurrencySegmentControl)
-
-        let fromMoney = Money(amount: self.amountTextField.text!, currency: fromCurrency!);
+        let fromMoney = Money(amount: amount, currency: fromCurrency)
 
         if fromCurrency == toCurrency {
-            let toMoney = Money(amount: self.amountTextField.text!, currency: toCurrency!);
+            let toMoney = Money(amount: amount, currency: toCurrency)
             self.resultLabel.text =
-                "\(fromMoney)" + NSLocalizedString(" is ", comment: "") + "\(toMoney)"
+                "\(fromMoney) \(NSLocalizedString("is", comment: "")) \(toMoney)"
         } else {
             self.resultLabel.text = NSLocalizedString("Fetching Rates ...", comment: "Final Conversion Amount Label")
-            self.exchangeRate(fromCurrency!.code, toCurrency: toCurrency!.code, completion: { (result) -> Void in
+            self.exchangeRate(fromCurrency.code, toCurrency: toCurrency.code, completion: { (result) -> Void in
                 if let amount = result {
-                    let toMoney = fromMoney.convertTo(toCurrency!, usingExchangeRate: amount)
+                    let toMoney = fromMoney.convertTo(toCurrency, usingExchangeRate: amount)
                     self.resultLabel.text =
-                        "\(fromMoney)" + NSLocalizedString(" is ", comment: "") + "\(toMoney)"
+                    "\(fromMoney) \(NSLocalizedString("is", comment: "")) \(toMoney)"
                 } else {
                     self.resultLabel.text = NSLocalizedString("...", comment: "Final Conversion Amount Label")
                 }
@@ -143,7 +140,7 @@ class ViewController: UIViewController {
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.navigationBar.barStyle = .black
         self.navigationController?.navigationBar.titleTextAttributes =
-            [NSForegroundColorAttributeName : UIColor.white]
+            [NSAttributedStringKey.foregroundColor : UIColor.white]
     }
     
     func setupResultContainerView() {
@@ -173,6 +170,9 @@ class ViewController: UIViewController {
     }
     
     func currencyForSegmentControlSelectedIndex(_ control: UISegmentedControl) -> LocaleCurrency? {
+        if control.selectedSegmentIndex == UISegmentedControlNoSegment {
+            return nil
+        }
         let currencyTypeRaw = CurrencyTypes.allValues()[control.selectedSegmentIndex]
         return LocaleCurrency.create(with: currencyTypeRaw)
     }
@@ -221,12 +221,12 @@ extension ViewController : UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {        
         self.convert()
-        return true;
+        return true
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         // Allowing Backspace and other non-visible characters
-        if range.length > 0 && string.characters.count == 0 {
+        if range.length > 0 && string.isEmpty {
             return true
         }
         
@@ -248,20 +248,20 @@ extension ViewController : UITextFieldDelegate {
         let replacementStringIsLegal: Bool =
             (string.rangeOfCharacter(from: disallowedCharacterSet) == .none)
         if !replacementStringIsLegal {
-            return false;
+            return false
         }
         
         // Handle first char 0
         if textField.text == "0" && string != decimalSeparator {
             textField.text = string
-            return false;
+            return false
         }
         
         // Limiting the number of characters that can be entered into a given text field
         let prospectiveText: String = (textField.text! as NSString).replacingCharacters(in: range, with: string)
         let separatorRange = prospectiveText.range(of: decimalSeparator)
         let maxTextLenght = self.maximumWholeDigits + ((separatorRange == .none) ? 0 : (1 + self.maximumFractionDigits))
-        let resultingStringLengthIsLegal: Bool = (prospectiveText.characters.count <= maxTextLenght)
+        let resultingStringLengthIsLegal: Bool = (prospectiveText.count <= maxTextLenght)
         if !resultingStringLengthIsLegal {
             return false
         }
@@ -269,9 +269,9 @@ extension ViewController : UITextFieldDelegate {
         // Limiting the number of characters that can be entered  after the decimal separator
         if separatorRange != .none {
             let fractionalCharactersCountIsLegal: Bool =
-                (range.location <= (prospectiveText.characters.distance(from: prospectiveText.startIndex, to: separatorRange!.lowerBound) + self.maximumFractionDigits));
+                (range.location <= (prospectiveText.distance(from: prospectiveText.startIndex, to: separatorRange!.lowerBound) + self.maximumFractionDigits))
             if !fractionalCharactersCountIsLegal {
-                return false;
+                return false
             }
         }
         
@@ -279,7 +279,7 @@ extension ViewController : UITextFieldDelegate {
         let scanner: Scanner = Scanner(string: prospectiveText)
         let resultingTextIsNumeric: Bool = (scanner.scanDecimal(nil) && scanner.isAtEnd)
         if !resultingTextIsNumeric {
-            return false;
+            return false
         }
         
         return true
@@ -294,48 +294,70 @@ extension ViewController {
     //MARK: - Communication
     //
 
+    // yahoo finance xchange is Discontinued as of 2017-11-06
     func exchangeRate(_ fromCurrency: String, toCurrency: String, completion: ((_ result: NSDecimalNumber?) -> Void)!) {
-        let baseURL = "https://query.yahooapis.com/v1/public/yql?q="
-        let query = "select * from yahoo.finance.xchange where pair in (\"\(fromCurrency)\(toCurrency)\")" +
-            "&format=json&env=store://datatables.org/alltableswithkeys&callback="
-        
-        let urlString = baseURL + query.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
-        
+        let urlString = "https://api.fixer.io/latest?base=\(fromCurrency)&symbols=\(toCurrency)"
+//        let baseURL = "https://query.yahooapis.com/v1/public/yql?q="
+//        let query = "select * from yahoo.finance.xchange where pair in (\"\(fromCurrency)\(toCurrency)\")" +
+//            "&format=json&env=store://datatables.org/alltableswithkeys&callback="
+//
+//        let urlString = baseURL + query.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
+//
         if let url = URL(string: urlString) {
             URLSession.shared.dataTask(with: url, completionHandler: { data, response, error in
                 if error != nil {
                     DispatchQueue.main.async { completion(nil) }
-                    return;
+                    return
                 }
-                
+
                 do {
-                    guard let serverData = data,
-                          let jsonDictionary = try JSONSerialization.jsonObject(with: serverData, options: JSONSerialization.ReadingOptions(rawValue: 0)) as? NSDictionary,
-                          let queryResults = jsonDictionary["query"] as? NSDictionary,
-                          let results = queryResults["results"] as? NSDictionary,
-                          let rate = results["rate"] as? NSDictionary,
-                          let exchangeRate = rate["Rate"] as? String else {
-                            completion(nil)
-                            return;
+                    guard let jsonData = data else {
+                        DispatchQueue.main.async { completion(nil) }
+                        return
+                    }
+
+                    let decoder = JSONDecoder()
+                    decoder.dateDecodingStrategy = .formatted(.apiDateFormatter)
+                    let ratesResponse = try decoder.decode(Response.self, from: jsonData)
+                    
+                    guard let exchangeRate = ratesResponse.rates[toCurrency] else {
+                        DispatchQueue.main.async { completion(nil) }
+                        return
                     }
 
                     DispatchQueue.main.async {
-                        let result = NSDecimalNumber(string: exchangeRate)
+                        let result = NSDecimalNumber(value: exchangeRate)
                         completion(result)
                     }
                 } catch {
+                    // Bad JSON Response
                     DispatchQueue.main.async { completion(nil) }
                 }
             }) .resume()
         }
+    
     }
     
 }
 
 // 
-// Helper
+// Helpers
 //
 
 private extension Selector {
     static let doneButtonSelector = #selector(ViewController.doneButtonAction)
+}
+
+struct Response: Codable {
+    var base: String?
+    var date: Date?
+    var rates: [String: Double]
+}
+
+extension DateFormatter {
+    static var apiDateFormatter: DateFormatter {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        return dateFormatter
+    }
 }
