@@ -31,7 +31,7 @@ extension Currency {
         return "[code = \(self.code), symbol = \(self.symbol), " +
             "exponent: \(self.exponent), " +
             "decimal separator = \(self.separator), " +
-        "grouping separator = \(self.delimiter)]"
+        "grouping separator = \(self.delimiter ?? "N/A")]"
     }
     
 }
