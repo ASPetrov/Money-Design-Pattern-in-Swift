@@ -8,214 +8,161 @@
 
 import Foundation
 
-public protocol Currency: CurrencyFormatter, CustomStringConvertible, Hashable {
-    // Currency code
+/// Currency protocol defines the minimum interface needed to represent it
+public protocol Currency: Equatable {
+    /// The Currency code
     var code: String { get }
-    // Currency symbol
-    var symbol: String { get }
-    // Currency fraction digits
-    var exponent: Int { get }
-    // Currency Decimal Separator - character between the whole and fraction amounts
-    var separator: String { get }
-    // Currency Grouping Separator - character between each thousands place
+    /// The name of the currency
+    var name: String { get }
+    // The number of decimal places used to express any minor units for the currency
+    var minorUnits: Int { get }
+    /// The Currency symbol/sign
+    var symbol: String? { get }
+    // The Currency decimal separator
+    var separator: String? { get }
+    // The Currency grouping separator
     var delimiter: String? { get }
+
+    /// Default constructor
+    init(code: String, name: String, minorUnits: Int, symbol: String?, separator: String?, delimiter: String?)
 }
 
-extension Currency {
-    
-    //
-    //MARK: - CustomStringConvertible
-    //
-    
-    public var description: String {
-        return "[code = \(self.code), symbol = \(self.symbol), " +
-            "exponent: \(self.exponent), " +
-            "decimal separator = \(self.separator), " +
-        "grouping separator = \(self.delimiter ?? "N/A")]"
-    }
-    
-}
-
-extension Currency {
-    
-    //
-    //MARK: - Hashable
-    //
-    
-    public var hashValue : Int {
-        get {
-            return self.code.hashValue
-        }
-    }
-    
-}
-
-extension Currency {
-    
-    //
-    //MARK: - Equatable
-    //
-    
-    public func equals(_ other: Self) -> Bool {
-        // ??? Should we check something else
-        return self.code == other.code
-    }
-    
-    public static func ==(lhs: Self, rhs: Self) -> Bool {
-        return lhs.equals(rhs)
-    }
-    
-}
-
-//
-
-public protocol CurrencyFormatter {
-    // Returns a string containing the formatted value of the provided number object.
-    func string(from number: NSNumber) -> String?
-    // Returns an NSNumber object created by parsing a given string.
-    func number(from string: String) -> NSNumber?
-}
-
-//
-// This class is simple NSNumberFormatter wrapper
-//
-
-public final class LocaleCurrency: Currency {
-    
-    //
-    //MARK: - Initialization
-    //
-    
-    // Set locale as constructor DI
-    public init?(_ locale: Locale = Locale.current) {
-        // fail if we can't get currency code from locale
-        if locale.currencyCode == nil {
+/// Currency Convenience  constructor
+public extension Currency {
+    init?(isoCurrencyCode: String) {
+        guard let locale = Locale.locale(for: isoCurrencyCode) else {
             return nil
         }
 
-        formatter               = NumberFormatter()
-        formatter.numberStyle   = .currency
-        formatter.locale        = locale
+        let formatter = NumberFormatter.currencyFormatter
+        formatter.locale = locale
+
+        self.init(code: isoCurrencyCode,
+                  name: Locale.current.localizedString(forCurrencyCode: isoCurrencyCode) ?? isoCurrencyCode,
+                  minorUnits: formatter.maximumFractionDigits,
+                  symbol: formatter.currencySymbol,
+                  separator: formatter.currencyDecimalSeparator,
+                  delimiter: formatter.currencyGroupingSeparator)
     }
-    
-    //
-    //MARK: - Properties
-    //
-    
-    // Currency formatter
-    private(set) var formatter: NumberFormatter
-    
 }
 
-extension LocaleCurrency {
-    
-    //
-    //MARK: - Currency
-    //
-    
-    public var code: String {
-        get {
-            return self.formatter.currencyCode
-        }
-    }
-    
-    public var symbol: String {
-        get {
-            return self.formatter.currencySymbol ?? ""
-        }
-    }
-    
-    public var exponent: Int {
-        get {
-            return self.formatter.maximumFractionDigits
-        }
-    }
-    
-    public var separator: String {
-        get {
-            return self.formatter.currencyDecimalSeparator ?? ""
-        }
+public extension Currency {
+
+    // MARK: - Equatable
+
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        return lhs.code == rhs.code
     }
 
-    public var delimiter: String? {
-        get {
-            return self.formatter.currencyGroupingSeparator
-        }
-    }
-    
 }
 
-extension LocaleCurrency {
-    
-    //
-    //MARK: - CurrencyFormatter
-    //
-    
-    public func string(from number: NSNumber) -> String? {
-        return formatter.string(from: number)
+/// Format helpers
+public extension Currency {
+    /// Returns a String containing the formatted ammount
+    func string(from number: NSNumber, locale: Locale? = nil) -> String? {
+        guard let locale = locale ?? Locale.locale(for: self.code) else {
+            return nil
+        }
+
+        return currencyFormatter(with: locale).string(from: number)
     }
-    
-    public func number(from string: String) -> NSNumber? {
-        return formatter.number(from: string)
+
+    /// Returns a NSNumber containing the formatted ammount
+    func number(from string: String, locale: Locale? = nil) -> NSNumber? {
+        guard let locale = locale ?? Locale.locale(for: self.code) else {
+            return nil
+        }
+
+        return currencyFormatter(with: locale).number(from: string)
     }
-    
+
+    /// The currency formatter  factory
+    func currencyFormatter(with locale: Locale) -> NumberFormatter {
+        let formatter = NumberFormatter.currencyFormatter
+        formatter.locale = locale
+        formatter.maximumFractionDigits = minorUnits
+        formatter.currencySymbol = symbol
+        formatter.currencyDecimalSeparator = separator
+        formatter.currencyGroupingSeparator = delimiter
+
+        return formatter
+    }
 }
 
-extension LocaleCurrency {
-    
-    //
-    //MARK: - Factory Methods
-    //
-    
-    // Try to create currency object from locale identifier
-    public class func create(from localeIdentifier: String) -> LocaleCurrency? {
+/// Crypto currency types (Bitcoin etc) should refine CryptoCurrency.
+public protocol CryptoCurrency: Currency { }
+
+/// LocaleCurrency a refinement of Currency so we can get it from Locale.
+public struct LocaleCurrency: Currency {
+
+    // MARK: - Currency
+
+    public var code: String
+    public var name: String
+    public var minorUnits: Int
+    public var symbol: String?
+    public var separator: String?
+    public var delimiter: String?
+
+    public init(code: String, name: String, minorUnits: Int, symbol: String?, separator: String?, delimiter: String?) {
+        self.code = code
+        self.name = name
+        self.minorUnits = minorUnits
+        self.symbol = symbol
+        self.separator = separator
+        self.delimiter = delimiter
+    }
+
+}
+
+/// LocaleCurrency Convenience  constructors
+public extension LocaleCurrency {
+    init?(localeIdentifier: String) {
         // Check for valid identifier
         if !Locale.availableIdentifiers.contains(localeIdentifier) {
             return nil
         }
-        
+
         let localeCanonicalIdentifier = Locale.canonicalIdentifier(from: localeIdentifier)
         let locale = Locale(identifier: localeCanonicalIdentifier)
-        let currency = LocaleCurrency(locale)
-        return currency
+
+        self.init(locale: locale)
     }
 
-    // Try to create currency object from currency code
-    public class func create(with currencyCode: String) -> LocaleCurrency? {
-        // Check for valid code
-        if !Locale.isoCurrencyCodes.contains(currencyCode) {
+    init?(locale: Locale = Locale.current) {
+        guard let currencyCode = locale.currencyCode else {
             return nil
         }
-        
-        let components = [NSLocale.Key.currencyCode.rawValue : currencyCode]
-        let localeIdentifier = Locale.identifier(fromComponents: components)
-        let localeCanonicalIdentifier = Locale.canonicalIdentifier(from: localeIdentifier)
-        let locale = Locale(identifier: localeCanonicalIdentifier)
-        let currency = LocaleCurrency(locale)
-        return currency
+
+        let formatter = NumberFormatter.currencyFormatter
+        formatter.locale = locale
+
+        self.init(code: currencyCode,
+                  name: locale.localizedString(forCurrencyCode: currencyCode) ?? currencyCode,
+                  minorUnits: formatter.maximumFractionDigits,
+                  symbol: formatter.currencySymbol,
+                  separator: formatter.currencyDecimalSeparator,
+                  delimiter: formatter.currencyGroupingSeparator)
+    }
+}
+
+/// LocaleCurrency factory methods
+public extension LocaleCurrency {
+    static func current() -> LocaleCurrency? {
+        return Self(locale: Locale.current)
     }
 
+    static func currency(for locale: Locale) -> LocaleCurrency? {
+        return Self(locale: locale)
+    }
 }
 
-extension LocaleCurrency {
-    
-    //
-    //MARK: - Default Currency 
-    //
-    
-    // Default Currency is US Dollars(USD)
-    public static var `default` = LocaleCurrency.create(with: "USD")!
-    
-}
+// MARK: - Helpers
 
-// Currently not used
-
-extension NumberFormatter {
-    
-    //
-    //MARK: - NumberFormatter Helper Extension
-    //
-    
-    static let availableDecimalSeparators  = Set<String>(["٫", ",", "."])
-    static let availableGroupingSeparators = Set<String>([",", "٬", " ", "’", "\'", "."])
+private extension NumberFormatter {
+    static var currencyFormatter: NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        return formatter
+    }
 }

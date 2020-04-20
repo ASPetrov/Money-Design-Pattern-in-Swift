@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "MoneyFramework"
-  s.version      = "1.0.5"
+  s.version      = "1.1.0"
   s.summary      = "Money Design Pattern in Swift"
 
   # This description is used to generate tags and improve search results.
@@ -51,7 +51,7 @@ Pod::Spec.new do |s|
   #  profile URL.
   #
 
-  s.author             = { "Aleksandar Petrov" => "aleksandar.petrov@mentormate.com" }
+  s.author             = { "Aleksandar Petrov" => "apetrovbg@gmail.com" }
   # Or just: s.author    = "Aleksandar Petrov"
   # s.authors            = { "Aleksandar Petrov" => "aleksandar.petrov@mentormate.com" }
   # s.social_media_url   = "http://twitter.com/Aleksandar Petrov"

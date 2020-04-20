@@ -1,0 +1,24 @@
+
+/* Class = "UILabel"; text = "Amount"; ObjectID = "CQv-Td-hrJ"; */
+"CQv-Td-hrJ.text" = "Amount";
+
+/* Class = "UISegmentedControl"; EbR-D9-BBn.segmentTitles[0] = "First"; ObjectID = "EbR-D9-BBn"; */
+"EbR-D9-BBn.segmentTitles[0]" = "First";
+
+/* Class = "UISegmentedControl"; EbR-D9-BBn.segmentTitles[1] = "Second"; ObjectID = "EbR-D9-BBn"; */
+"EbR-D9-BBn.segmentTitles[1]" = "Second";
+
+/* Class = "UILabel"; text = "From"; ObjectID = "JGo-Gm-S8u"; */
+"JGo-Gm-S8u.text" = "From";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Oh4-4U-zGE"; */
+"Oh4-4U-zGE.text" = "Label";
+
+/* Class = "UISegmentedControl"; WC3-yw-mZM.segmentTitles[0] = "First"; ObjectID = "WC3-yw-mZM"; */
+"WC3-yw-mZM.segmentTitles[0]" = "First";
+
+/* Class = "UISegmentedControl"; WC3-yw-mZM.segmentTitles[1] = "Second"; ObjectID = "WC3-yw-mZM"; */
+"WC3-yw-mZM.segmentTitles[1]" = "Second";
+
+/* Class = "UILabel"; text = "To"; ObjectID = "uV0-fN-sg2"; */
+"uV0-fN-sg2.text" = "To";
