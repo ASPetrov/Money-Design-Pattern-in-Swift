@@ -26,13 +26,20 @@ Keep monetary calculations in `Decimal`. When changing arithmetic, allocation, o
 
 ## Implementation plan
 
-See the [master specification](Documentation/Master-Specification.md) for the remaining release checks. For behavior changes, start with a regression test that fails for the expected reason, make the minimal change, then run the affected suite before refactoring.
+Follow the order in the [master specification](Documentation/Master-Specification.md). For behavior changes, start with a regression test that fails for the expected reason, make the minimal change, then run the affected suite before refactoring.
 
-## Swift formatting
+## Swift style and formatting
 
-Follow the [Swift style policy](Documentation/Swift-Style.md). Use [SwiftFormat](https://github.com/nicklockwood/SwiftFormat) with the repository's `.swiftformat`. Install it with `brew install swiftformat`. Run `swiftformat path/to/ChangedFile.swift` before staging Swift changes and review the formatting diff.
+Follow the repository's adaptation of the Google Swift Style Guide. Use four spaces, aim for 120 columns, and omit `return` where a single expression can return implicitly. Put guard bodies on separate lines and start multiple conditions on the line after `guard`. Prefer clear names and retain comments that explain a non-obvious reason or a public contract. Follow the Swift API Design Guidelines for names, argument labels, units, and errors. [Swift style policy](Documentation/Swift-Style.md) · [Swift API Design Guidelines](https://www.swift.org/documentation/api-design-guidelines/)
+
+Use SwiftFormat with the repository's `.swiftformat`. Install it with `brew install swiftformat`. Run `swiftformat path/to/ChangedFile.swift` before staging Swift changes and review the formatting diff. [SwiftFormat](https://github.com/nicklockwood/SwiftFormat)
 
 Enable the repository's optional pre-commit hook with `git config --local core.hooksPath .githooks`. If a hooks path is already configured, integrate this check with the existing hooks. The hook runs SwiftFormat in lint mode on staged Swift files, including partially staged files.
+
+## Agent skills
+
+- Use `$swift-concurrency` for actor isolation, `Sendable`, and task cancellation work. [Swift Concurrency specification](Documentation/Swift-Concurrency.md)
+- Use `$swift-testing-expert` for test design and the Swift Testing migration. Follow the migration stages for functional unit tests and keep UI automation and retained performance measurements in XCTest. [Swift Testing migration](Documentation/Swift-Testing-Migration.md)
 
 ## Commit messages
 
