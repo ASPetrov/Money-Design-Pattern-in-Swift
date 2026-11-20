@@ -49,9 +49,13 @@ struct ConversionView: View {
         case .loading:
             ProgressView("Converting…")
         case let .converted(money):
-            Text(money.formatted(locale: model.locale) ?? money.description)
-                .font(.title2)
-                .accessibilityIdentifier("conversion-result")
+            if let text = money.formatted(locale: model.locale) {
+                Text(text)
+                    .font(.title2)
+                    .accessibilityIdentifier("conversion-result")
+            } else {
+                Text("Could not format the converted amount.")
+            }
         case .failed(.invalidAmount):
             Text("Enter a valid amount.")
         case .failed(.rateUnavailable):

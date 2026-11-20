@@ -344,9 +344,10 @@ extension Money {
 }
 
 extension Money: CustomStringConvertible {
-    /// Formats the amount using the default locale selection, or returns an empty string on failure.
-    /// Access can search the available locales and format the digits. Use `formatted(locale:)` to select a locale.
-    public var description: String { formatted() ?? "" }
+    /// Formats the amount or returns a diagnostic with its decimal value and currency code.
+    public var description: String {
+        formatted() ?? "\(amount) \(currency.code) [formatting failed]"
+    }
 
     /// Formats the amount for the supplied locale, or returns `nil` if formatting fails.
     /// With no locale, ISO currencies use their currency locale and custom currencies use the current locale.
@@ -372,6 +373,7 @@ extension Money: Equatable {
 }
 
 extension Money: Comparable {
+    /// Requires matching currency identifiers and scales. Use `compare(to:)` for unvalidated currencies.
     public static func < (lhs: Money, rhs: Money) -> Bool {
         requireValidMoneyOperation("comparison") { try lhs.compare(to: rhs) == .orderedAscending }
     }

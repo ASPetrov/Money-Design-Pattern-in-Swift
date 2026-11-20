@@ -9,3 +9,4 @@
 "Converting…" = "Конвертиране…";
 "Enter a valid amount." = "Въведете валидна сума.";
 "Conversion is unavailable for this currency pair." = "Конвертирането за тази валутна двойка е недостъпно.";
+"Could not format the converted amount." = "Конвертираната сума не може да бъде форматирана.";

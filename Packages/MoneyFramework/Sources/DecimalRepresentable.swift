@@ -10,6 +10,16 @@ import Foundation
 
 public protocol DecimalRepresentable {
     var decimalNumber: Decimal { get }
+
+    /// Returns the converted scalar or the reason it cannot be converted.
+    var decimalConversion: Result<Decimal, any Error> { get }
+}
+
+extension DecimalRepresentable {
+    public var decimalConversion: Result<Decimal, any Error> {
+        let decimal = decimalNumber
+        return decimal.isNaN ? .failure(Amount.ValidationError.unrepresentableValue) : .success(decimal)
+    }
 }
 
 extension Decimal: DecimalRepresentable {
@@ -109,7 +119,14 @@ extension Double: DecimalRepresentable {
 //}
 
 extension String: DecimalRepresentable {
+    /// Requires an exact, locale-independent decimal string. Use decimalConversion to inspect a failure.
     public var decimalNumber: Decimal {
-        Decimal(string: self) ?? .nan
+        requireValidMoneyOperation("decimal string conversion") {
+            try Amount(decimalString: self).decimalValue
+        }
+    }
+
+    public var decimalConversion: Result<Decimal, any Error> {
+        Result { try Amount(decimalString: self).decimalValue }
     }
 }

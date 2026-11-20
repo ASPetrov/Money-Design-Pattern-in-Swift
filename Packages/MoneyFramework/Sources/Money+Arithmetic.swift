@@ -45,12 +45,15 @@ extension Money {
         _ scalar: DecimalRepresentable,
         roundingMode: Decimal.RoundingMode = .bankers
     ) -> Result<Money, ArithmeticError> {
-        checkedScalarOperation(
-            amount,
-            scalar.decimalNumber,
-            roundingMode: roundingMode,
-            calculate: NSDecimalAdd
-        )
+        scalar.decimalConversion.mapError { _ in
+            ArithmeticError.invalidScalar
+        }.flatMap { decimal in
+            checkedScalarOperation(
+                amount, decimal,
+                roundingMode: roundingMode,
+                calculate: NSDecimalAdd
+            )
+        }
     }
 
     /// Requires compatible currencies and a representable result.
@@ -97,11 +100,15 @@ extension Money {
         _ scalar: DecimalRepresentable,
         roundingMode: Decimal.RoundingMode = .bankers
     ) -> Result<Money, ArithmeticError> {
-        checkedScalarOperation(
-            amount, scalar.decimalNumber,
-            roundingMode: roundingMode,
-            calculate: NSDecimalSubtract
-        )
+        scalar.decimalConversion.mapError { _ in
+            ArithmeticError.invalidScalar
+        }.flatMap { decimal in
+            checkedScalarOperation(
+                amount, decimal,
+                roundingMode: roundingMode,
+                calculate: NSDecimalSubtract
+            )
+        }
     }
 
     public func multiply(
@@ -121,12 +128,15 @@ extension Money {
         by multiplier: DecimalRepresentable,
         roundingMode: Decimal.RoundingMode = .bankers
     ) -> Result<Money, ArithmeticError> {
-        checkedScalarOperation(
-            amount,
-            multiplier.decimalNumber,
-            roundingMode: roundingMode,
-            calculate: NSDecimalMultiply
-        )
+        multiplier.decimalConversion.mapError { _ in
+            ArithmeticError.invalidScalar
+        }.flatMap { decimal in
+            checkedScalarOperation(
+                amount, decimal,
+                roundingMode: roundingMode,
+                calculate: NSDecimalMultiply
+            )
+        }
     }
 
     public func multiply(
@@ -137,7 +147,10 @@ extension Money {
         requireValidMoneyOperation("multiplication with target currency") {
             if self.currency.identifier == currency.identifier && self.currency.minorUnits == currency.minorUnits {
                 let product: Money = requireValidMoneyOperation("multiplication with target currency") {
-                    multiplyingChecked(by: multiplier, roundingMode: roundingMode)
+                    multiplyingChecked(
+                        by: multiplier,
+                        roundingMode: roundingMode
+                    )
                 }
                 return try Money(
                     validating: product.value,
@@ -145,9 +158,12 @@ extension Money {
                     roundingMode: roundingMode
                 )
             }
+            guard case let .success(rate) = multiplier.decimalConversion else {
+                throw ArithmeticError.invalidScalar
+            }
             return try convertTo(
                 currency,
-                usingExchangeRate: multiplier.decimalNumber,
+                usingExchangeRate: rate,
                 roundingMode: roundingMode
             )
         }
@@ -169,10 +185,13 @@ extension Money {
         by divisor: DecimalRepresentable,
         roundingMode: Decimal.RoundingMode = .bankers
     ) throws -> Money {
-        var denominator = divisor.decimalNumber
-        guard !denominator.isNaN else {
+        guard
+            case let .success(decimal) = divisor.decimalConversion,
+            !decimal.isNaN
+        else {
             throw ArithmeticError.invalidDivisor
         }
+        var denominator = decimal
         guard !denominator.isZero else {
             throw ArithmeticError.divisionByZero
         }
@@ -232,12 +251,16 @@ extension Money {
 
     public static func - <R: DecimalRepresentable>(lhs: R, rhs: Money) -> Money {
         requireValidMoneyOperation("scalar minus money") {
-            rhs.checkedScalarOperation(
-                lhs.decimalNumber,
-                rhs.amount,
-                roundingMode: .bankers,
-                calculate: NSDecimalSubtract
-            )
+            lhs.decimalConversion.mapError { _ in
+                ArithmeticError.invalidScalar
+            }.flatMap { decimal in
+                rhs.checkedScalarOperation(
+                    decimal,
+                    rhs.amount,
+                    roundingMode: .bankers,
+                    calculate: NSDecimalSubtract
+                )
+            }
         }
     }
 

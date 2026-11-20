@@ -23,6 +23,13 @@ final class AmountTests: XCTestCase {
 
         XCTAssertEqual(divisor.decimalNumber, Decimal(125) / 1000)
         XCTAssertEqual(try money.divide(by: divisor).amount, 8)
+        XCTAssertEqual(try money.divide(by: "0.125").amount, 8)
+        let invalidScalar: any DecimalRepresentable = "0.125 extra"
+        if case let .failure(error) = invalidScalar.decimalConversion {
+            XCTAssertEqual(error as? Amount.ValidationError, .invalidFormat)
+        } else {
+            XCTFail("Expected a scalar conversion error")
+        }
         XCTAssertThrowsError(try money.divide(by: "invalid")) {
             XCTAssertEqual($0 as? Money<LocaleCurrency>.ArithmeticError, .invalidDivisor)
         }

@@ -283,6 +283,7 @@ class MoneyTests: XCTestCase {
         let moneyRHS = try XCTUnwrap(Money(amount: "2.0", currency: currency))
         // When
         let result = moneyLHS > moneyRHS
+        XCTAssertEqual([moneyLHS, moneyRHS].sorted(), [moneyRHS, moneyLHS])
         // Then
         XCTAssertTrue(result, "Money on the left side should have greater amount than  money on the right side")
     }
