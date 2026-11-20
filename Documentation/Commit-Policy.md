@@ -21,4 +21,4 @@ Enable the tracked hooks from the repository root:
 git config --local core.hooksPath .githooks
 ```
 
-This directory includes the SwiftFormat `pre-commit` hook and the Commitizen `commit-msg` hook. If the checkout already uses a different hooks directory, integrate both checks with that setup. Ensure `cz` is on the `PATH` used by Git. Run `cz check --message-length-limit 72 --message 'docs: explain checked division'` for a manual check.
+This directory includes the SwiftFormat `pre-commit` hook and the Commitizen `commit-msg` hook. If the checkout already uses a different hooks directory, integrate both checks with that setup. Ensure `cz` is on the `PATH` used by Git. Run `cz check --message-length-limit 72 --message 'docs: explain checked division'` for a manual check. 
