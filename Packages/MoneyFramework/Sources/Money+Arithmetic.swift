@@ -8,11 +8,19 @@
 
 import Foundation
 
-/// Arithmetic Operators
-// NOTE: if the left or the right side amount is nan result will be nan also
 extension Money {
+    /// Requires compatible currencies and a representable result.
     public func add(_ money: Money) -> Money {
-        try! adding(money)
+        requireValidMoneyOperation("addition") {
+            addingChecked(money)
+        }
+    }
+
+    /// Adds compatible monetary values and reports any arithmetic error.
+    public func addingChecked<U: Currency>(
+        _ money: Money<U>
+    ) -> Result<Money, ArithmeticError> {
+        arithmeticResult { try adding(money) }
     }
 
     public func adding<U: Currency>(_ money: Money<U>) throws -> Money {
@@ -27,14 +35,36 @@ extension Money {
     }
 
     public func add(_ newAmount: DecimalRepresentable, roundingMode: Decimal.RoundingMode = .bankers) -> Money {
-        try! result(
-            amount: amount + newAmount.decimalNumber,
-            roundingMode: roundingMode
+        requireValidMoneyOperation("scalar addition") {
+            addingChecked(newAmount, roundingMode: roundingMode)
+        }
+    }
+
+    /// Adds a scalar in major currency units and reports any arithmetic error.
+    public func addingChecked(
+        _ scalar: DecimalRepresentable,
+        roundingMode: Decimal.RoundingMode = .bankers
+    ) -> Result<Money, ArithmeticError> {
+        checkedScalarOperation(
+            amount,
+            scalar.decimalNumber,
+            roundingMode: roundingMode,
+            calculate: NSDecimalAdd
         )
     }
 
+    /// Requires compatible currencies and a representable result.
     public func subtract(_ money: Money) -> Money {
-        try! subtracting(money)
+        requireValidMoneyOperation("subtraction") {
+            subtractingChecked(money)
+        }
+    }
+
+    /// Subtracts compatible monetary values and reports any arithmetic error.
+    public func subtractingChecked<U: Currency>(
+        _ money: Money<U>
+    ) -> Result<Money, ArithmeticError> {
+        arithmeticResult { try subtracting(money) }
     }
 
     public func subtracting<U: Currency>(_ money: Money<U>) throws -> Money {
@@ -54,9 +84,23 @@ extension Money {
         _ newAmount: DecimalRepresentable,
         roundingMode: Decimal.RoundingMode = .bankers
     ) -> Money {
-        try! result(
-            amount: amount - newAmount.decimalNumber,
-            roundingMode: roundingMode
+        requireValidMoneyOperation("scalar subtraction") {
+            subtractingChecked(
+                newAmount,
+                roundingMode: roundingMode
+            )
+        }
+    }
+
+    /// Subtracts a scalar in major currency units and reports any arithmetic error.
+    public func subtractingChecked(
+        _ scalar: DecimalRepresentable,
+        roundingMode: Decimal.RoundingMode = .bankers
+    ) -> Result<Money, ArithmeticError> {
+        checkedScalarOperation(
+            amount, scalar.decimalNumber,
+            roundingMode: roundingMode,
+            calculate: NSDecimalSubtract
         )
     }
 
@@ -64,9 +108,24 @@ extension Money {
         _ multiplier: DecimalRepresentable,
         roundingMode: Decimal.RoundingMode = .bankers
     ) -> Money {
-        try! result(
-            amount: amount * multiplier.decimalNumber,
-            roundingMode: roundingMode
+        requireValidMoneyOperation("multiplication") {
+            multiplyingChecked(
+                by: multiplier,
+                roundingMode: roundingMode
+            )
+        }
+    }
+
+    /// Multiplies by a dimensionless scalar and reports any arithmetic error.
+    public func multiplyingChecked(
+        by multiplier: DecimalRepresentable,
+        roundingMode: Decimal.RoundingMode = .bankers
+    ) -> Result<Money, ArithmeticError> {
+        checkedScalarOperation(
+            amount,
+            multiplier.decimalNumber,
+            roundingMode: roundingMode,
+            calculate: NSDecimalMultiply
         )
     }
 
@@ -75,19 +134,33 @@ extension Money {
         currency: T,
         roundingMode: Decimal.RoundingMode = .bankers
     ) -> Money {
-        if self.currency.identifier == currency.identifier && self.currency.minorUnits == currency.minorUnits {
-            let result = amount * multiplier.decimalNumber
-            return Money(
-                amount: result,
-                currency: currency,
+        requireValidMoneyOperation("multiplication with target currency") {
+            if self.currency.identifier == currency.identifier && self.currency.minorUnits == currency.minorUnits {
+                let product: Money = requireValidMoneyOperation("multiplication with target currency") {
+                    multiplyingChecked(by: multiplier, roundingMode: roundingMode)
+                }
+                return try Money(
+                    validating: product.value,
+                    currency: currency,
+                    roundingMode: roundingMode
+                )
+            }
+            return try convertTo(
+                currency,
+                usingExchangeRate: multiplier.decimalNumber,
                 roundingMode: roundingMode
-            )!
+            )
         }
-        return try! convertTo(
-            currency,
-            usingExchangeRate: multiplier.decimalNumber,
-            roundingMode: roundingMode
-        )
+    }
+
+    /// Divides by a scalar and reports any arithmetic error.
+    public func dividingChecked(
+        by divisor: DecimalRepresentable,
+        roundingMode: Decimal.RoundingMode = .bankers
+    ) -> Result<Money, ArithmeticError> {
+        arithmeticResult {
+            try divide(by: divisor, roundingMode: roundingMode)
+        }
     }
 
     /// Divides by a dimensionless number and rounds to the currency's minor units using `.bankers` by default.
@@ -126,7 +199,9 @@ extension Money {
     /// Divides a validated amount with the default rounding mode. Traps if the division fails.
     @available(*, deprecated, message: "Use try divide(by:) to handle invalid divisors and unrepresentable results.")
     public func devide(_ divisor: DecimalRepresentable) -> Money {
-        try! divide(by: divisor)
+        requireValidMoneyOperation("division") {
+            dividingChecked(by: divisor)
+        }
     }
 }
 
@@ -156,8 +231,14 @@ extension Money {
     }
 
     public static func - <R: DecimalRepresentable>(lhs: R, rhs: Money) -> Money {
-        let result = lhs.decimalNumber - rhs.amount
-        return try! rhs.result(amount: result)
+        requireValidMoneyOperation("scalar minus money") {
+            rhs.checkedScalarOperation(
+                lhs.decimalNumber,
+                rhs.amount,
+                roundingMode: .bankers,
+                calculate: NSDecimalSubtract
+            )
+        }
     }
 
     public static func * <R: DecimalRepresentable>(lhs: Money, rhs: R) -> Money {
@@ -166,5 +247,59 @@ extension Money {
 
     public static func * <R: DecimalRepresentable>(lhs: R, rhs: Money) -> Money {
         rhs.multiply(lhs)
+    }
+}
+
+extension Money {
+    private typealias DecimalCalculation = (
+        UnsafeMutablePointer<Decimal>,
+        UnsafePointer<Decimal>,
+        UnsafePointer<Decimal>,
+        Decimal.RoundingMode
+    ) -> Decimal.CalculationError
+
+    private func arithmeticResult(
+        _ operation: () throws -> Money
+    ) -> Result<Money, ArithmeticError> {
+        Result(catching: operation).mapError {
+            $0 as? ArithmeticError ?? .unrepresentableResult
+        }
+    }
+
+    private func checkedScalarOperation(
+        _ lhs: Decimal,
+        _ rhs: Decimal,
+        roundingMode: Decimal.RoundingMode,
+        calculate: DecimalCalculation
+    ) -> Result<Money, ArithmeticError> {
+        guard !lhs.isNaN, !rhs.isNaN else {
+            return .failure(.invalidScalar)
+        }
+        var lhs = lhs
+        var rhs = rhs
+        var calculated = Decimal()
+        let status = calculate(&calculated, &lhs, &rhs, roundingMode)
+        guard status == .noError || status == .lossOfPrecision else {
+            return .failure(.unrepresentableResult)
+        }
+        return arithmeticResult {
+            let rounded = try result(amount: calculated, roundingMode: roundingMode)
+            guard status != .lossOfPrecision || rounded.amount != calculated else {
+                throw ArithmeticError.unrepresentableResult
+            }
+            return rounded
+        }
+    }
+}
+
+private func requireValidMoneyOperation<Value, Failure: Error>(
+    _ operation: StaticString,
+    _ body: () -> Result<Value, Failure>
+) -> Value {
+    switch body() {
+    case let .success(value):
+        return value
+    case let .failure(error):
+        preconditionFailure("Money \(operation) failed: \(error)")
     }
 }

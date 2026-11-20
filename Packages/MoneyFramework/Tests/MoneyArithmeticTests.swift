@@ -104,6 +104,26 @@ final class MoneyArithmeticTests: XCTestCase {
         XCTAssertEqual(money.multiply(multiplier, roundingMode: .up).amount, Decimal(string: "0.13"))
     }
 
+    func testCheckedArithmeticReportsFailuresWithoutThrowing() throws {
+        let eur = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: "EUR"))
+        let usd = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: "USD"))
+        let money = try Money(validating: Amount(integer: 10), currency: eur)
+        let dollars = try Money(validating: Amount(integer: 1), currency: usd)
+        let largeAmount = try XCTUnwrap(Decimal(string: "1e120"))
+        let factor = try XCTUnwrap(Decimal(string: "1e60"))
+        let large = try Money(validating: Amount(decimal: largeAmount), currency: eur)
+
+        XCTAssertEqual(money.addingChecked(2), .success(money + 2))
+        XCTAssertEqual(money.subtractingChecked(2), .success(money - 2))
+        XCTAssertEqual(money.multiplyingChecked(by: 2), .success(money * 2))
+        XCTAssertEqual(money.dividingChecked(by: 2), .success(try money.divide(by: 2)))
+        XCTAssertEqual(money.addingChecked(dollars), .failure(.incompatibleCurrencies))
+        XCTAssertEqual(money.subtractingChecked(dollars), .failure(.incompatibleCurrencies))
+        XCTAssertEqual(money.addingChecked("invalid"), .failure(.invalidScalar))
+        XCTAssertEqual(money.dividingChecked(by: 0), .failure(.divisionByZero))
+        XCTAssertEqual(large.multiplyingChecked(by: factor), .failure(.unrepresentableResult))
+    }
+
     func testCheckedDivisionHandlesZeroAndAppliesRequestedRounding() throws {
         let currency = try XCTUnwrap(LocaleCurrency(localeIdentifier: "en_US"))
         let zero = try XCTUnwrap(Money(currency: currency))

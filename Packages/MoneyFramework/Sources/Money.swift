@@ -22,6 +22,7 @@ public struct Money<T: Currency> {
     }
 
     public enum ArithmeticError: Error, Equatable {
+        case invalidScalar
         case invalidDivisor
         case divisionByZero
         case unrepresentableResult
@@ -194,12 +195,12 @@ extension Money {
 
     /// For validated inputs. Use allocate(recipientCount:) to handle errors.
     public func allocate(_ n: Int) -> [Money] {
-        try! allocate(recipientCount: n)
+        requireValidMoneyOperation("equal allocation") { try allocate(recipientCount: n) }
     }
 
     /// For validated inputs. Use allocate(ratios:) to handle errors.
     public func allocate(_ ratios: [Int]) -> [Money] {
-        try! allocate(ratios: ratios)
+        requireValidMoneyOperation("weighted allocation") { try allocate(ratios: ratios) }
     }
 
     private func allocate(
@@ -321,7 +322,7 @@ extension Money {
 
     /// For amounts that fit in Int. Use checkedMinorUnits() to handle errors.
     public var amountInMinorUnits: Int {
-        try! checkedMinorUnits()
+        requireValidMoneyOperation("minor-unit count") { try checkedMinorUnits() }
     }
 
     /// Returns the signed count of the currency's smallest units, such as cents for USD.
@@ -336,7 +337,9 @@ extension Money {
     }
 
     public func amount(from subunits: Int) -> Decimal {
-        try! Amount(minorUnits: subunits, scale: currency.minorUnits).decimalValue
+        requireValidMoneyOperation("major-unit amount") {
+            try Amount(minorUnits: subunits, scale: currency.minorUnits).decimalValue
+        }
     }
 }
 
@@ -370,7 +373,7 @@ extension Money: Equatable {
 
 extension Money: Comparable {
     public static func < (lhs: Money, rhs: Money) -> Bool {
-        try! lhs.compare(to: rhs) == .orderedAscending
+        requireValidMoneyOperation("comparison") { try lhs.compare(to: rhs) == .orderedAscending }
     }
 
     public func compare<U: Currency>(to other: Money<U>) throws -> ComparisonResult {
@@ -378,5 +381,13 @@ extension Money: Comparable {
         var lhs = amount
         var rhs = other.amount
         return NSDecimalCompare(&lhs, &rhs)
+    }
+}
+
+func requireValidMoneyOperation<Value>(_ operation: StaticString, _ body: () throws -> Value) -> Value {
+    do {
+        return try body()
+    } catch {
+        preconditionFailure("Money \(operation) failed: \(error)")
     }
 }

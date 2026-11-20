@@ -1,7 +1,26 @@
 only_rules:
   - file_length
+  - force_try
+  - force_unwrapping
+  - implicitly_unwrapped_optional
+  - custom_rules
 
 file_length:
   warning: 400
   error: 400
   ignore_comment_only_lines: false
+
+force_try: error
+force_unwrapping: error
+
+implicitly_unwrapped_optional:
+  severity: error
+  mode: all
+
+custom_rules:
+  optional_try:
+    regex: '\b(try)\?'
+    capture_group: 1
+    match_kinds: keyword
+    message: Handle the thrown error explicitly.
+    severity: error
