@@ -370,7 +370,6 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -423,7 +422,6 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -481,6 +479,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = M352RPT82H;
 				INFOPLIST_FILE = TestFrameworkAppTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				SWIFT_VERSION = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "MentorMate-LLC.TestFrameworkAppTests";
@@ -495,6 +494,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = M352RPT82H;
 				INFOPLIST_FILE = TestFrameworkAppTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				SWIFT_VERSION = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "MentorMate-LLC.TestFrameworkAppTests";
@@ -508,6 +508,7 @@
 			buildSettings = {
 				DEVELOPMENT_TEAM = M352RPT82H;
 				INFOPLIST_FILE = TestFrameworkAppUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				SWIFT_VERSION = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "MentorMate-LLC.TestFrameworkAppUITests";
@@ -522,6 +523,7 @@
 			buildSettings = {
 				DEVELOPMENT_TEAM = M352RPT82H;
 				INFOPLIST_FILE = TestFrameworkAppUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				SWIFT_VERSION = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "MentorMate-LLC.TestFrameworkAppUITests";
