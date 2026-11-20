@@ -7,8 +7,8 @@
 //
 
 import Foundation
-import XCTest
 import MoneyFramework
+import XCTest
 
 class MoneyTests: XCTestCase {
 
@@ -206,15 +206,19 @@ class MoneyTests: XCTestCase {
         let currency = LocaleCurrency(isoCurrencyCode: "EUR")!
         let amount = Decimal(string: "0.05")!
         let money = Money(amount: amount, currency: currency)!
-         // When
+        // When
         let array = money.allocate(2)
         // Then
-        XCTAssertEqual(array[0].amount,
-                       Decimal(string: "0.03"),
-                       "First recepient should have 0.03")
-        XCTAssertEqual(array[1].amount,
-                       Decimal(string: "0.02"),
-                       "Second recepient should have 0.02")
+        XCTAssertEqual(
+            array[0].amount,
+            Decimal(string: "0.03"),
+            "First recepient should have 0.03"
+        )
+        XCTAssertEqual(
+            array[1].amount,
+            Decimal(string: "0.02"),
+            "Second recepient should have 0.02"
+        )
     }
 
     // TODO: Test Allocate to Zero Recepients (throws "Division by zero")
@@ -227,12 +231,16 @@ class MoneyTests: XCTestCase {
         // When
         let array = money.allocate([70, 30])
         // Then
-        XCTAssertEqual(array[0].amount,
-                       Decimal(string: "0.70"),
-                       "First recepient should have 0.70")
-        XCTAssertEqual(array[1].amount,
-                       Decimal(string: "0.30"),
-                       "Second recepient should have 0.30")
+        XCTAssertEqual(
+            array[0].amount,
+            Decimal(string: "0.70"),
+            "First recepient should have 0.70"
+        )
+        XCTAssertEqual(
+            array[1].amount,
+            Decimal(string: "0.30"),
+            "Second recepient should have 0.30"
+        )
     }
 
     //
@@ -249,9 +257,11 @@ class MoneyTests: XCTestCase {
         // When
         let dollars = try! euros.convertTo(USD, usingExchangeRate: exchangeRate)
         // Then
-        XCTAssertEqual(dollars.amount,
-                       Decimal(string: "22.47"),
-                       "Dollars amount should be 22.47")
+        XCTAssertEqual(
+            dollars.amount,
+            Decimal(string: "22.47"),
+            "Dollars amount should be 22.47"
+        )
     }
 
     // TODO: Test Convert ot Same Currency (NOTE: throws "Cannot convert to the same currency")
@@ -381,7 +391,6 @@ class MoneyTests: XCTestCase {
         XCTAssertEqual(result.amount, Decimal(10),  "Money amount should be $ 10.00")
     }
 
-
     func testMultiplyByAmount() {
         let currency = LocaleCurrency(localeIdentifier: "en_US")!
         let moneyLHS = Money(amount: "12.0", currency: currency)!
@@ -444,6 +453,74 @@ class MoneyTests: XCTestCase {
         XCTAssertEqual(converted.currency, jpy)
         XCTAssertEqual(converted.amount, Decimal(3))
         XCTAssertEqual(converted.roundingMode, .plain)
+    }
+
+    func testAmountBackedMoneyPreservesPublicDecimalAccessAndRounding() throws {
+        let currency = try XCTUnwrap(LocaleCurrency(localeIdentifier: "en_US"))
+        let value = try Amount(decimalString: "1.025")
+        let money = try XCTUnwrap(Money(value: value, currency: currency, roundingMode: .plain))
+        let amount: Decimal = money.amount
+
+        XCTAssertEqual(amount, Decimal(string: "1.03"))
+        XCTAssertEqual(money.roundingMode, .plain)
+        XCTAssertEqual(Money(amount: .zero, currency: currency)?.amount, .zero)
+        XCTAssertEqual(Money(amount: "1.25", currency: currency)?.amount, Decimal(string: "1.25"))
+        XCTAssertEqual(Money(currency: currency)?.amount, .zero)
+    }
+
+    func testCheckedDivisionHandlesZeroAndPreservesRounding() throws {
+        let currency = try XCTUnwrap(LocaleCurrency(localeIdentifier: "en_US"))
+        let zero = try XCTUnwrap(Money(currency: currency))
+        let money = try XCTUnwrap(Money(amount: Decimal(1), currency: currency, roundingMode: .plain))
+
+        XCTAssertEqual(try zero.divide(by: 3).amount, .zero)
+        XCTAssertEqual(try money.divide(by: 3).amount, Decimal(string: "0.33"))
+        let result = try money.divide(by: 8)
+        XCTAssertEqual(result.amount, Decimal(string: "0.13"))
+        XCTAssertEqual(result.roundingMode, .plain)
+        XCTAssertThrowsError(try money.divide(by: 0))
+        XCTAssertThrowsError(try money.divide(by: Decimal.nan))
+        let large = try XCTUnwrap(Money(amount: Decimal(string: "1e120")!, currency: currency))
+        XCTAssertThrowsError(try large.divide(by: Decimal(string: "1e-60")!))
+    }
+
+    func testCheckedEqualAllocationConservesPositiveNegativeAndZeroAmounts() throws {
+        let currency = try XCTUnwrap(LocaleCurrency(localeIdentifier: "en_US"))
+        for units in [3, -3, 0] {
+            let value = try Amount(minorUnits: units, scale: 2)
+            let money = try XCTUnwrap(Money(value: value, currency: currency, roundingMode: .plain))
+            let shares = try money.allocate(recipientCount: 2)
+            let expected = [units / 2 + units % 2, units / 2]
+            XCTAssertEqual(try shares.map { try $0.checkedMinorUnits() }, expected)
+            XCTAssertTrue(shares.allSatisfy { $0.currency == currency && $0.roundingMode == .plain })
+        }
+    }
+
+    func testCheckedWeightedAllocationSkipsZeroWeightsAndHandlesIntMin() throws {
+        let currency = try XCTUnwrap(LocaleCurrency(localeIdentifier: "en_US"))
+        let value = try Amount(minorUnits: Int.min, scale: 2)
+        let money = try XCTUnwrap(Money(value: value, currency: currency))
+        let shares = try money.allocate(ratios: [0, Int.max, Int.max])
+
+        XCTAssertEqual(try shares.map { try $0.checkedMinorUnits() }, [0, Int.min / 2, Int.min / 2])
+        let small = try XCTUnwrap(Money(amount: "0.03", currency: currency))
+        let weighted = try small.allocate(ratios: [0, 1, 1])
+        XCTAssertEqual(try weighted.map { try $0.checkedMinorUnits() }, [0, 2, 1])
+        XCTAssertEqual(money.amount(from: Int.min), value.decimalValue)
+    }
+
+    func testCheckedAllocationRejectsInvalidInputsAndUnrepresentableMinorUnits() throws {
+        let currency = try XCTUnwrap(LocaleCurrency(localeIdentifier: "en_US"))
+        let money = try XCTUnwrap(Money(amount: Decimal(1), currency: currency))
+
+        XCTAssertThrowsError(try money.allocate(recipientCount: 0))
+        XCTAssertThrowsError(try money.allocate(recipientCount: Int.max))
+        for ratios in [[], [0, 0], [-1, 2], [Int.max, Int.max, Int.max]] {
+            XCTAssertThrowsError(try money.allocate(ratios: ratios))
+        }
+        let large = try XCTUnwrap(Money(amount: Decimal(Int.max), currency: currency))
+        XCTAssertThrowsError(try large.checkedMinorUnits())
+        XCTAssertThrowsError(try large.allocate(recipientCount: 2))
     }
 
     // TODO: Test Arithmetic operations with NaN
