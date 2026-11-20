@@ -18,7 +18,7 @@ xcodebuild -scheme MoneyFramework \
   test
 ```
 
-For the sample app, open `TestFrameworkApp/TestFrameworkApp.xcodeproj` and use its shared `TestFrameworkApp` scheme to run and test on an iOS simulator. See [the baseline](Documentation/Baseline.md) for historical Xcode commands and test results.
+For the sample app, open `TestFrameworkApp/TestFrameworkApp.xcodeproj` and use its shared `TestFrameworkApp` scheme to run and test on an iOS simulator.
 
 ## Library changes
 
@@ -26,7 +26,7 @@ Keep monetary calculations in `Decimal`. When changing arithmetic, allocation, o
 
 ## Implementation plan
 
-Follow the order and completion criteria in [the master specification](Documentation/Master-Specification.md). For behavior changes, start with a regression test that fails for the expected reason, make the minimal change, then run the affected suite before refactoring.
+See the [master specification](Documentation/Master-Specification.md) for the remaining release checks. For behavior changes, start with a regression test that fails for the expected reason, make the minimal change, then run the affected suite before refactoring.
 
 ## Swift formatting
 
