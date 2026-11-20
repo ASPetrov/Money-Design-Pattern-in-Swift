@@ -28,7 +28,7 @@ Keep monetary calculations in `Decimal`. When changing arithmetic, allocation, o
 
 ## Implementation plan
 
-Follow the order in the [master specification](Documentation/Master-Specification.md). For behavior changes, start with a regression test that fails for the expected reason, make the minimal change, then run the affected suite before refactoring.
+Check the [master specification](Documentation/Master-Specification.md) for outstanding work and completed stages. For behavior changes, start with a regression test that fails for the expected reason, make the minimal change, then run the affected suite before refactoring.
 
 ## Swift style and formatting
 
@@ -40,8 +40,8 @@ Install SwiftLint with `brew install swiftlint` to check the 400-line limit. Ena
 
 ## Agent skills
 
-- Use `$swift-concurrency` for actor isolation, `Sendable`, and task cancellation work. [Swift Concurrency specification](Documentation/Swift-Concurrency.md)
-- Use `$swift-testing-expert` for test design and the Swift Testing migration. Follow the migration stages for functional unit tests and keep UI automation and retained performance measurements in XCTest. [Swift Testing migration](Documentation/Swift-Testing-Migration.md)
+- Use `$swift-concurrency` for actor isolation, `Sendable`, and task cancellation work.
+- Use `$swift-testing-expert` for test design. Use Swift Testing for functional unit tests and XCTest for UI automation and performance measurements.
 
 ## Commit messages
 

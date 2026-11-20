@@ -41,7 +41,7 @@ SwiftFormat enforces placement of access modifiers and simplifies redundant `fil
 
 Propagate errors with `try` and `throws`, or handle them explicitly where the caller can act on the failure. Avoid silent fallbacks. Use optional binding for expected absence and document what `nil` means in a public API.
 
-Do not use `try!`, `try?`, force unwraps, or implicitly unwrapped optionals. In tests use `try XCTUnwrap`, `try #require`, or a throwing test. A force unwrap is a last resort in a test and requires a reason and a single-line SwiftLint exception. See the [error-handling specification](Swift-Error-Handling.md) for the SwiftLint rollout.
+Do not use `try!`, `try?`, force unwraps, or implicitly unwrapped optionals. In tests use `try XCTUnwrap`, `try #require`, or a throwing test. A force unwrap is a last resort in a test and requires a reason and a single-line SwiftLint exception. SwiftLint enforces these rules.
 
 ## Enforcement
 
