@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd "$(git rev-parse --show-toplevel)"
+temporary_directory="$(mktemp -d "${TMPDIR:-/tmp}/money-swiftformat.XXXXXX")"
+trap 'rm -rf -- "$temporary_directory"' EXIT
+
+git diff --cached --name-only --diff-filter=ACMR -z -- '*.swift' > "$temporary_directory/paths"
+if [[ ! -s "$temporary_directory/paths" ]]; then
+    exit 0
+fi
+
+if ! command -v swiftformat >/dev/null 2>&1; then
+    echo 'SwiftFormat is required. Install it with brew install swiftformat.' >&2
+    exit 1
+fi
+
+if ! git show :.swiftformat > "$temporary_directory/.swiftformat"; then
+    echo 'Stage .swiftformat before committing Swift changes.' >&2
+    exit 1
+fi
+
+files=()
+while IFS= read -r -d '' path; do
+    staged_file="$temporary_directory/staged/$path"
+    mkdir -p "$(dirname "$staged_file")"
+    git show ":$path" > "$staged_file"
+    files+=("./$path")
+done < "$temporary_directory/paths"
+
+cd "$temporary_directory/staged"
+if ! swiftformat --lint --cache ignore --config "$temporary_directory/.swiftformat" "${files[@]}"; then
+    echo 'Run swiftformat on the reported Swift files, review the diff, and stage the fixes.' >&2
+    exit 1
+fi

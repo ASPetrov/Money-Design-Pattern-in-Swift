@@ -25,3 +25,9 @@ Keep monetary calculations in `Decimal`. When changing arithmetic, allocation, o
 ## Implementation plan
 
 Follow the order and completion criteria in [the master specification](Documentation/Master-Specification.md). For behavior changes, start with a regression test that fails for the expected reason, make the minimal change, then run the affected suite before refactoring.
+
+## Swift formatting
+
+Follow the [Swift style policy](Documentation/Swift-Style.md). Use [SwiftFormat](https://github.com/nicklockwood/SwiftFormat) with the repository's `.swiftformat`. Install it with `brew install swiftformat`. Run `swiftformat path/to/ChangedFile.swift` before staging Swift changes and review the formatting diff.
+
+Enable the repository's optional pre-commit hook with `git config --local core.hooksPath .githooks`. If a hooks path is already configured, integrate this check with the existing hooks. The hook runs SwiftFormat in lint mode on staged Swift files, including partially staged files.

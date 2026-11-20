@@ -1,0 +1,16 @@
+--swift-version 6.0
+--indent 4
+--max-width 120
+--linebreaks lf
+--trimwhitespace always
+--allman false
+--semicolons never
+--import-grouping alpha
+--wrap-arguments before-first
+--wrap-parameters before-first
+--wrap-collections before-first
+--wrap-conditions before-first
+--guard-else auto
+--trailing-commas collections-only
+--rules indent,linebreaks,linebreakAtEndOfFile,trailingSpace,consecutiveBlankLines,spaceAroundOperators,spaceAroundBraces,spaceInsideBraces,braces,semicolons,sortImports,wrap,wrapArguments,wrapGuardStatementBodies,trailingCommas
+--exclude .build,.swiftpm,DerivedData,Pods
