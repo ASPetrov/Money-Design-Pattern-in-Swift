@@ -479,10 +479,18 @@ class MoneyTests: XCTestCase {
         let result = try money.divide(by: 8, roundingMode: .plain)
         XCTAssertEqual(result.amount, Decimal(string: "0.13"))
         XCTAssertEqual(try money.divide(by: 8).amount, Decimal(string: "0.12"))
-        XCTAssertThrowsError(try money.divide(by: 0))
-        XCTAssertThrowsError(try money.divide(by: Decimal.nan))
-        let large = try XCTUnwrap(Money(amount: Decimal(string: "1e120")!, currency: currency))
-        XCTAssertThrowsError(try large.divide(by: Decimal(string: "1e-60")!))
+        XCTAssertThrowsError(try money.divide(by: 0)) {
+            XCTAssertEqual($0 as? Money<LocaleCurrency>.ArithmeticError, .divisionByZero)
+        }
+        XCTAssertThrowsError(try money.divide(by: Decimal.nan)) {
+            XCTAssertEqual($0 as? Money<LocaleCurrency>.ArithmeticError, .invalidDivisor)
+        }
+        let largeAmount = try XCTUnwrap(Decimal(string: "1e120"))
+        let tinyDivisor = try XCTUnwrap(Decimal(string: "1e-60"))
+        let large = try XCTUnwrap(Money(amount: largeAmount, currency: currency))
+        XCTAssertThrowsError(try large.divide(by: tinyDivisor)) {
+            XCTAssertEqual($0 as? Money<LocaleCurrency>.ArithmeticError, .unrepresentableResult)
+        }
     }
 
     func testCheckedEqualAllocationConservesPositiveNegativeAndZeroAmounts() throws {
@@ -514,17 +522,40 @@ class MoneyTests: XCTestCase {
         let currency = try XCTUnwrap(LocaleCurrency(localeIdentifier: "en_US"))
         let money = try XCTUnwrap(Money(amount: Decimal(1), currency: currency))
 
-        XCTAssertThrowsError(try money.allocate(recipientCount: 0))
-        XCTAssertThrowsError(try money.allocate(recipientCount: Int.max))
-        for ratios in [[], [0, 0], [-1, 2], [Int.max, Int.max, Int.max]] {
-            XCTAssertThrowsError(try money.allocate(ratios: ratios))
+        for count in [0, Int.max] {
+            XCTAssertThrowsError(try money.allocate(recipientCount: count)) {
+                XCTAssertEqual($0 as? Money<LocaleCurrency>.ArithmeticError, .invalidRecipientCount)
+            }
+        }
+        let invalidRatios: [([Int], Money<LocaleCurrency>.ArithmeticError)] = [
+            ([], .invalidRecipientCount),
+            ([0, 0], .invalidRatios),
+            ([-1, 2], .invalidRatios),
+            ([Int.max, Int.max, Int.max], .totalWeightOutOfRange),
+        ]
+        for (ratios, expected) in invalidRatios {
+            XCTAssertThrowsError(try money.allocate(ratios: ratios), "Ratios: \(ratios)") {
+                XCTAssertEqual($0 as? Money<LocaleCurrency>.ArithmeticError, expected)
+            }
         }
         let large = try XCTUnwrap(Money(amount: Decimal(Int.max), currency: currency))
-        XCTAssertThrowsError(try large.checkedMinorUnits())
-        XCTAssertThrowsError(try large.allocate(recipientCount: 2))
+        XCTAssertThrowsError(try large.checkedMinorUnits()) {
+            XCTAssertEqual($0 as? Amount.ValidationError, .minorUnitsOutOfRange)
+        }
+        XCTAssertThrowsError(try large.allocate(recipientCount: 2)) {
+            XCTAssertEqual($0 as? Amount.ValidationError, .minorUnitsOutOfRange)
+        }
     }
 
-    // TODO: Test Arithmetic operations with NaN
-    // TODO: Test different currencies exceptions in compare and arithmetic methods
-    // TODO: Test Unary minus operator (NOTE: it is based on multiply)
+    func testUnaryMinusReversesTheSignAndPreservesCurrency() throws {
+        let currency = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: "EUR"))
+        for units in [423, -423, 0] {
+            let value = try Amount(minorUnits: units, scale: currency.minorUnits)
+            let money = try XCTUnwrap(Money(value: value, currency: currency))
+            let negated = -money
+
+            XCTAssertEqual(negated.currency, currency)
+            XCTAssertEqual(try negated.checkedMinorUnits(), -units)
+        }
+    }
 }

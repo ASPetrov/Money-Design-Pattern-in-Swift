@@ -35,12 +35,23 @@ final class CustomCurrencyTests: XCTestCase {
         XCTAssertEqual((lhs + rhs).amount, Decimal(4))
         XCTAssertEqual((lhs - rhs).amount, .zero)
         XCTAssertEqual(try lhs.compare(to: rhs), .orderedSame)
-        for currency in [otherNetwork, otherContract, otherScale] {
+        let incompatibleCurrencies: [(CustomCurrency, Money<CustomCurrency>.ArithmeticError)] = [
+            (otherNetwork, .incompatibleCurrencies),
+            (otherContract, .incompatibleCurrencies),
+            (otherScale, .incompatibleCurrencyScale),
+        ]
+        for (currency, expected) in incompatibleCurrencies {
             let incompatible = try XCTUnwrap(Money(amount: Decimal(2), currency: currency))
             XCTAssertNotEqual(lhs, incompatible)
-            XCTAssertThrowsError(try lhs.adding(incompatible))
-            XCTAssertThrowsError(try lhs.subtracting(incompatible))
-            XCTAssertThrowsError(try lhs.compare(to: incompatible))
+            XCTAssertThrowsError(try lhs.adding(incompatible)) {
+                XCTAssertEqual($0 as? Money<CustomCurrency>.ArithmeticError, expected)
+            }
+            XCTAssertThrowsError(try lhs.subtracting(incompatible)) {
+                XCTAssertEqual($0 as? Money<CustomCurrency>.ArithmeticError, expected)
+            }
+            XCTAssertThrowsError(try lhs.compare(to: incompatible)) {
+                XCTAssertEqual($0 as? Money<CustomCurrency>.ArithmeticError, expected)
+            }
         }
         XCTAssertFalse((lhs as Any) is any DecimalRepresentable)
     }
@@ -52,9 +63,8 @@ final class CustomCurrencyTests: XCTestCase {
             code: "CR", name: "Credits", minorUnits: 0
         ))
         let source = try XCTUnwrap(Money(amount: Decimal(1), currency: usd, roundingMode: .plain))
-        let converted = try source.convertTo(
-            credits, usingExchangeRate: Decimal(string: "2.5")!, roundingMode: .plain
-        )
+        let rate = try XCTUnwrap(Decimal(string: "2.5"))
+        let converted = try source.convertTo(credits, usingExchangeRate: rate, roundingMode: .plain)
 
         XCTAssertEqual(converted.amount, Decimal(3))
         XCTAssertEqual(converted.currency, credits)
@@ -68,8 +78,38 @@ final class CustomCurrencyTests: XCTestCase {
                 XCTAssertEqual($0 as? ConvertCurrenciesStrategyError, .invalidExchangeRate)
             }
         }
-        let large = try XCTUnwrap(Money(amount: Decimal(string: "1e120")!, currency: usd))
-        XCTAssertThrowsError(try large.convertTo(credits, usingExchangeRate: Decimal(string: "1e60")!))
+        let largeAmount = try XCTUnwrap(Decimal(string: "1e120"))
+        let largeRate = try XCTUnwrap(Decimal(string: "1e60"))
+        let large = try XCTUnwrap(Money(amount: largeAmount, currency: usd))
+        XCTAssertThrowsError(try large.convertTo(credits, usingExchangeRate: largeRate)) {
+            XCTAssertEqual($0 as? ConvertCurrenciesStrategyError, .unrepresentableResult)
+        }
+    }
+
+    func testConversionUsesTheSuppliedStrategy() throws {
+        let sourceCurrency = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: "USD"))
+        let targetCurrency = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: "EUR"))
+        let source = try XCTUnwrap(Money(amount: Decimal(10), currency: sourceCurrency))
+        let strategy = RecordingConversionStrategy()
+
+        let result = try source.convertTo(targetCurrency, usingExchangeRate: 2, strategy: strategy)
+
+        XCTAssertEqual(strategy.sourceAmount, 10)
+        XCTAssertEqual(strategy.sourceCurrencyCode, "USD")
+        XCTAssertEqual(strategy.targetCurrencyCode, "EUR")
+        XCTAssertEqual(strategy.rate, 2)
+        XCTAssertEqual(result.amount, 7)
+        XCTAssertEqual(result.currency, targetCurrency)
+    }
+
+    func testConversionRejectsConflictingScalesForTheSameIdentity() throws {
+        let currency = try token(network: "test:1", reference: "native")
+        let conflictingCurrency = try token(network: "test:1", reference: "native", scale: 18)
+        let money = try XCTUnwrap(Money(amount: Decimal(1), currency: currency))
+
+        XCTAssertThrowsError(try money.convertTo(conflictingCurrency, usingExchangeRate: 1)) {
+            XCTAssertEqual($0 as? ConvertCurrenciesStrategyError, .incompatibleCurrencyScale)
+        }
     }
 
     func testLargeETHRemainsDisplayableOutsideMinorUnitRange() throws {
@@ -111,5 +151,24 @@ final class CustomCurrencyTests: XCTestCase {
         try XCTUnwrap(CustomCurrency(
             identifier: .asset(network: network, reference: reference), code: code, name: code, minorUnits: scale
         ))
+    }
+}
+
+private final class RecordingConversionStrategy: ConvertCurrenciesStrategy {
+    private(set) var sourceAmount: Decimal?
+    private(set) var sourceCurrencyCode: String?
+    private(set) var targetCurrencyCode: String?
+    private(set) var rate: Decimal?
+
+    func convertTo<T: Currency>(
+        _ money: Money<T>,
+        toCurrency currency: T,
+        usingExchangeRate multiplier: Decimal
+    ) throws -> Money<T> {
+        sourceAmount = money.amount
+        sourceCurrencyCode = money.currency.code
+        targetCurrencyCode = currency.code
+        rate = multiplier
+        return try XCTUnwrap(Money(amount: Decimal(7), currency: currency))
     }
 }
