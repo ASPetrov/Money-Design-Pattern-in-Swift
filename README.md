@@ -23,8 +23,7 @@ Deployment Target:  10.0
 
 + Better README
 + Better Unit Tests
-+ Change API Endpoint
-+ Refactor Test App Code
++ Verify the offline SwiftUI demo and share its Xcode scheme
 
 ## License
 
