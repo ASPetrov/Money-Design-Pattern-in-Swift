@@ -8,214 +8,210 @@
 
 import Foundation
 import MoneyFramework
-import XCTest
+import Testing
 
-class MoneyTests: XCTestCase {
+struct MoneyTests {
 
     //
     // MARK: - Initialization
     //
 
-    func testCanCreateMoney() throws {
+    @Test func testCanCreateMoney() throws {
         // Given
-        let currency = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: "EUR"))
+        let currency = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
         // Implicit Zero amount
         // When
         let money = Money(currency: currency)
         // Then
-        XCTAssertNotNil(money, "Could not create money")
+        #expect(money != nil, "Could not create money")
     }
 
-    func testCanCreateMoneyWithAmountAsDecimal() throws {
+    @Test func testCanCreateMoneyWithAmountAsDecimal() throws {
         // Given
-        let currency = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: "EUR"))
+        let currency = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
         let amount = Decimal(1)
         // When
         let money = Money(amount: amount, currency: currency)
         // Then
-        XCTAssertNotNil(money, "Could not create money with decimal amount")
+        #expect(money != nil, "Could not create money with decimal amount")
     }
 
-    func testCanCreateMoneyWithAmountAsString() throws {
+    @Test func testCanCreateMoneyWithAmountAsString() throws {
         // Given
-        let currency = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: "EUR"))
+        let currency = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
         let amount = "1"
         // When
         let money = Money(amount: amount, currency: currency)
         // Then
-        XCTAssertNotNil(money, "Could not create money with string amount")
+        #expect(money != nil, "Could not create money with string amount")
     }
 
-    func testCanCreateMoneyWithAmountAsFormattedString() throws {
+    @Test func testCanCreateMoneyWithAmountAsFormattedString() throws {
         // Given
-        let currency = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: "USD"))
+        let currency = try #require(LocaleCurrency(isoCurrencyCode: "USD"))
         let amount = "$1"
         // When
         let money = Money(amount: amount, currency: currency)
         // Then
-        XCTAssertNotNil(money, "Could not create money with formatted string amount")
+        #expect(money != nil, "Could not create money with formatted string amount")
     }
 
-    func testCanNotCreateMoneyWithBadDecimal() throws {
+    @Test func testCanNotCreateMoneyWithBadDecimal() throws {
         // Given
-        let currency = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: "EUR"))
+        let currency = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
         let amount = Decimal.nan
         // When
         let money = Money(amount: amount, currency: currency )
         // Then
-        XCTAssertNil(money, "Could not create money with not a number")
+        #expect(money == nil, "Could not create money with not a number")
     }
 
-    func testCanNotCreateMoneyWithBadString() throws {
+    @Test func testCanNotCreateMoneyWithBadString() throws {
         // Given
-        let currency = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: "EUR"))
+        let currency = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
         let amount = "Random &^Ugjh2 string"
         // When
         let money = Money(amount: amount, currency: currency)
         // Then
-        XCTAssertNil(money, "Could not create money with random string")
+        #expect(money == nil, "Could not create money with random string")
     }
 
     //
     // MARK: - Test Public Read Only Properties
     //
 
-    func testCanReadCurrency() throws {
+    @Test func testCanReadCurrency() throws {
         // Given
-        let currency = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: "EUR"))
-        let amount = try XCTUnwrap(Decimal(string: "4.23"))
+        let currency = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
+        let amount = try #require(Decimal(string: "4.23"))
         // When
         let money = Money(amount: amount, currency: currency)
         // Then
-        XCTAssertEqual(money?.currency, currency, "Money currency should match")
+        #expect(money?.currency == currency, "Money currency should match")
     }
 
-    func testCanReadAmount() throws {
+    @Test func testCanReadAmount() throws {
         // Given
-        let currency = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: "EUR"))
-        let amount = try XCTUnwrap(Decimal(string: "4.23"))
+        let currency = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
+        let amount = try #require(Decimal(string: "4.23"))
         // When
         let money = Money(amount: amount, currency: currency)
         // Then
-        XCTAssertEqual(money?.amount, amount, "Money amount should match")
+        #expect(money?.amount == amount, "Money amount should match")
     }
 
     //
     // MARK: - Test Decimal/amount Facade Methods
     //
 
-    func testIsZeroReturnsTrue() throws {
+    @Test func testIsZeroReturnsTrue() throws {
         // Given
-        let currency = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: "EUR"))
+        let currency = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
         // When
         let money = Money(currency: currency)
         // Then
-        XCTAssertEqual(money?.amount, .zero, "Money amount should be zero")
+        #expect(money?.amount == .zero, "Money amount should be zero")
     }
 
-    func testIsZeroReturnsFalse() throws {
+    @Test func testIsZeroReturnsFalse() throws {
         // Given
-        let currency = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: "EUR"))
-        let amount = try XCTUnwrap(Decimal(string: "4.23"))
+        let currency = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
+        let amount = try #require(Decimal(string: "4.23"))
         // When
         let money = Money(amount: amount, currency: currency)
         // Then
-        XCTAssertNotEqual(money?.amount, .zero, "Money amount should not be zero")
+        #expect(money?.amount != .zero, "Money amount should not be zero")
     }
 
-    func testIsNegativeReturnsTrue() throws {
+    @Test func testIsNegativeReturnsTrue() throws {
         // Given
-        let currency = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: "EUR"))
-        let amount = try XCTUnwrap(Decimal(string: "-4.23"))
+        let currency = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
+        let amount = try #require(Decimal(string: "-4.23"))
         // When
-        let money = try XCTUnwrap(Money(amount: amount, currency: currency))
+        let money = try #require(Money(amount: amount, currency: currency))
         // Then
-        XCTAssertTrue(money.isNegative, "Money amount should be negative")
+        #expect(money.isNegative, "Money amount should be negative")
     }
 
-    func testIsNegativeReturnsFalse() throws {
+    @Test func testIsNegativeReturnsFalse() throws {
         // Given
-        let currency = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: "EUR"))
-        let amount = try XCTUnwrap(Decimal(string: "4.23"))
+        let currency = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
+        let amount = try #require(Decimal(string: "4.23"))
         // When
-        let money = try XCTUnwrap(Money(amount: amount, currency: currency))
+        let money = try #require(Money(amount: amount, currency: currency))
         // Then
-        XCTAssertFalse(money.isNegative, "Money amount should not be negative")
+        #expect(!(money.isNegative), "Money amount should not be negative")
     }
 
-    func testIsPositiveReturnsTrue() throws {
+    @Test func testIsPositiveReturnsTrue() throws {
         // Given
-        let currency = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: "EUR"))
-        let amount = try XCTUnwrap(Decimal(string: "4.23"))
+        let currency = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
+        let amount = try #require(Decimal(string: "4.23"))
         // When
-        let money = try XCTUnwrap(Money(amount: amount, currency: currency))
+        let money = try #require(Money(amount: amount, currency: currency))
         // Then
-        XCTAssertTrue(money.isPositive, "Money amount should be positive")
+        #expect(money.isPositive, "Money amount should be positive")
     }
 
-    func testIsPositiveReturnsFalse() throws {
+    @Test func testIsPositiveReturnsFalse() throws {
         // Given
-        let currency = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: "EUR"))
-        let amount = try XCTUnwrap(Decimal(string: "-4.23"))
+        let currency = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
+        let amount = try #require(Decimal(string: "-4.23"))
         // When
-        let money = try XCTUnwrap(Money(amount: amount, currency: currency))
+        let money = try #require(Money(amount: amount, currency: currency))
         // Then
-        XCTAssertFalse(money.isPositive, "Money amount should not be positive")
+        #expect(!(money.isPositive), "Money amount should not be positive")
     }
 
-    func testAbsolute() throws {
+    @Test func testAbsolute() throws {
         // Given
-        let currency = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: "EUR"))
-        let amount = try XCTUnwrap(Decimal(string: "-4.23"))
+        let currency = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
+        let amount = try #require(Decimal(string: "-4.23"))
         // When
-        let money = try XCTUnwrap(Money(amount: amount, currency: currency))
+        let money = try #require(Money(amount: amount, currency: currency))
         // Then
-        XCTAssertFalse(money.absoluteAmount.isSignMinus, "Money amount should not be positive")
+        #expect(!(money.absoluteAmount.isSignMinus), "Money amount should not be positive")
     }
 
     //
     // MARK: - Test Minor Units Methods
     //
 
-    func testAmountInSubunits() throws {
+    @Test func testAmountInSubunits() throws {
         // Given
-        let currency = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: "EUR"))
-        let amount = try XCTUnwrap(Decimal(string: "4.23"))
+        let currency = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
+        let amount = try #require(Decimal(string: "4.23"))
         // When
-        let money = try XCTUnwrap(Money(amount: amount, currency: currency))
+        let money = try #require(Money(amount: amount, currency: currency))
         // Then
-        XCTAssertEqual(money.amountInMinorUnits, 423, "Subunits amount should match")
+        #expect(money.amountInMinorUnits == 423, "Subunits amount should match")
     }
 
-    func testOneSubunit() throws {
+    @Test func testOneSubunit() throws {
         // Given
-        let currency = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: "EUR"))
+        let currency = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
         let oneMinorUnit = Decimal(string: "0.01")
         // When
-        let money = try XCTUnwrap(Money(currency: currency))
+        let money = try #require(Money(currency: currency))
         // Then
-        XCTAssertEqual(money.oneMinorUnit, oneMinorUnit, "Smallest subunit should match")
+        #expect(money.oneMinorUnit == oneMinorUnit, "Smallest subunit should match")
     }
 
     //
     // MARK: - Convert
     //
 
-    func testConvertEurosToDollars() throws {
+    @Test func testConvertEurosToDollars() throws {
         // Given
-        let EUR = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: "EUR"))
-        let USD = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: "USD"))
-        let amount = try XCTUnwrap(Decimal(string: "20"))
-        let euros = try XCTUnwrap(Money(amount: amount, currency: EUR))
-        let exchangeRate = try XCTUnwrap(Decimal(string: "1.1234"))
+        let EUR = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
+        let USD = try #require(LocaleCurrency(isoCurrencyCode: "USD"))
+        let amount = try #require(Decimal(string: "20"))
+        let euros = try #require(Money(amount: amount, currency: EUR))
+        let exchangeRate = try #require(Decimal(string: "1.1234"))
         // When
         let dollars = try euros.convertTo(USD, usingExchangeRate: exchangeRate)
         // Then
-        XCTAssertEqual(
-            dollars.amount,
-            Decimal(string: "22.47"),
-            "Dollars amount should be 22.47"
-        )
+        #expect(dollars.amount == Decimal(string: "22.47"), "Dollars amount should be 22.47")
     }
 
     // TODO: Test Convert ot Same Currency (NOTE: throws "Cannot convert to the same currency")
@@ -226,104 +222,104 @@ class MoneyTests: XCTestCase {
     //
 
     // opertator == is using equals method (??? - no need to be tested)
-    func testTwoMoneyObjectsWithSameAmountAndCurrencyAreEqual() throws {
+    @Test func testTwoMoneyObjectsWithSameAmountAndCurrencyAreEqual() throws {
         // Given
-        let currency = try XCTUnwrap(LocaleCurrency(localeIdentifier: "en_US"))
-        let moneyLHS = try XCTUnwrap(Money(amount: "0.0", currency: currency))
-        let moneyRHS = try XCTUnwrap(Money(amount: "0.0", currency: currency))
+        let currency = try #require(LocaleCurrency(localeIdentifier: "en_US"))
+        let moneyLHS = try #require(Money(amount: "0.0", currency: currency))
+        let moneyRHS = try #require(Money(amount: "0.0", currency: currency))
         // When
         let result = moneyLHS.equals(moneyRHS)
         // Then
-        XCTAssertTrue(result, "Money should match")
+        #expect(result, "Money should match")
     }
 
-    func testTwoMoneyObjectsWithDifferentAmountAndSameCurrencyAreNotEqual() throws {
+    @Test func testTwoMoneyObjectsWithDifferentAmountAndSameCurrencyAreNotEqual() throws {
         // Given
-        let currency = try XCTUnwrap(LocaleCurrency(localeIdentifier: "en_US"))
-        let moneyLHS = try XCTUnwrap(Money(amount: "0.0", currency: currency))
-        let moneyRHS = try XCTUnwrap(Money(amount: "15.0", currency: currency))
+        let currency = try #require(LocaleCurrency(localeIdentifier: "en_US"))
+        let moneyLHS = try #require(Money(amount: "0.0", currency: currency))
+        let moneyRHS = try #require(Money(amount: "15.0", currency: currency))
         // When
         let result = moneyLHS.equals(moneyRHS)
         // Then
-        XCTAssertFalse(result, "Money should not match")
+        #expect(!(result), "Money should not match")
     }
 
-    func testTwoMoneyObjectsWithSameAmountAndDifferentCurrencyAreNotEqual() throws {
+    @Test func testTwoMoneyObjectsWithSameAmountAndDifferentCurrencyAreNotEqual() throws {
         // Given
-        let currencyLHS = try XCTUnwrap(LocaleCurrency(localeIdentifier: "en_US"))
-        let currencyRHS = try XCTUnwrap(LocaleCurrency(localeIdentifier: "fr_TN"))
-        let moneyLHS = try XCTUnwrap(Money(amount: "0.0", currency: currencyLHS))
-        let moneyRHS = try XCTUnwrap(Money(amount: "0.0", currency: currencyRHS))
+        let currencyLHS = try #require(LocaleCurrency(localeIdentifier: "en_US"))
+        let currencyRHS = try #require(LocaleCurrency(localeIdentifier: "fr_TN"))
+        let moneyLHS = try #require(Money(amount: "0.0", currency: currencyLHS))
+        let moneyRHS = try #require(Money(amount: "0.0", currency: currencyRHS))
         // When
         let result = moneyLHS.equals(moneyRHS)
         // Then
-        XCTAssertFalse(result, "Money should not match")
+        #expect(!(result), "Money should not match")
     }
 
-    func testTwoMoneyObjectsWithDifferentAmountAndDifferentCurrencyAreNotEqual() throws {
+    @Test func testTwoMoneyObjectsWithDifferentAmountAndDifferentCurrencyAreNotEqual() throws {
         // Given
-        let currencyLHS = try XCTUnwrap(LocaleCurrency(localeIdentifier: "en_US"))
-        let currencyRHS = try XCTUnwrap(LocaleCurrency(localeIdentifier: "fr_TN"))
-        let moneyLHS = try XCTUnwrap(Money(amount: "0.0", currency: currencyLHS))
-        let moneyRHS = try XCTUnwrap(Money(amount: "13.33", currency: currencyRHS))
+        let currencyLHS = try #require(LocaleCurrency(localeIdentifier: "en_US"))
+        let currencyRHS = try #require(LocaleCurrency(localeIdentifier: "fr_TN"))
+        let moneyLHS = try #require(Money(amount: "0.0", currency: currencyLHS))
+        let moneyRHS = try #require(Money(amount: "13.33", currency: currencyRHS))
         // When
         let result = moneyLHS.equals(moneyRHS)
         // Then
-        XCTAssertFalse(result, "Money should not match")
+        #expect(!(result), "Money should not match")
     }
 
     //
     // MARK: - Comparable
     //
 
-    func testLeftSideMoneyObjectAmountIsGreaterThanRightSideMoneyObjectAmount() throws {
+    @Test func testLeftSideMoneyObjectAmountIsGreaterThanRightSideMoneyObjectAmount() throws {
         // Given
-        let currency = try XCTUnwrap(LocaleCurrency(localeIdentifier: "en_US"))
-        let moneyLHS = try XCTUnwrap(Money(amount: "15.0", currency: currency))
-        let moneyRHS = try XCTUnwrap(Money(amount: "2.0", currency: currency))
+        let currency = try #require(LocaleCurrency(localeIdentifier: "en_US"))
+        let moneyLHS = try #require(Money(amount: "15.0", currency: currency))
+        let moneyRHS = try #require(Money(amount: "2.0", currency: currency))
         // When
         let result = moneyLHS > moneyRHS
-        XCTAssertEqual([moneyLHS, moneyRHS].sorted(), [moneyRHS, moneyLHS])
+        #expect([moneyLHS, moneyRHS].sorted() == [moneyRHS, moneyLHS])
         // Then
-        XCTAssertTrue(result, "Money on the left side should have greater amount than  money on the right side")
+        #expect(result, "Money on the left side should have greater amount than  money on the right side")
     }
 
-    func testLeftSideMoneyObjectAmmountIsLessThanRightSideMoneyObjectAmount() throws {
+    @Test func testLeftSideMoneyObjectAmmountIsLessThanRightSideMoneyObjectAmount() throws {
         // Given
-        let currency = try XCTUnwrap(LocaleCurrency(localeIdentifier: "en_US"))
-        let moneyLHS = try XCTUnwrap(Money(amount: "2.0", currency: currency))
-        let moneyRHS = try XCTUnwrap(Money(amount: "15.0", currency: currency))
+        let currency = try #require(LocaleCurrency(localeIdentifier: "en_US"))
+        let moneyLHS = try #require(Money(amount: "2.0", currency: currency))
+        let moneyRHS = try #require(Money(amount: "15.0", currency: currency))
         // When
         let result = moneyLHS < moneyRHS
         // Then
-        XCTAssertTrue(result, "Money on the left side should have less amount than  money on the right side")
+        #expect(result, "Money on the left side should have less amount than  money on the right side")
     }
 
     // TODO: Test with different currencies
 
-    func testConversionAppliesRequestedRoundingAtTargetCurrencyPrecision() throws {
-        let usd = try XCTUnwrap(LocaleCurrency(localeIdentifier: "en_US"))
-        let jpy = try XCTUnwrap(LocaleCurrency(localeIdentifier: "ja_JP"))
-        let money = try XCTUnwrap(Money(amount: Decimal(1), currency: usd, roundingMode: .plain))
-        let rate = try XCTUnwrap(Decimal(string: "2.5"))
+    @Test func testConversionAppliesRequestedRoundingAtTargetCurrencyPrecision() throws {
+        let usd = try #require(LocaleCurrency(localeIdentifier: "en_US"))
+        let jpy = try #require(LocaleCurrency(localeIdentifier: "ja_JP"))
+        let money = try #require(Money(amount: Decimal(1), currency: usd, roundingMode: .plain))
+        let rate = try #require(Decimal(string: "2.5"))
 
         let converted = try money.convertTo(jpy, usingExchangeRate: rate, roundingMode: .plain)
 
-        XCTAssertEqual(converted.currency, jpy)
-        XCTAssertEqual(converted.amount, Decimal(3))
-        XCTAssertEqual(try money.convertTo(jpy, usingExchangeRate: rate).amount, Decimal(2))
+        #expect(converted.currency == jpy)
+        #expect(converted.amount == Decimal(3))
+        #expect(try money.convertTo(jpy, usingExchangeRate: rate).amount == Decimal(2))
     }
 
-    func testAmountBackedMoneyPreservesPublicDecimalAccessAndRounding() throws {
-        let currency = try XCTUnwrap(LocaleCurrency(localeIdentifier: "en_US"))
+    @Test func testAmountBackedMoneyPreservesPublicDecimalAccessAndRounding() throws {
+        let currency = try #require(LocaleCurrency(localeIdentifier: "en_US"))
         let value = try Amount(decimalString: "1.025")
-        let money = try XCTUnwrap(Money(value: value, currency: currency, roundingMode: .plain))
+        let money = try #require(Money(value: value, currency: currency, roundingMode: .plain))
         let amount: Decimal = money.amount
 
-        XCTAssertEqual(amount, Decimal(string: "1.03"))
-        XCTAssertEqual(money.value.decimalValue, amount)
-        XCTAssertEqual(Money(amount: .zero, currency: currency)?.amount, .zero)
-        XCTAssertEqual(Money(amount: "1.25", currency: currency)?.amount, Decimal(string: "1.25"))
-        XCTAssertEqual(Money(currency: currency)?.amount, .zero)
+        #expect(amount == Decimal(string: "1.03"))
+        #expect(money.value.decimalValue == amount)
+        #expect(Money(amount: .zero, currency: currency)?.amount == .zero)
+        #expect(Money(amount: "1.25", currency: currency)?.amount == Decimal(string: "1.25"))
+        #expect(Money(currency: currency)?.amount == .zero)
     }
 }

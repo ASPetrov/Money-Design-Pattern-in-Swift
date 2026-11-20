@@ -1,5 +1,20 @@
 # Карта на сценариите за Swift Testing
 
+## Проследяване на миграцията
+
+Библиотечните тестове запазиха имената си при пренасянето, с изключение на следните групи:
+
+| Изходни сценарии | Swift Testing или XCTest |
+| --- | --- |
+| `testCanCreateCurrencyFromCurrentLocale` | `defaultCurrencyUsesCurrentLocale` сравнява подразбиращия се и изричния locale, включително при липса на валута. |
+| Двойките за код, име, символ, мащаб и разделители в `CurrencyTests` | `currencyMetadataMatchesLocale` проверява en_US и de_DE. `euroMetadataMatchesISOCode` проверява конструиране по EUR. `tunisianDinarHasThreeMinorUnitDigits` пази случая с три позиции. |
+| `testUnaryMinusReversesTheSignAndPreservesCurrency` | `unaryMinusReversesSignAndPreservesCurrency` отчита отделни аргументи за положителна, отрицателна и нулева сума. |
+| Двете измервания за lookup | Преместени в `CurrencyPerformanceTests` със същите имена и XCTest. |
+
+Допълнителните регресии от етапи 9 и 9.1 за независими formatter-и, проверена аритметика, скаларно парсиране и съвместимо сортиране са пренесени със съответните си тестове. Тестовете на приложението остават за етап 12.
+
+## База от етап 7
+
 База от етап 7. Обхваща 77 библиотечни, 4 приложни unit и 1 UI XCTest метода. Имената по-долу са текущите методи. При обединяване запази входовете и проверките, които пазят различен договор.
 
 ## AmountTests
