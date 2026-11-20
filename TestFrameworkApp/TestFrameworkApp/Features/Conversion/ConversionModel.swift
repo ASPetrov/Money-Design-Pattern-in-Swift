@@ -55,15 +55,27 @@ final class ConversionModel: ObservableObject {
     }
 
     @Published var amountText = "" {
-        didSet { invalidateResult() }
+        didSet {
+            if amountText != oldValue {
+                cancelConversion()
+            }
+        }
     }
 
     @Published var source: DemoCurrency = .usd {
-        didSet { invalidateResult() }
+        didSet {
+            if source != oldValue {
+                cancelConversion()
+            }
+        }
     }
 
     @Published var destination: DemoCurrency = .eur {
-        didSet { invalidateResult() }
+        didSet {
+            if destination != oldValue {
+                cancelConversion()
+            }
+        }
     }
 
     @Published private(set) var state: State = .idle
@@ -71,13 +83,20 @@ final class ConversionModel: ObservableObject {
     let locale: Locale
     private let rateProvider: any ExchangeRateProviding
     private var activeRequest: UUID?
+    private var conversionTask: Task<Void, Never>?
 
     init(rateProvider: any ExchangeRateProviding, locale: Locale = .current) {
         self.rateProvider = rateProvider
         self.locale = locale
     }
 
-    func convert() async {
+    deinit {
+        conversionTask?.cancel()
+    }
+
+    @discardableResult
+    func convert() -> Task<Void, Never>? {
+        cancelConversion()
         let source = source
         let destination = destination
         guard
@@ -85,7 +104,7 @@ final class ConversionModel: ObservableObject {
             let destinationCurrency = destination.definition
         else {
             state = .failed(.rateUnavailable)
-            return
+            return nil
         }
 
         let money: Money<LocaleCurrency>
@@ -94,31 +113,47 @@ final class ConversionModel: ObservableObject {
             money = try Money(validating: amount, currency: sourceCurrency)
         } catch {
             state = .failed(.invalidAmount)
-            return
+            return nil
         }
 
         if source == destination {
             state = .converted(money)
-            return
+            return nil
         }
 
         let request = UUID()
         activeRequest = request
         state = .loading
-        do {
-            let rate = try await rateProvider.rate(from: source, to: destination)
-            try Task.checkCancellation()
-            let result = try money.convertTo(destinationCurrency, usingExchangeRate: rate)
-            finish(request, with: .converted(result))
-        } catch is CancellationError {
-            finish(request, with: .idle)
-        } catch {
-            finish(request, with: .failed(.rateUnavailable))
+        let task = Task { [weak self, rateProvider] in
+            do {
+                try Task.checkCancellation()
+                let rate = try await rateProvider.rate(
+                    from: source,
+                    to: destination
+                )
+                try Task.checkCancellation()
+                let result = try money.convertTo(
+                    destinationCurrency,
+                    usingExchangeRate: rate
+                )
+                self?.finish(request, with: .converted(result))
+            } catch is CancellationError {
+                self?.finish(request, with: .idle)
+            } catch {
+                self?.finish(
+                    request,
+                    with: Task.isCancelled ? .idle : .failed(.rateUnavailable)
+                )
+            }
         }
+        conversionTask = task
+        return task
     }
 
-    private func invalidateResult() {
+    func cancelConversion() {
         activeRequest = nil
+        conversionTask?.cancel()
+        conversionTask = nil
         state = .idle
     }
 
@@ -127,6 +162,7 @@ final class ConversionModel: ObservableObject {
             return
         }
         activeRequest = nil
+        conversionTask = nil
         state = result
     }
 }

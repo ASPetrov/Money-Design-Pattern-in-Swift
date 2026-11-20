@@ -20,7 +20,7 @@ struct ConversionView: View {
                     currencyPicker("To", selection: $model.destination)
                     Button("Convert") {
                         isAmountFocused = false
-                        Task { await model.convert() }
+                        model.convert()
                     }
                     .disabled(model.state == .loading)
                     .accessibilityIdentifier("convert")
@@ -39,6 +39,7 @@ struct ConversionView: View {
             .navigationTitle("Currency Converter")
         }
         .navigationViewStyle(.stack)
+        .onDisappear { model.cancelConversion() }
     }
 
     @ViewBuilder
