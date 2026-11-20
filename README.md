@@ -1,46 +1,73 @@
-# Money Design Pattern in Swift
+# MoneyFramework
 
-Simple implementation of The Money Pattern, defined by Martin Fowler.
+A Swift implementation of the Money pattern for representing monetary amounts with a currency, converting between currencies, and allocating amounts.
+
+The project includes the `MoneyFramework` library, an offline SwiftUI demo, and a walkthrough available in English and Bulgarian.
+
+## Project contents
+
+| Component | Purpose |
+| --- | --- |
+| `MoneyFramework` | The reusable Swift library. Add this product to your application to use the Money implementation. |
+| SwiftUI demo | An offline example application demonstrating how to use the library. |
+| Walkthrough | An explanation of the Money pattern and the accompanying demo. See the documentation links below. |
+
+## Requirements
+
+- Swift 6.0 or later
+- iOS 15 or later, or macOS 12 or later
 
 ## Installation
 
-Money Framework is available through [CocoaPods](http://cocoapods.org).
+### Xcode
 
-To install add the following line to your Podfile:
+1. Select **File → Add Package Dependencies**.
+2. Enter the repository URL:
 
-``` Ruby
-pod 'MoneyFramework'
+   ```text
+   https://github.com/ASPetrov/Money-Design-Pattern-in-Swift.git
+   ```
+
+3. Select **Branch** and enter `master`.
+4. Add the **MoneyFramework** library product to your application target.
+
+### Swift Package Manager
+
+Add the repository to the `dependencies` array in your `Package.swift`:
+
+```swift
+.package(
+    url: "https://github.com/ASPetrov/Money-Design-Pattern-in-Swift.git",
+    branch: "master"
+)
 ```
 
-## Build Settings
+Then add the library product to the `dependencies` array of the target that will use it:
 
-Base SDK:  Latest
-Deployment Target:  10.0
-
-> **NB! You can build an application with latest Base SDK that runs under iOS 10. But then you have to take care to not use any function or method that is not available on iOS 10. If you do, your application will crash on iOS 10 as soon as this function is used.**
-
-## Offline SwiftUI demo
-
-Open `TestFrameworkApp/TestFrameworkApp.xcodeproj` in Xcode, select the shared `TestFrameworkApp` scheme and an iOS simulator, then choose **Run**. The demo targets iOS 15 or later and resolves `MoneyFramework` from the local Swift package at `Packages/MoneyFramework`.
-
-The converter uses fixed sample rates for USD, EUR, and BGN. Enter `10`, select USD and EUR, and tap **Convert** to see `8 EUR` in your locale's format. The demo requires no internet connection or API key.
-
-To run the model and UI tests, choose **Product → Test** in Xcode or run this command from the repository root, using an installed simulator name:
-
-```sh
-xcodebuild -project TestFrameworkApp/TestFrameworkApp.xcodeproj \
-  -scheme TestFrameworkApp \
-  -destination 'platform=iOS Simulator,name=iPhone 18 Pro,OS=27.2' \
-  -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO test
+```swift
+.product(
+    name: "MoneyFramework",
+    package: "Money-Design-Pattern-in-Swift"
+)
 ```
 
-## To be done
+Import the module in your Swift source files:
 
-+ Better README
-+ Better Unit Tests
+```swift
+import MoneyFramework
+```
+
+**Package availability:** The selected branch or release tag must contain `Package.swift`. The `master` instructions apply once the Swift Package Manager changes have been pushed to that branch.
+
+## Documentation
+
+The walkthrough explains the Money pattern and its implementation, including the offline SwiftUI demo.
+
+| Language | Document |
+| --- | --- |
+| English | [Money Pattern walkthrough](Documentation/EN/Money-Pattern.md) |
+| Български | [Ръководство за шаблона Money](Documentation/BG/Money-Pattern.md) |
 
 ## License
 
-**Copyright (c) 2015 Aleksandar Petrov**
-
-Licensed under the MIT License.
+This project is distributed under the [MIT License](LICENSE.md).
