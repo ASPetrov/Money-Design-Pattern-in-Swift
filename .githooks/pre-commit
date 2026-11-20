@@ -15,8 +15,18 @@ if ! command -v swiftformat >/dev/null 2>&1; then
     exit 1
 fi
 
+if ! command -v swiftlint >/dev/null 2>&1; then
+    echo 'SwiftLint is required. Install it with brew install swiftlint.' >&2
+    exit 1
+fi
+
 if ! git show :.swiftformat > "$temporary_directory/.swiftformat"; then
     echo 'Stage .swiftformat before committing Swift changes.' >&2
+    exit 1
+fi
+
+if ! git show :.swiftlint.yml > "$temporary_directory/.swiftlint.yml"; then
+    echo 'Stage .swiftlint.yml before committing Swift changes.' >&2
     exit 1
 fi
 
@@ -33,3 +43,5 @@ if ! swiftformat --lint --cache ignore --config "$temporary_directory/.swiftform
     echo 'Run swiftformat on the reported Swift files, review the diff, and stage the fixes.' >&2
     exit 1
 fi
+
+swiftlint lint --no-cache --config "$temporary_directory/.swiftlint.yml" "${files[@]}"

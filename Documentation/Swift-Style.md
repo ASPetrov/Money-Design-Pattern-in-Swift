@@ -5,6 +5,7 @@ MoneyFramework uses the Google Swift Style Guide as its baseline. We use four sp
 ## Formatting
 
 - Use spaces for indentation, LF line endings, and a final newline.
+- Keep each tracked Swift file at 400 physical lines or fewer, including comments and blank lines.
 - Wrap code at 120 columns where practical. Keep indivisible URLs, literals, and imports intact when wrapping would reduce clarity or change their meaning.
 - When arguments or parameters need wrapping, put the first item on a new line. Use trailing commas in multiline array and dictionary literals.
 - Sort imports alphabetically, place opening braces on the same line when they fit, and omit semicolons between statements.
@@ -36,6 +37,10 @@ Do not use `try!`, `try?`, force unwraps, or implicitly unwrapped optionals. In 
 
 SwiftFormat checks mechanical formatting using the root `.swiftformat`. Its wrapping rules handle supported constructs. Review remaining long lines against the documented exceptions. Comment usefulness and API clarity are code review criteria.
 
-Enable the tracked `pre-commit` hook with `git config --local core.hooksPath .githooks`. The hook reads staged copies of changed Swift files and the staged formatter configuration. Run `swiftformat path/to/File.swift` to apply the rules, review the diff, and stage the intended changes.
+Enable the tracked `pre-commit` hook with `git config --local core.hooksPath .githooks`. The hook runs SwiftFormat and SwiftLint against staged copies of changed Swift files using the staged configurations. Run `swiftformat path/to/File.swift` to apply formatting, review the diff, and stage the intended changes.
 
-When adding SwiftLint, use it for objective checks that complement SwiftFormat, such as residual line length and selected naming or code-quality rules. Align exceptions with this policy and keep judgment about comments and API design in review. Propose future policy changes alongside corresponding formatter or linter updates.
+Install SwiftLint with `brew install swiftlint`. To check the file-length rule across all tracked Swift files, run this command from the repository root.
+
+```sh
+git ls-files -z -- '*.swift' | xargs -0 swiftlint lint --no-cache --config .swiftlint.yml
+```

@@ -1,0 +1,7 @@
+only_rules:
+  - file_length
+
+file_length:
+  warning: 400
+  error: 400
+  ignore_comment_only_lines: false

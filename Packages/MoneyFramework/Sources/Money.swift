@@ -156,7 +156,11 @@ extension Money {
         try! allocate(ratios: ratios)
     }
 
-    private func allocate(count: Int, totalWeight: UInt, weightAt: (Int) -> UInt) throws -> [Money] {
+    private func allocate(
+        count: Int,
+        totalWeight: UInt,
+        weightAt: (Int) -> UInt
+    ) throws -> [Money] {
         let units = try checkedMinorUnits()
         let magnitude = units.magnitude
         var remaining = magnitude
@@ -176,8 +180,12 @@ extension Money {
 
         return try shares.map { share in
             // The magnitude can be one larger than Int.max only for a negative amount.
-            let signedShare = units < 0 ? Int(bitPattern: 0 &- share) : Int(share)
-            let value = try Amount(minorUnits: signedShare, scale: currency.minorUnits)
+            let signedShare =
+                units < 0 ? Int(bitPattern: 0 &- share) : Int(share)
+            let value = try Amount(
+                minorUnits: signedShare,
+                scale: currency.minorUnits
+            )
             return try result(amount: value.decimalValue)
         }
     }
@@ -196,7 +204,12 @@ extension Money {
         usingExchangeRate multiplier: Decimal,
         roundingMode: Decimal.RoundingMode = .bankers
     ) throws -> Money {
-        try NormalConvertStrategy.convert(self, to: currency, rate: multiplier, roundingMode: roundingMode)
+        try NormalConvertStrategy.convert(
+            self,
+            to: currency,
+            rate: multiplier,
+            roundingMode: roundingMode
+        )
     }
 
     /// Converts to a different currency type using target units per source unit.
@@ -226,10 +239,9 @@ extension Money {
             usingExchangeRate: multiplier
         )
     }
-
 }
 
-private extension Money {
+extension Money {
     func checkCompatibility<U: Currency>(with other: Money<U>) throws {
         guard currency.identifier == other.currency.identifier else {
             throw ArithmeticError.incompatibleCurrencies
@@ -244,7 +256,11 @@ private extension Money {
         roundingMode: Decimal.RoundingMode = .bankers
     ) throws -> Money {
         guard
-            let result = Money(amount: amount, currency: currency, roundingMode: roundingMode)
+            let result = Money(
+                amount: amount,
+                currency: currency,
+                roundingMode: roundingMode
+            )
         else {
             throw ArithmeticError.unrepresentableResult
         }
@@ -276,7 +292,6 @@ extension Money {
     public func amount(from subunits: Int) -> Decimal {
         try! Amount(minorUnits: subunits, scale: currency.minorUnits).decimalValue
     }
-
 }
 
 extension Money: CustomStringConvertible {
@@ -287,7 +302,10 @@ extension Money: CustomStringConvertible {
     /// Formats the amount for the supplied locale, or returns `nil` if formatting fails.
     /// With no locale, ISO currencies use their currency locale and custom currencies use the current locale.
     public func formatted(locale: Locale? = nil) -> String? {
-        currency.string(from: NSDecimalNumber(decimal: amount), locale: locale)
+        currency.string(
+            from: NSDecimalNumber(decimal: amount),
+            locale: locale
+        )
     }
 }
 
@@ -314,155 +332,5 @@ extension Money: Comparable {
         var lhs = amount
         var rhs = other.amount
         return NSDecimalCompare(&lhs, &rhs)
-    }
-}
-
-/// Arithmetic Operators
-// NOTE: if the left or the right side amount is nan result will be nan also
-extension Money {
-    public func add(_ money: Money) -> Money {
-        try! adding(money)
-    }
-
-    public func adding<U: Currency>(_ money: Money<U>) throws -> Money {
-        try checkCompatibility(with: money)
-        var lhs = amount
-        var rhs = money.amount
-        var sum = Decimal()
-        guard NSDecimalAdd(&sum, &lhs, &rhs, .bankers) == .noError else {
-            throw ArithmeticError.unrepresentableResult
-        }
-        return try result(amount: sum)
-    }
-
-    public func add(_ newAmount: DecimalRepresentable, roundingMode: Decimal.RoundingMode = .bankers) -> Money {
-        try! result(
-            amount: amount + newAmount.decimalNumber,
-            roundingMode: roundingMode
-        )
-    }
-
-    public func subtract(_ money: Money) -> Money {
-        try! subtracting(money)
-    }
-
-    public func subtracting<U: Currency>(_ money: Money<U>) throws -> Money {
-        try checkCompatibility(with: money)
-        var lhs = amount
-        var rhs = money.amount
-        var difference = Decimal()
-        guard
-            NSDecimalSubtract(&difference, &lhs, &rhs, .bankers) == .noError
-        else {
-            throw ArithmeticError.unrepresentableResult
-        }
-        return try result(amount: difference)
-    }
-
-    public func subtract(
-        _ newAmount: DecimalRepresentable,
-        roundingMode: Decimal.RoundingMode = .bankers
-    ) -> Money {
-        try! result(
-            amount: amount - newAmount.decimalNumber,
-            roundingMode: roundingMode
-        )
-    }
-
-    public func multiply(_ multiplier: DecimalRepresentable, roundingMode: Decimal.RoundingMode = .bankers) -> Money {
-        try! result(
-            amount: amount * multiplier.decimalNumber,
-            roundingMode: roundingMode
-        )
-    }
-
-    public func multiply(
-        _ multiplier: DecimalRepresentable,
-        currency: T,
-        roundingMode: Decimal.RoundingMode = .bankers
-    ) -> Money {
-        if self.currency.identifier == currency.identifier && self.currency.minorUnits == currency.minorUnits {
-            let result = amount * multiplier.decimalNumber
-            return Money(amount: result, currency: currency, roundingMode: roundingMode)!
-        }
-        return try! convertTo(
-            currency,
-            usingExchangeRate: multiplier.decimalNumber,
-            roundingMode: roundingMode
-        )
-    }
-
-    /// Divides by a dimensionless number and rounds to the currency's minor units using `.bankers` by default.
-    /// - Throws: `ArithmeticError` if the divisor is zero or invalid, or the result is unrepresentable.
-    public func divide(
-        by divisor: DecimalRepresentable,
-        roundingMode: Decimal.RoundingMode = .bankers
-    ) throws -> Money {
-        var denominator = divisor.decimalNumber
-        guard !denominator.isNaN else {
-            throw ArithmeticError.invalidDivisor
-        }
-        guard !denominator.isZero else {
-            throw ArithmeticError.divisionByZero
-        }
-
-        var numerator = amount
-        var quotient = Decimal()
-        let status = NSDecimalDivide(&quotient, &numerator, &denominator, roundingMode)
-        // Accept a truncated intermediate only when currency rounding discards further digits.
-        guard status == .noError || status == .lossOfPrecision else {
-            throw ArithmeticError.unrepresentableResult
-        }
-        let rounded = try result(amount: quotient, roundingMode: roundingMode)
-        guard status != .lossOfPrecision || rounded.amount != quotient else {
-            throw ArithmeticError.unrepresentableResult
-        }
-        return rounded
-    }
-
-    /// Divides a validated amount with the default rounding mode. Traps if the division fails.
-    @available(*, deprecated, message: "Use try divide(by:) to handle invalid divisors and unrepresentable results.")
-    public func devide(_ divisor: DecimalRepresentable) -> Money {
-        try! divide(by: divisor)
-    }
-
-}
-
-extension Money {
-    public static func + (lhs: Money, rhs: Money) -> Money {
-        lhs.add(rhs)
-    }
-
-    public static func - (lhs: Money, rhs: Money) -> Money {
-        lhs.subtract(rhs)
-    }
-
-    public static prefix func - (value: Money) -> Money {
-        value.multiply(-1)
-    }
-
-    public static func + <R: DecimalRepresentable>(lhs: Money, rhs: R) -> Money {
-        lhs.add(rhs)
-    }
-
-    public static func + <R: DecimalRepresentable>(lhs: R, rhs: Money) -> Money {
-        rhs.add(lhs)
-    }
-
-    public static func - <R: DecimalRepresentable>(lhs: Money, rhs: R) -> Money {
-        lhs.subtract(rhs)
-    }
-
-    public static func - <R: DecimalRepresentable>(lhs: R, rhs: Money) -> Money {
-        let result = lhs.decimalNumber - rhs.amount
-        return try! rhs.result(amount: result)
-    }
-
-    public static func * <R: DecimalRepresentable>(lhs: Money, rhs: R) -> Money {
-        lhs.multiply(rhs)
-    }
-
-    public static func * <R: DecimalRepresentable>(lhs: R, rhs: Money) -> Money {
-        rhs.multiply(lhs)
     }
 }

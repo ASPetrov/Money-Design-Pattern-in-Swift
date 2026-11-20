@@ -36,7 +36,7 @@ Follow the repository's adaptation of the Google Swift Style Guide. Use four spa
 
 Use SwiftFormat with the repository's `.swiftformat`. Install it with `brew install swiftformat`. Run `swiftformat path/to/ChangedFile.swift` before staging Swift changes and review the formatting diff. [SwiftFormat](https://github.com/nicklockwood/SwiftFormat)
 
-Enable the repository's optional pre-commit hook with `git config --local core.hooksPath .githooks`. If a hooks path is already configured, integrate this check with the existing hooks. The hook runs SwiftFormat in lint mode on staged Swift files, including partially staged files.
+Install SwiftLint with `brew install swiftlint` to check the 400-line limit. Enable the repository's optional pre-commit hook with `git config --local core.hooksPath .githooks`. If a hooks path is already configured, integrate these checks with the existing hooks. The hook runs SwiftFormat and SwiftLint on staged Swift content, including partially staged files.
 
 ## Agent skills
 
