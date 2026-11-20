@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ $# -ne 1 || ! -f "$1" || ! -r "$1" ]]; then
+    echo 'Usage: commit-msg <path to a readable commit message file>' >&2
+    exit 1
+fi
+
+if ! command -v cz >/dev/null 2>&1; then
+    echo 'Commitizen (cz) is required on PATH. See Documentation/Commit-Policy.md.' >&2
+    exit 1
+fi
+
+repo_root="$(git rev-parse --show-toplevel)"
+if ! cz --config "$repo_root/.cz.toml" check --message-length-limit 72 --commit-msg-file "$1"; then
+    echo 'Use type(scope): summary or run cz commit. See Documentation/Commit-Policy.md.' >&2
+    exit 1
+fi

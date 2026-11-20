@@ -31,3 +31,7 @@ Follow the order and completion criteria in [the master specification](Documenta
 Follow the [Swift style policy](Documentation/Swift-Style.md). Use [SwiftFormat](https://github.com/nicklockwood/SwiftFormat) with the repository's `.swiftformat`. Install it with `brew install swiftformat`. Run `swiftformat path/to/ChangedFile.swift` before staging Swift changes and review the formatting diff.
 
 Enable the repository's optional pre-commit hook with `git config --local core.hooksPath .githooks`. If a hooks path is already configured, integrate this check with the existing hooks. The hook runs SwiftFormat in lint mode on staged Swift files, including partially staged files.
+
+## Commit messages
+
+Follow the [commit message policy](Documentation/Commit-Policy.md). Use Conventional Commits for new commits and validate with Commitizen. The tracked `commit-msg` hook shares `.cz.toml` with `cz commit` and uses the same hooks directory as the SwiftFormat check.

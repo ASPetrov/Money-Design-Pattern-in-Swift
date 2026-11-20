@@ -1,0 +1,4 @@
+[tool.commitizen]
+name = "cz_conventional_commits"
+allow_abort = false
+allowed_prefixes = ["Merge ", 'Revert "', "fixup! ", "squash! ", "amend! "]
