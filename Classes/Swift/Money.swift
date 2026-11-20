@@ -194,8 +194,8 @@ extension Money {
     }
 
     public func add(_ newAmount: DecimalRepresentable) -> Money {
-        let result = (amount + newAmount.decimalNumber).rounded(currency.minorUnits, roundingMode)
-        return Money(amount: result, currency: currency)!
+        let result = amount + newAmount.decimalNumber
+        return Money(amount: result, currency: currency, roundingMode: roundingMode)!
     }
     
     public func subtract(_ money: Money) -> Money {
@@ -204,26 +204,26 @@ extension Money {
     }
 
     public func subtract(_ newAmount: DecimalRepresentable) -> Money {
-        let result = (amount - newAmount.decimalNumber).rounded(currency.minorUnits, roundingMode)
-        return Money(amount: result, currency: self.currency)!
+        let result = amount - newAmount.decimalNumber
+        return Money(amount: result, currency: currency, roundingMode: roundingMode)!
     }
 
     public func multiply(_ multiplier: DecimalRepresentable) -> Money {
-        let result = (amount * multiplier.decimalNumber).rounded(currency.minorUnits, roundingMode)
-        return Money(amount: result, currency: self.currency)!
+        let result = amount * multiplier.decimalNumber
+        return Money(amount: result, currency: currency, roundingMode: roundingMode)!
     }
     
     // NOTE: used when converting between currencies
     public func multiply(_ multiplier: DecimalRepresentable, currency: T) -> Money {
-        let result = (amount * multiplier.decimalNumber).rounded(currency.minorUnits, roundingMode)
-        return Money(amount: result, currency: currency)!
+        let result = amount * multiplier.decimalNumber
+        return Money(amount: result, currency: currency, roundingMode: roundingMode)!
     }
     
     // NOTE: used when allocating
     public func devide(_ divisor: DecimalRepresentable) -> Money {
         precondition(!amount.isZero, "Division by zero")
-        let newAmount = (amount / divisor.decimalNumber).rounded(currency.minorUnits, roundingMode)
-        return Money(amount: newAmount, currency: self.currency)!
+        let newAmount = amount / divisor.decimalNumber
+        return Money(amount: newAmount, currency: currency, roundingMode: roundingMode)!
     }
 }
 
@@ -241,18 +241,19 @@ extension Money {
     }
 
     public static func -<R : DecimalRepresentable>(lhs: Money, rhs: R) -> Money {
-        return lhs.add(rhs)
+        return lhs.subtract(rhs)
     }
-    
+
     public static func -<R : DecimalRepresentable>(lhs: R, rhs: Money) -> Money {
-        return rhs.add(lhs)
+        let result = lhs.decimalNumber - rhs.amount
+        return Money(amount: result, currency: rhs.currency, roundingMode: rhs.roundingMode)!
     }
 
     public static func *<R : DecimalRepresentable>(lhs: Money, rhs: R) -> Money {
-        return lhs.add(rhs)
+        return lhs.multiply(rhs)
     }
-    
+
     public static func *<R : DecimalRepresentable>(lhs: R, rhs: Money) -> Money {
-        return rhs.add(lhs)
+        return rhs.multiply(lhs)
     }
 }

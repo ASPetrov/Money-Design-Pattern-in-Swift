@@ -390,6 +390,62 @@ class MoneyTests: XCTestCase {
         XCTAssertEqual(result.amount, Decimal(24), "Money amount should be $ 24.00")
     }
 
+    func testSubtractOperatorWithMoneyOnEitherSide() throws {
+        let currency = try XCTUnwrap(LocaleCurrency(localeIdentifier: "en_US"))
+        let money = try XCTUnwrap(Money(amount: Decimal(10), currency: currency))
+
+        XCTAssertEqual((money - 3).amount, Decimal(7))
+        XCTAssertEqual((3 - money).amount, Decimal(-7))
+        XCTAssertEqual((3 - money).currency, currency)
+    }
+
+    func testMultiplyOperatorWithMoneyOnEitherSide() throws {
+        let currency = try XCTUnwrap(LocaleCurrency(localeIdentifier: "en_US"))
+        let money = try XCTUnwrap(Money(amount: Decimal(10), currency: currency))
+
+        XCTAssertEqual((money * 3).amount, Decimal(30))
+        XCTAssertEqual((3 * money).amount, Decimal(30))
+        XCTAssertEqual((3 * money).currency, currency)
+    }
+
+    func testArithmeticPreservesRoundingModeAcrossOperations() throws {
+        let currency = try XCTUnwrap(LocaleCurrency(localeIdentifier: "en_US"))
+        let initialAmount = try XCTUnwrap(Decimal(string: "1.01"))
+        let money = try XCTUnwrap(Money(amount: initialAmount, currency: currency, roundingMode: .plain))
+        let halfCent = try XCTUnwrap(Decimal(string: "0.005"))
+
+        let first = money + halfCent
+        let second = first + halfCent
+
+        XCTAssertEqual(first.roundingMode, .plain)
+        XCTAssertEqual(second.amount, Decimal(string: "1.03"))
+        XCTAssertEqual(second.roundingMode, .plain)
+    }
+
+    func testScalarMinusMoneyRoundsTheResultUsingTheMoneyMode() throws {
+        let currency = try XCTUnwrap(LocaleCurrency(localeIdentifier: "en_US"))
+        let money = try XCTUnwrap(Money(amount: Decimal(1), currency: currency, roundingMode: .up))
+        let scalar = try XCTUnwrap(Decimal(string: "0.995"))
+
+        let result = scalar - money
+
+        XCTAssertEqual(result.amount, .zero)
+        XCTAssertEqual(result.roundingMode, .up)
+    }
+
+    func testConversionPreservesRoundingModeAtTargetCurrencyPrecision() throws {
+        let usd = try XCTUnwrap(LocaleCurrency(localeIdentifier: "en_US"))
+        let jpy = try XCTUnwrap(LocaleCurrency(localeIdentifier: "ja_JP"))
+        let money = try XCTUnwrap(Money(amount: Decimal(1), currency: usd, roundingMode: .plain))
+        let rate = try XCTUnwrap(Decimal(string: "2.5"))
+
+        let converted = try money.convertTo(jpy, usingExchangeRate: rate)
+
+        XCTAssertEqual(converted.currency, jpy)
+        XCTAssertEqual(converted.amount, Decimal(3))
+        XCTAssertEqual(converted.roundingMode, .plain)
+    }
+
     // TODO: Test Arithmetic operations with NaN
     // TODO: Test different currencies exceptions in compare and arithmetic methods
     // TODO: Test Unary minus operator (NOTE: it is based on multiply)
