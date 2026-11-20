@@ -9,6 +9,8 @@ MoneyFramework uses the Google Swift Style Guide as its baseline. We use four sp
 - When arguments or parameters need wrapping, put the first item on a new line. Use trailing commas in multiline array and dictionary literals.
 - Sort imports alphabetically, place opening braces on the same line when they fit, and omit semicolons between statements.
 
+Omit `return` when a function, computed property, or closure can return its single expression implicitly. Keep explicit returns for early exits and bodies that require them. SwiftFormat checks this with `redundantReturn`. The sample app is exempt while it uses Swift 4 language mode.
+
 For `guard`, put the body on its own lines. Keep a short single condition on the `guard` line. For multiple conditions, put each condition on its own indented line after `guard` and align `else` with `guard`. SwiftFormat expands inline guard bodies and indents conditions that wrap. Short lists of conditions can still fit on one line, so split them during editing or review.
 
 ## Comments and API design
@@ -16,6 +18,13 @@ For `guard`, put the body on its own lines. Keep a short single condition on the
 Choose names and structure that explain what the code does. Add comments when readers need a non-obvious reason, invariant, platform workaround, or financial rounding rule to understand why the code is written that way. Keep public API documentation where it explains a caller-visible contract such as units, rounding, limits, or errors.
 
 Follow the Swift API Design Guidelines when adding or reviewing public interfaces, including services and adapters. Review names and argument labels at the call site and make units and error behavior apparent to callers. [Swift API Design Guidelines](https://www.swift.org/documentation/api-design-guidelines/)
+
+Review new APIs at the call site:
+
+- Use labels that explain the role or unit of an argument when its type alone leaves room for ambiguity. Prefer `allocate(recipientCount: 3)` and `divide(by: 2)`.
+- Make mutation visible in names. Use pairs such as `sort()` and `sorted()` when both forms exist. Use assertion-like names for Boolean properties and predicates, such as `isZero`.
+- Prefer properties for inexpensive derived values such as `amount`. Document the complexity of computed properties that take more than constant time.
+- For new public APIs, distinguish recoverable invalid input with `throws` when callers need the reason. Document important units, default rounding, and failure conditions that callers cannot infer from the signature.
 
 ## Enforcement
 
