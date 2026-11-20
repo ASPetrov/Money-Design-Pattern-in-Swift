@@ -9,29 +9,65 @@
 import Foundation
 
 public protocol ConvertCurrenciesStrategy {
-    // work only with one actual implementation of Currency
-    func convertTo<T>(_ money: Money<T>, toCurrency currency: T, usingExchangeRate multiplier: Decimal) throws -> Money<T>
+    func convertTo<T: Currency>(
+        _ money: Money<T>,
+        toCurrency currency: T,
+        usingExchangeRate multiplier: Decimal
+    ) throws -> Money<T>
 }
 
 public final class NormalConvertStrategy: ConvertCurrenciesStrategy {
-    public func convertTo<T>(_ money: Money<T>, toCurrency currency: T, usingExchangeRate multiplier: Decimal) throws -> Money<T> {
-        guard money.currency != currency else {
-            throw ConvertCurrenciesStrategyError.negativeExchangeRate
-        }
-        guard !multiplier.isSignMinus else {
-            throw ConvertCurrenciesStrategyError.negativeExchangeRate
-        }
-        precondition(!multiplier.isSignMinus, "")
+    public init() {
+        // no-op
+    }
 
-        // Uses target currency scale for rounding
-        return money.multiply(multiplier, currency: currency)
+    public func convertTo<T: Currency>(
+        _ money: Money<T>,
+        toCurrency currency: T,
+        usingExchangeRate multiplier: Decimal
+    ) throws -> Money<T> {
+        return try Self.convert(money, to: currency, rate: multiplier, roundingMode: .bankers)
+    }
+
+    static func convert<T: Currency, U: Currency>(
+        _ money: Money<T>,
+        to currency: U,
+        rate: Decimal,
+        roundingMode: Decimal.RoundingMode
+    ) throws -> Money<U> {
+        if money.currency.identifier == currency.identifier {
+            guard money.currency.minorUnits == currency.minorUnits else {
+                throw ConvertCurrenciesStrategyError.incompatibleCurrencyScale
+            }
+            throw ConvertCurrenciesStrategyError.sameCurrency
+        }
+        guard !rate.isNaN, rate > .zero else {
+            throw ConvertCurrenciesStrategyError.invalidExchangeRate
+        }
+        var amount = money.amount
+        var rate = rate
+        var product = Decimal()
+        let status = NSDecimalMultiply(&product, &amount, &rate, roundingMode)
+        guard status == .noError || status == .lossOfPrecision else {
+            throw ConvertCurrenciesStrategyError.unrepresentableResult
+        }
+        guard
+            let result = Money(
+                amount: product,
+                currency: currency,
+                roundingMode: roundingMode
+            ),
+            status != .lossOfPrecision || result.amount != product
+        else {
+            throw ConvertCurrenciesStrategyError.unrepresentableResult
+        }
+        return result
     }
 }
 
-enum ConvertCurrenciesStrategyError: Error {
-    /// Cannot convert to the same currency
+public enum ConvertCurrenciesStrategyError: Error, Equatable {
     case sameCurrency
-    /// Cannot convert using a negative conversion multiplier
-    case negativeExchangeRate
-    
+    case incompatibleCurrencyScale
+    case invalidExchangeRate
+    case unrepresentableResult
 }

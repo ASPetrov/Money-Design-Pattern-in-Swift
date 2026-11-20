@@ -18,7 +18,11 @@ extension Decimal: DecimalRepresentable {
     }
 }
 
-extension Money: DecimalRepresentable {
+extension Amount: DecimalRepresentable {
+    public var decimalNumber: Decimal { decimalValue }
+}
+
+extension Money {
     public var decimalNumber: Decimal {
         return amount
     }

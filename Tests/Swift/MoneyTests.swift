@@ -417,21 +417,20 @@ class MoneyTests: XCTestCase {
         XCTAssertEqual((3 * money).currency, currency)
     }
 
-    func testArithmeticPreservesRoundingModeAcrossOperations() throws {
+    func testArithmeticRoundingIsSelectedPerOperation() throws {
         let currency = try XCTUnwrap(LocaleCurrency(localeIdentifier: "en_US"))
         let initialAmount = try XCTUnwrap(Decimal(string: "1.01"))
         let money = try XCTUnwrap(Money(amount: initialAmount, currency: currency, roundingMode: .plain))
         let halfCent = try XCTUnwrap(Decimal(string: "0.005"))
 
-        let first = money + halfCent
-        let second = first + halfCent
+        let first = money.add(halfCent, roundingMode: .plain)
 
-        XCTAssertEqual(first.roundingMode, .plain)
-        XCTAssertEqual(second.amount, Decimal(string: "1.03"))
-        XCTAssertEqual(second.roundingMode, .plain)
+        XCTAssertEqual(first.amount, Decimal(string: "1.02"))
+        XCTAssertEqual((first + halfCent).amount, Decimal(string: "1.02"))
+        XCTAssertEqual(first.add(halfCent, roundingMode: .plain).amount, Decimal(string: "1.03"))
     }
 
-    func testScalarMinusMoneyRoundsTheResultUsingTheMoneyMode() throws {
+    func testScalarMinusMoneyUsesDefaultRounding() throws {
         let currency = try XCTUnwrap(LocaleCurrency(localeIdentifier: "en_US"))
         let money = try XCTUnwrap(Money(amount: Decimal(1), currency: currency, roundingMode: .up))
         let scalar = try XCTUnwrap(Decimal(string: "0.995"))
@@ -439,20 +438,22 @@ class MoneyTests: XCTestCase {
         let result = scalar - money
 
         XCTAssertEqual(result.amount, .zero)
-        XCTAssertEqual(result.roundingMode, .up)
+        let multiplier = try Amount(decimalString: "0.125")
+        XCTAssertEqual((money * multiplier).amount, Decimal(string: "0.12"))
+        XCTAssertEqual(money.multiply(multiplier, roundingMode: .up).amount, Decimal(string: "0.13"))
     }
 
-    func testConversionPreservesRoundingModeAtTargetCurrencyPrecision() throws {
+    func testConversionAppliesRequestedRoundingAtTargetCurrencyPrecision() throws {
         let usd = try XCTUnwrap(LocaleCurrency(localeIdentifier: "en_US"))
         let jpy = try XCTUnwrap(LocaleCurrency(localeIdentifier: "ja_JP"))
         let money = try XCTUnwrap(Money(amount: Decimal(1), currency: usd, roundingMode: .plain))
         let rate = try XCTUnwrap(Decimal(string: "2.5"))
 
-        let converted = try money.convertTo(jpy, usingExchangeRate: rate)
+        let converted = try money.convertTo(jpy, usingExchangeRate: rate, roundingMode: .plain)
 
         XCTAssertEqual(converted.currency, jpy)
         XCTAssertEqual(converted.amount, Decimal(3))
-        XCTAssertEqual(converted.roundingMode, .plain)
+        XCTAssertEqual(try money.convertTo(jpy, usingExchangeRate: rate).amount, Decimal(2))
     }
 
     func testAmountBackedMoneyPreservesPublicDecimalAccessAndRounding() throws {
@@ -462,22 +463,22 @@ class MoneyTests: XCTestCase {
         let amount: Decimal = money.amount
 
         XCTAssertEqual(amount, Decimal(string: "1.03"))
-        XCTAssertEqual(money.roundingMode, .plain)
+        XCTAssertEqual(money.value.decimalValue, amount)
         XCTAssertEqual(Money(amount: .zero, currency: currency)?.amount, .zero)
         XCTAssertEqual(Money(amount: "1.25", currency: currency)?.amount, Decimal(string: "1.25"))
         XCTAssertEqual(Money(currency: currency)?.amount, .zero)
     }
 
-    func testCheckedDivisionHandlesZeroAndPreservesRounding() throws {
+    func testCheckedDivisionHandlesZeroAndAppliesRequestedRounding() throws {
         let currency = try XCTUnwrap(LocaleCurrency(localeIdentifier: "en_US"))
         let zero = try XCTUnwrap(Money(currency: currency))
         let money = try XCTUnwrap(Money(amount: Decimal(1), currency: currency, roundingMode: .plain))
 
         XCTAssertEqual(try zero.divide(by: 3).amount, .zero)
         XCTAssertEqual(try money.divide(by: 3).amount, Decimal(string: "0.33"))
-        let result = try money.divide(by: 8)
+        let result = try money.divide(by: 8, roundingMode: .plain)
         XCTAssertEqual(result.amount, Decimal(string: "0.13"))
-        XCTAssertEqual(result.roundingMode, .plain)
+        XCTAssertEqual(try money.divide(by: 8).amount, Decimal(string: "0.12"))
         XCTAssertThrowsError(try money.divide(by: 0))
         XCTAssertThrowsError(try money.divide(by: Decimal.nan))
         let large = try XCTUnwrap(Money(amount: Decimal(string: "1e120")!, currency: currency))
@@ -492,7 +493,7 @@ class MoneyTests: XCTestCase {
             let shares = try money.allocate(recipientCount: 2)
             let expected = [units / 2 + units % 2, units / 2]
             XCTAssertEqual(try shares.map { try $0.checkedMinorUnits() }, expected)
-            XCTAssertTrue(shares.allSatisfy { $0.currency == currency && $0.roundingMode == .plain })
+            XCTAssertTrue(shares.allSatisfy { $0.currency == currency })
         }
     }
 

@@ -47,13 +47,20 @@ public struct Amount: Equatable, Sendable {
         let formatter = NumberFormatter()
         formatter.locale = locale
         formatter.numberStyle = .decimal
+        try self.init(localizedString: localizedString, formatter: formatter)
+    }
 
+    init(
+        localizedString: String,
+        formatter: NumberFormatter,
+        allowsSign: Bool = true
+    ) throws {
         var input = localizedString[...]
         var sign = ""
-        if let minusSign = formatter.minusSign, !minusSign.isEmpty, input.hasPrefix(minusSign) {
+        if allowsSign, let minusSign = formatter.minusSign, !minusSign.isEmpty, input.hasPrefix(minusSign) {
             input.removeFirst(minusSign.count)
             sign = "-"
-        } else if let plusSign = formatter.plusSign, !plusSign.isEmpty, input.hasPrefix(plusSign) {
+        } else if allowsSign, let plusSign = formatter.plusSign, !plusSign.isEmpty, input.hasPrefix(plusSign) {
             input.removeFirst(plusSign.count)
         }
 

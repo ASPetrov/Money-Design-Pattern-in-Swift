@@ -33,6 +33,7 @@
 		9046834F1BE0D10700EE830A /* CurrencyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9046834D1BE0D10700EE830A /* CurrencyTests.swift */; };
 		904683501BE0D10700EE830A /* MoneyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9046834E1BE0D10700EE830A /* MoneyTests.swift */; };
 		F051C1A201FE000000000002 /* AmountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F051C1A201FE000000000001 /* AmountTests.swift */; };
+		F051C1A201FE000000000004 /* CustomCurrencyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F051C1A201FE000000000003 /* CustomCurrencyTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +68,7 @@
 		9046834D1BE0D10700EE830A /* CurrencyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = CurrencyTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		9046834E1BE0D10700EE830A /* MoneyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MoneyTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		F051C1A201FE000000000001 /* AmountTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AmountTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		F051C1A201FE000000000003 /* CustomCurrencyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = CustomCurrencyTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +164,7 @@
 				9046834D1BE0D10700EE830A /* CurrencyTests.swift */,
 				9046834E1BE0D10700EE830A /* MoneyTests.swift */,
 				F051C1A201FE000000000001 /* AmountTests.swift */,
+				F051C1A201FE000000000003 /* CustomCurrencyTests.swift */,
 			);
 			path = Swift;
 			sourceTree = "<group>";
@@ -323,6 +326,7 @@
 				9046834F1BE0D10700EE830A /* CurrencyTests.swift in Sources */,
 				904683501BE0D10700EE830A /* MoneyTests.swift in Sources */,
 				F051C1A201FE000000000002 /* AmountTests.swift in Sources */,
+				F051C1A201FE000000000004 /* CustomCurrencyTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

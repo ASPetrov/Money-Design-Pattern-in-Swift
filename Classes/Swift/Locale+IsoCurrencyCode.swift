@@ -14,9 +14,19 @@ public extension Locale {
             return nil
         }
 
-        guard let availableLocale = Locale.availableLocales(for: isoCurrencyCode).first else {
-            let localeComponents = [NSLocale.Key.currencyCode.rawValue: isoCurrencyCode]
-            let localeIdentifier = Locale.identifier(fromComponents: localeComponents)
+        if isoCurrencyCode == "USD" {
+            return Locale(identifier: "en_US")
+        }
+
+        guard
+            let availableLocale = Locale.availableLocales(for: isoCurrencyCode).first
+        else {
+            let localeComponents = [
+                NSLocale.Key.currencyCode.rawValue: isoCurrencyCode,
+            ]
+            let localeIdentifier = Locale.identifier(
+                fromComponents: localeComponents
+            )
             let canonical = Locale.canonicalIdentifier(from: localeIdentifier)
             return Locale(identifier: canonical)
         }
@@ -27,14 +37,9 @@ public extension Locale {
 
     private static func availableLocales(for currencyCode: String) -> [Locale] {
         return Locale.availableIdentifiers
-            .map { Locale(identifier:$0) }
+            .sorted()
+            .map { Locale(identifier: $0) }
             .filter { $0.currencyCode == currencyCode }
     }
 
-//    private static func preferredLocaleIdentifier() -> String {
-//        guard let preferredIdentifier = Locale.preferredLanguages.first else {
-//            return Locale.current.identifier
-//        }
-//        return preferredIdentifier
-//    }
 }
