@@ -95,110 +95,110 @@ class CurrencyTests: XCTestCase {
     // MARK: - Properties
     //
 
-    func testCurrencyCodeMatch() {
+    func testCurrencyCodeMatch() throws {
         // Given
         let currencyCode = "EUR"
         // When
-        let currency = LocaleCurrency(isoCurrencyCode: currencyCode)!
+        let currency = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: currencyCode))
         // Then
         XCTAssertEqual(currency.code, currencyCode, "Currency code should match")
     }
 
-    func testCurrencyCodeNotMatch() {
+    func testCurrencyCodeNotMatch() throws {
         // Given
         let localeIdentifier = "en_US"
         // When
-        let currency = LocaleCurrency(localeIdentifier: localeIdentifier)!
+        let currency = try XCTUnwrap(LocaleCurrency(localeIdentifier: localeIdentifier))
         // Then
         XCTAssertNotEqual(currency.code, "EUR", "Currency code should not match")
     }
 
-    func testCurrencyNameMatch() {
+    func testCurrencyNameMatch() throws {
         // Given
         let currencyCode = "EUR"
         // When
-        let currency = LocaleCurrency(isoCurrencyCode: currencyCode)!
+        let currency = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: currencyCode))
         // Then
         XCTAssertEqual(currency.name.lowercased(), "Euro".lowercased(), "Currency code should match")
     }
 
-    func testCurrencyNameNotMatch() {
+    func testCurrencyNameNotMatch() throws {
         // Given
         let localeIdentifier = "en_US"
         // When
-        let currency = LocaleCurrency(localeIdentifier: localeIdentifier)!
+        let currency = try XCTUnwrap(LocaleCurrency(localeIdentifier: localeIdentifier))
         // Then
         XCTAssertNotEqual(currency.name.lowercased(), "Euro".lowercased(), "Currency code should not match")
     }
 
-    func testCurrencySymbolMatch() {
+    func testCurrencySymbolMatch() throws {
         // Given
         let localeIdentifier = "en_US"
         // When
-        let currency = LocaleCurrency(localeIdentifier: localeIdentifier)!
+        let currency = try XCTUnwrap(LocaleCurrency(localeIdentifier: localeIdentifier))
         // Then
         XCTAssertEqual(currency.symbol, "$", "Currency symbol should match")
     }
 
-    func testCurrencySymbolNotMatch() {
+    func testCurrencySymbolNotMatch() throws {
         // Given
         let currencyCode = "EUR"
         // When
-        let currency = LocaleCurrency(isoCurrencyCode: currencyCode)!
+        let currency = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: currencyCode))
         // Then
         XCTAssertNotEqual(currency.symbol, "$", "Currency symbol should not match")
     }
 
-    func testCurrencyMaximumFractionDigitsMatch() {
+    func testCurrencyMaximumFractionDigitsMatch() throws {
         // Given
         let localeIdentifier = "fr_TN"
         // When
-        let currency = LocaleCurrency(localeIdentifier: localeIdentifier)!
+        let currency = try XCTUnwrap(LocaleCurrency(localeIdentifier: localeIdentifier))
         // Then
         XCTAssertEqual(currency.minorUnits, 3, "Currency maximum fraction digits should match")
     }
 
-    func testCurrencyMaximumFractionDigitsNotMatch() {
+    func testCurrencyMaximumFractionDigitsNotMatch() throws {
         // Given
         let currencyCode = "EUR"
         // When
-        let currency = LocaleCurrency(isoCurrencyCode: currencyCode)!
+        let currency = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: currencyCode))
         // Then
         XCTAssertNotEqual(currency.minorUnits, 3, "Currency maximum fraction digits should not match")
     }
 
-    func testCurrencDecimalSeparatorMatch() {
+    func testCurrencDecimalSeparatorMatch() throws {
         // Given
         let localeIdentifier = "de_DE"
         // When
-        let currency = LocaleCurrency(localeIdentifier: localeIdentifier)!
+        let currency = try XCTUnwrap(LocaleCurrency(localeIdentifier: localeIdentifier))
         // Then
         XCTAssertEqual(currency.separator, ",", "Currency decimal separator should match")
     }
 
-    func testCurrencyDecimalSeparatorNotMatch() {
+    func testCurrencyDecimalSeparatorNotMatch() throws {
         // Given
         let localeIdentifier = "en_US"
         // When
-        let currency = LocaleCurrency(localeIdentifier: localeIdentifier)!
+        let currency = try XCTUnwrap(LocaleCurrency(localeIdentifier: localeIdentifier))
         // Then
         XCTAssertNotEqual(currency.separator, ",", "Currency decimal separator should not match")
     }
 
-    func testCurrencGroupingSeparatorMatch() {
+    func testCurrencGroupingSeparatorMatch() throws {
         // Given
         let localeIdentifier = "en_US"
         // When
-        let currency = LocaleCurrency(localeIdentifier: localeIdentifier)!
+        let currency = try XCTUnwrap(LocaleCurrency(localeIdentifier: localeIdentifier))
         // Then
         XCTAssertEqual(currency.delimiter, ",", "Currency grouping separator should match")
     }
 
-    func testCurrencyGroupingSeparatorNotMatch() {
+    func testCurrencyGroupingSeparatorNotMatch() throws {
         // Given
         let localeIdentifier = "de_DE"
         // When
-        let currency = LocaleCurrency(localeIdentifier: localeIdentifier)!
+        let currency = try XCTUnwrap(LocaleCurrency(localeIdentifier: localeIdentifier))
         // Then
         XCTAssertNotEqual(currency.delimiter, ",", "Currency grouping separator should not match")
     }
@@ -207,20 +207,20 @@ class CurrencyTests: XCTestCase {
     // MARK: - Equal
     //
 
-    func testTwoCurrencyObjectsAreEqual() {
+    func testTwoCurrencyObjectsAreEqual() throws {
         // Given
-        let currencyLHS = LocaleCurrency(localeIdentifier: "en_US")!
-        let currencyRHS = LocaleCurrency(isoCurrencyCode: "USD")!
+        let currencyLHS = try XCTUnwrap(LocaleCurrency(localeIdentifier: "en_US"))
+        let currencyRHS = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: "USD"))
         // When
         let result = currencyLHS == currencyRHS
         // Then
         XCTAssertEqual(result, true, "Currencies should match")
     }
 
-    func testTwoCurrencyObjectsAreNotEqual() {
+    func testTwoCurrencyObjectsAreNotEqual() throws {
         // Given
-        let currencyLHS = LocaleCurrency(localeIdentifier: "en_US")!
-        let currencyRHS = LocaleCurrency(localeIdentifier: "fr_TN")!
+        let currencyLHS = try XCTUnwrap(LocaleCurrency(localeIdentifier: "en_US"))
+        let currencyRHS = try XCTUnwrap(LocaleCurrency(localeIdentifier: "fr_TN"))
         // When
         let result = currencyLHS == currencyRHS
         // Then

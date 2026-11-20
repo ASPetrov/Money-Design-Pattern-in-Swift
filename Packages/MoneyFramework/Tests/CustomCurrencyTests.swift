@@ -132,6 +132,13 @@ final class CustomCurrencyTests: XCTestCase {
         XCTAssertEqual(Money(amount: formatted, currency: usd, locale: locale), money)
         XCTAssertNil(Money(amount: formatted + " extra", currency: usd, locale: locale))
         XCTAssertEqual(Money(amount: "$1", currency: usd)?.amount, Decimal(1))
+        XCTAssertEqual(try Money(parsing: formatted, currency: usd, locale: locale), money)
+        XCTAssertThrowsError(try Money(parsing: formatted + " extra", currency: usd, locale: locale)) {
+            XCTAssertEqual($0 as? Amount.ValidationError, .invalidFormat)
+        }
+        XCTAssertThrowsError(try Money(parsing: "1.123456789012345678901234567890123456789", currency: usd)) {
+            XCTAssertEqual($0 as? Amount.ValidationError, .unrepresentableValue)
+        }
     }
 
     func testMoneyRejectsInvalidExternalCurrencyScale() {
@@ -140,6 +147,9 @@ final class CustomCurrencyTests: XCTestCase {
         )
 
         XCTAssertNil(Money(currency: externalCurrency))
+        XCTAssertThrowsError(try Money(validating: .zero, currency: externalCurrency)) {
+            XCTAssertEqual($0 as? Amount.ValidationError, .invalidScale)
+        }
     }
 
     private func token(

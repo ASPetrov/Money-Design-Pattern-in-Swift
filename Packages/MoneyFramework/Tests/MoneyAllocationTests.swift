@@ -11,11 +11,11 @@ import MoneyFramework
 import XCTest
 
 final class MoneyAllocationTests: XCTestCase {
-    func testAllocateToRecepients() {
+    func testAllocateToRecepients() throws {
         // Given
-        let currency = LocaleCurrency(isoCurrencyCode: "EUR")!
-        let amount = Decimal(string: "0.05")!
-        let money = Money(amount: amount, currency: currency)!
+        let currency = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: "EUR"))
+        let amount = try XCTUnwrap(Decimal(string: "0.05"))
+        let money = try XCTUnwrap(Money(amount: amount, currency: currency))
         // When
         let array = money.allocate(2)
         // Then
@@ -33,11 +33,11 @@ final class MoneyAllocationTests: XCTestCase {
 
     // TODO: Test Allocate to Zero Recepients (throws "Division by zero")
 
-    func testAllocateToRecepientsUsingRatios() {
+    func testAllocateToRecepientsUsingRatios() throws {
         // Given
-        let currency = LocaleCurrency(isoCurrencyCode: "EUR")!
-        let amount = Decimal(string: "1")!
-        let money = Money(amount: amount, currency: currency)!
+        let currency = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: "EUR"))
+        let amount = try XCTUnwrap(Decimal(string: "1"))
+        let money = try XCTUnwrap(Money(amount: amount, currency: currency))
         // When
         let array = money.allocate([70, 30])
         // Then

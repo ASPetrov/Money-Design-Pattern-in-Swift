@@ -111,14 +111,17 @@ extension Currency {
         return formattingCurrency(locale: locale).string(from: number)
     }
 
+    /// Returns nil if the input cannot be parsed as an exact monetary amount.
     public func number(
         from string: String,
         locale: Locale? = nil
     ) -> NSNumber? {
-        guard let amount = parseAmount(string, locale: locale) else {
+        do {
+            let amount = try parseAmount(string, locale: locale)
+            return NSDecimalNumber(decimal: amount.decimalValue)
+        } catch {
             return nil
         }
-        return NSDecimalNumber(decimal: amount.decimalValue)
     }
 
     public func currencyFormatter(with locale: Locale) -> NumberFormatter {
@@ -139,7 +142,7 @@ extension Currency {
 }
 
 extension Currency {
-    func parseAmount(_ string: String, locale: Locale?) -> Amount? {
+    func parseAmount(_ string: String, locale: Locale?) throws -> Amount {
         if usesCustomFormatting {
             let suffix = " " + (symbol ?? code)
             let codeSuffix = " " + code
@@ -149,7 +152,7 @@ extension Currency {
             } else if digits.hasSuffix(codeSuffix) {
                 digits.removeLast(codeSuffix.count)
             }
-            return try? Amount(
+            return try Amount(
                 localizedString: digits,
                 locale: locale ?? .current
             )
@@ -177,21 +180,31 @@ extension Currency {
             let digits = String(string.dropFirst(prefix.count).dropLast(suffix.count))
             numbers.decimalSeparator = currencyFormatter.currencyDecimalSeparator
             numbers.groupingSeparator = currencyFormatter.currencyGroupingSeparator
-            guard
-                let value = try? Amount(localizedString: digits, formatter: numbers, allowsSign: false)
-            else {
+            do {
+                let value = try Amount(localizedString: digits, formatter: numbers, allowsSign: false)
+                return negative ? try Amount(decimal: -value.decimalValue) : value
+            } catch Amount.ValidationError.invalidFormat {
                 continue
             }
-            return negative ? try? Amount(decimal: -value.decimalValue) : value
         }
 
-        if locale == nil, let value = try? Amount(decimalString: string) {
-            return value
+        if locale == nil {
+            do {
+                return try Amount(decimalString: string)
+            } catch Amount.ValidationError.invalidFormat {
+                return try Amount(
+                    localizedString: string,
+                    locale: selectedLocale
+                )
+            }
         }
-        return try? Amount(localizedString: string, locale: selectedLocale)
+        return try Amount(localizedString: string, locale: selectedLocale)
     }
 
-    private func formattingCurrency(locale: Locale?, fallback: Locale? = nil) -> NumberFormatter {
+    private func formattingCurrency(
+        locale: Locale?,
+        fallback: Locale? = nil
+    ) -> NumberFormatter {
         guard let locale else {
             return currencyFormatter(
                 with: fallback ?? Locale.locale(for: code) ?? .current

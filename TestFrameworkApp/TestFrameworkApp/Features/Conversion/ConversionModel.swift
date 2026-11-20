@@ -88,10 +88,11 @@ final class ConversionModel: ObservableObject {
             return
         }
 
-        guard
-            let amount = try? Amount(localizedString: amountText, locale: locale),
-            let money = Money(value: amount, currency: sourceCurrency)
-        else {
+        let money: Money<LocaleCurrency>
+        do {
+            let amount = try Amount(localizedString: amountText, locale: locale)
+            money = try Money(validating: amount, currency: sourceCurrency)
+        } catch {
             state = .failed(.invalidAmount)
             return
         }

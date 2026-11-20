@@ -11,50 +11,50 @@ import MoneyFramework
 import XCTest
 
 final class MoneyArithmeticTests: XCTestCase {
-    func testAddMoney() {
+    func testAddMoney() throws {
         // Given
-        let currency = LocaleCurrency(localeIdentifier: "en_US")!
-        let moneyLHS = Money(amount: "12.0", currency: currency)!
-        let moneyRHS = Money(amount: "2.0", currency: currency)!
+        let currency = try XCTUnwrap(LocaleCurrency(localeIdentifier: "en_US"))
+        let moneyLHS = try XCTUnwrap(Money(amount: "12.0", currency: currency))
+        let moneyRHS = try XCTUnwrap(Money(amount: "2.0", currency: currency))
         let result = moneyLHS.add(moneyRHS)
         // Then
         XCTAssertEqual(result.amount, Decimal(14), "Money amount should be $ 14.00")
     }
 
-    func testAddAmount() {
+    func testAddAmount() throws {
         // Given
-        let currency = LocaleCurrency(localeIdentifier: "en_US")!
-        let moneyLHS = Money(amount: "12.0", currency: currency)!
+        let currency = try XCTUnwrap(LocaleCurrency(localeIdentifier: "en_US"))
+        let moneyLHS = try XCTUnwrap(Money(amount: "12.0", currency: currency))
         // When
         let result = moneyLHS.add(Decimal(2))
         // Then
         XCTAssertEqual(result.amount, Decimal(14), "Money amount should be $ 14.00")
     }
 
-    func testSubtractMoney() {
+    func testSubtractMoney() throws {
         // Given
-        let currency = LocaleCurrency(localeIdentifier: "en_US")!
-        let moneyLHS = Money(amount: "12.0", currency: currency)!
-        let moneyRHS = Money(amount: "2.0", currency: currency)!
+        let currency = try XCTUnwrap(LocaleCurrency(localeIdentifier: "en_US"))
+        let moneyLHS = try XCTUnwrap(Money(amount: "12.0", currency: currency))
+        let moneyRHS = try XCTUnwrap(Money(amount: "2.0", currency: currency))
         // When
         let result = moneyLHS.subtract(moneyRHS)
         // Then
         XCTAssertEqual(result.amount, Decimal(10), "Money amount should be $ 10.00")
     }
 
-    func testSubtractAmount() {
+    func testSubtractAmount() throws {
         // Given
-        let currency = LocaleCurrency(localeIdentifier: "en_US")!
-        let moneyLHS = Money(amount: "12.0", currency: currency)!
+        let currency = try XCTUnwrap(LocaleCurrency(localeIdentifier: "en_US"))
+        let moneyLHS = try XCTUnwrap(Money(amount: "12.0", currency: currency))
         // When
         let result = moneyLHS.subtract(Decimal(2))
         // Then
         XCTAssertEqual(result.amount, Decimal(10),  "Money amount should be $ 10.00")
     }
 
-    func testMultiplyByAmount() {
-        let currency = LocaleCurrency(localeIdentifier: "en_US")!
-        let moneyLHS = Money(amount: "12.0", currency: currency)!
+    func testMultiplyByAmount() throws {
+        let currency = try XCTUnwrap(LocaleCurrency(localeIdentifier: "en_US"))
+        let moneyLHS = try XCTUnwrap(Money(amount: "12.0", currency: currency))
         let result = moneyLHS.multiply(Decimal(2))
         // Then
         XCTAssertEqual(result.amount, Decimal(24), "Money amount should be $ 24.00")

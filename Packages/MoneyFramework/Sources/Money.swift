@@ -34,55 +34,100 @@ public struct Money<T: Currency> {
 
     // MARK: - Initialization
 
+    /// Returns nil if the input cannot be parsed or rounded at the currency's scale.
     public init?(
         amount: String,
         currency: T,
         roundingMode: Decimal.RoundingMode = .bankers
     ) {
-        guard let value = currency.parseAmount(amount, locale: nil) else {
+        do {
+            try self.init(
+                parsing: amount,
+                currency: currency,
+                roundingMode: roundingMode
+            )
+        } catch {
             return nil
         }
-        self.init(value: value, currency: currency, roundingMode: roundingMode)
     }
 
+    /// Returns nil if the localized input cannot be parsed or rounded at the currency's scale.
     public init?(
         amount: String,
         currency: T,
         locale: Locale,
         roundingMode: Decimal.RoundingMode = .bankers
     ) {
-        guard let value = currency.parseAmount(amount, locale: locale) else {
+        do {
+            try self.init(parsing: amount, currency: currency, locale: locale, roundingMode: roundingMode)
+        } catch {
             return nil
         }
-        self.init(value: value, currency: currency, roundingMode: roundingMode)
+    }
+
+    /// Parses a monetary string and rounds the amount to the currency's scale.
+    /// - Throws: `Amount.ValidationError` for invalid syntax, precision, or currency scale.
+    public init(
+        parsing amount: String,
+        currency: T,
+        locale: Locale? = nil,
+        roundingMode: Decimal.RoundingMode = .bankers
+    ) throws {
+        let value = try currency.parseAmount(amount, locale: locale)
+        try self.init(
+            validating: value,
+            currency: currency,
+            roundingMode: roundingMode
+        )
     }
 
     public init?(currency: T) {
         self.init(amount: .zero, currency: currency)
     }
 
+    /// Returns nil for an invalid decimal amount or a failed currency rounding operation.
     public init?(
         amount: Decimal,
         currency: T,
         roundingMode: Decimal.RoundingMode = .bankers
     ) {
-        guard let value = try? Amount(decimal: amount) else {
+        do {
+            let value = try Amount(decimal: amount)
+            try self.init(
+                validating: value,
+                currency: currency,
+                roundingMode: roundingMode
+            )
+        } catch {
             return nil
         }
-        self.init(value: value, currency: currency, roundingMode: roundingMode)
     }
 
+    /// Returns nil when the amount cannot be rounded at the currency's scale.
     public init?(
         value: Amount,
         currency: T,
         roundingMode: Decimal.RoundingMode = .bankers
     ) {
-        let scale = currency.minorUnits
-        guard
-            let rounded = try? value.rounded(scale: scale, mode: roundingMode)
-        else {
+        do {
+            try self.init(
+                validating: value,
+                currency: currency,
+                roundingMode: roundingMode
+            )
+        } catch {
             return nil
         }
+    }
+
+    /// Creates money by rounding the amount to the currency's scale.
+    /// - Throws: `Amount.ValidationError` if the scale or rounded result is invalid.
+    public init(
+        validating value: Amount,
+        currency: T,
+        roundingMode: Decimal.RoundingMode = .bankers
+    ) throws {
+        let rounded = try value.rounded(scale: currency.minorUnits, mode: roundingMode)
         self.currency = currency
         self.value = rounded
     }
@@ -107,7 +152,6 @@ extension Money {
     public var absoluteAmount: Decimal {
         amount.isSignMinus ? -amount : amount
     }
-
 }
 
 extension Money {
@@ -143,7 +187,9 @@ extension Money {
         guard totalWeight > 0 else {
             throw ArithmeticError.invalidRatios
         }
-        return try allocate(count: ratios.count, totalWeight: totalWeight) { UInt(ratios[$0]) }
+        return try allocate(count: ratios.count, totalWeight: totalWeight) {
+            UInt(ratios[$0])
+        }
     }
 
     /// For validated inputs. Use allocate(recipientCount:) to handle errors.
