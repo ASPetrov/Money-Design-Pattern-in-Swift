@@ -26,6 +26,12 @@ Review new APIs at the call site:
 - Prefer properties for inexpensive derived values such as `amount`. Document the complexity of computed properties that take more than constant time.
 - For new public APIs, distinguish recoverable invalid input with `throws` when callers need the reason. Document important units, default rounding, and failure conditions that callers cannot infer from the signature.
 
+## Error handling and optionals
+
+Propagate errors with `try` and `throws`, or handle them explicitly where the caller can act on the failure. Avoid silent fallbacks. Use optional binding for expected absence and document what `nil` means in a public API.
+
+Do not use `try!`, `try?`, force unwraps, or implicitly unwrapped optionals. In tests use `try XCTUnwrap`, `try #require`, or a throwing test. A force unwrap is a last resort in a test and requires a reason and a single-line SwiftLint exception. See the [error-handling specification](Swift-Error-Handling.md) for the SwiftLint rollout.
+
 ## Enforcement
 
 SwiftFormat checks mechanical formatting using the root `.swiftformat`. Its wrapping rules handle supported constructs. Review remaining long lines against the documented exceptions. Comment usefulness and API clarity are code review criteria.
