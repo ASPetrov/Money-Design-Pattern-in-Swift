@@ -14,7 +14,7 @@ public protocol DecimalRepresentable {
 
 extension Decimal: DecimalRepresentable {
     public var decimalNumber: Decimal {
-        return self
+        self
     }
 }
 
@@ -24,7 +24,7 @@ extension Amount: DecimalRepresentable {
 
 extension Money {
     public var decimalNumber: Decimal {
-        return amount
+        amount
     }
 }
 
@@ -32,61 +32,61 @@ extension Money {
 
 extension Int: DecimalRepresentable {
     public var decimalNumber: Decimal {
-        return Decimal(self)
+        Decimal(self)
     }
 }
 
 extension UInt: DecimalRepresentable {
     public var decimalNumber: Decimal {
-        return Decimal(self)
+        Decimal(self)
     }
 }
 
 extension Int8: DecimalRepresentable {
     public var decimalNumber: Decimal {
-        return Decimal(self)
+        Decimal(self)
     }
 }
 
 extension UInt8: DecimalRepresentable {
     public var decimalNumber: Decimal {
-        return Decimal(self)
+        Decimal(self)
     }
 }
 
 extension Int16: DecimalRepresentable {
     public var decimalNumber: Decimal {
-        return Decimal(self)
+        Decimal(self)
     }
 }
 
 extension UInt16: DecimalRepresentable {
     public var decimalNumber: Decimal {
-        return Decimal(self)
+        Decimal(self)
     }
 }
 
 extension Int32: DecimalRepresentable {
     public var decimalNumber: Decimal {
-        return Decimal(self)
+        Decimal(self)
     }
 }
 
 extension UInt32: DecimalRepresentable {
     public var decimalNumber: Decimal {
-        return Decimal(self)
+        Decimal(self)
     }
 }
 
 extension Int64: DecimalRepresentable {
     public var decimalNumber: Decimal {
-        return Decimal(self)
+        Decimal(self)
     }
 }
 
 extension UInt64: DecimalRepresentable {
     public var decimalNumber: Decimal {
-        return Decimal(self)
+        Decimal(self)
     }
 }
 
@@ -98,7 +98,7 @@ extension UInt64: DecimalRepresentable {
 
 extension Double: DecimalRepresentable {
     public var decimalNumber: Decimal {
-        return Decimal(self)
+        Decimal(self)
     }
 }
 
@@ -110,6 +110,6 @@ extension Double: DecimalRepresentable {
 
 extension String: DecimalRepresentable {
     public var decimalNumber: Decimal {
-        return Decimal(string: self) ?? .nan
+        Decimal(string: self) ?? .nan
     }
 }

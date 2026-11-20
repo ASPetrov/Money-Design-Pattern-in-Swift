@@ -36,7 +36,7 @@ public extension Locale {
     }
 
     private static func availableLocales(for currencyCode: String) -> [Locale] {
-        return Locale.availableIdentifiers
+        Locale.availableIdentifiers
             .sorted()
             .map { Locale(identifier: $0) }
             .filter { $0.currencyCode == currencyCode }

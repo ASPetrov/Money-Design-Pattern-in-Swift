@@ -93,19 +93,19 @@ extension Money {
     // MARK: - Amount code suger
 
     public var isZero: Bool {
-        return amount.isZero
+        amount.isZero
     }
 
     public var isNegative: Bool {
-        return amount.isSignMinus
+        amount.isSignMinus
     }
 
     public var isPositive: Bool {
-        return !amount.isSignMinus
+        !amount.isSignMinus
     }
 
     public var absoluteAmount: Decimal {
-        return amount.isSignMinus ? -amount : amount
+        amount.isSignMinus ? -amount : amount
     }
 
 }
@@ -148,12 +148,12 @@ extension Money {
 
     /// For validated inputs. Use allocate(recipientCount:) to handle errors.
     public func allocate(_ n: Int) -> [Money] {
-        return try! allocate(recipientCount: n)
+        try! allocate(recipientCount: n)
     }
 
     /// For validated inputs. Use allocate(ratios:) to handle errors.
     public func allocate(_ ratios: [Int]) -> [Money] {
-        return try! allocate(ratios: ratios)
+        try! allocate(ratios: ratios)
     }
 
     private func allocate(count: Int, totalWeight: UInt, weightAt: (Int) -> UInt) throws -> [Money] {
@@ -192,7 +192,7 @@ extension Money {
         usingExchangeRate multiplier: Decimal,
         roundingMode: Decimal.RoundingMode = .bankers
     ) throws -> Money {
-        return try NormalConvertStrategy.convert(self, to: currency, rate: multiplier, roundingMode: roundingMode)
+        try NormalConvertStrategy.convert(self, to: currency, rate: multiplier, roundingMode: roundingMode)
     }
 
     public func convertTo<U: Currency>(
@@ -291,7 +291,7 @@ extension Money: Equatable {
 
 extension Money: Comparable {
     public static func < (lhs: Money, rhs: Money) -> Bool {
-        return try! lhs.compare(to: rhs) == .orderedAscending
+        try! lhs.compare(to: rhs) == .orderedAscending
     }
 
     public func compare<U: Currency>(to other: Money<U>) throws -> ComparisonResult {
@@ -306,7 +306,7 @@ extension Money: Comparable {
 // NOTE: if the left or the right side amount is nan result will be nan also
 extension Money {
     public func add(_ money: Money) -> Money {
-        return try! adding(money)
+        try! adding(money)
     }
 
     public func adding<U: Currency>(_ money: Money<U>) throws -> Money {
@@ -328,7 +328,7 @@ extension Money {
     }
 
     public func subtract(_ money: Money) -> Money {
-        return try! subtracting(money)
+        try! subtracting(money)
     }
 
     public func subtracting<U: Currency>(_ money: Money<U>) throws -> Money {
@@ -405,34 +405,34 @@ extension Money {
 
     /// For validated inputs. Use divide(by:) to handle errors.
     public func devide(_ divisor: DecimalRepresentable) -> Money {
-        return try! divide(by: divisor)
+        try! divide(by: divisor)
     }
 
 }
 
 extension Money {
     public static func + (lhs: Money, rhs: Money) -> Money {
-        return lhs.add(rhs)
+        lhs.add(rhs)
     }
 
     public static func - (lhs: Money, rhs: Money) -> Money {
-        return lhs.subtract(rhs)
+        lhs.subtract(rhs)
     }
 
     public static prefix func - (value: Money) -> Money {
-        return value.multiply(-1)
+        value.multiply(-1)
     }
 
     public static func + <R: DecimalRepresentable>(lhs: Money, rhs: R) -> Money {
-        return lhs.add(rhs)
+        lhs.add(rhs)
     }
 
     public static func + <R: DecimalRepresentable>(lhs: R, rhs: Money) -> Money {
-        return rhs.add(lhs)
+        rhs.add(lhs)
     }
 
     public static func - <R: DecimalRepresentable>(lhs: Money, rhs: R) -> Money {
-        return lhs.subtract(rhs)
+        lhs.subtract(rhs)
     }
 
     public static func - <R: DecimalRepresentable>(lhs: R, rhs: Money) -> Money {
@@ -441,10 +441,10 @@ extension Money {
     }
 
     public static func * <R: DecimalRepresentable>(lhs: Money, rhs: R) -> Money {
-        return lhs.multiply(rhs)
+        lhs.multiply(rhs)
     }
 
     public static func * <R: DecimalRepresentable>(lhs: R, rhs: Money) -> Money {
-        return rhs.multiply(lhs)
+        rhs.multiply(lhs)
     }
 }

@@ -78,7 +78,7 @@ public extension Currency {
     var identifier: CurrencyIdentifier { .legacy(code) }
 
     static func == (lhs: Self, rhs: Self) -> Bool {
-        return lhs.identifier == rhs.identifier && lhs.minorUnits == rhs.minorUnits
+        lhs.identifier == rhs.identifier && lhs.minorUnits == rhs.minorUnits
     }
 }
 
@@ -271,11 +271,11 @@ public extension LocaleCurrency {
 /// LocaleCurrency factory methods
 public extension LocaleCurrency {
     static func current() -> LocaleCurrency? {
-        return Self(locale: Locale.current)
+        Self(locale: Locale.current)
     }
 
     static func currency(for locale: Locale) -> LocaleCurrency? {
-        return Self(locale: locale)
+        Self(locale: locale)
     }
 }
 

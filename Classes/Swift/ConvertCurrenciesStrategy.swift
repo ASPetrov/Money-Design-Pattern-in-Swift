@@ -26,7 +26,7 @@ public final class NormalConvertStrategy: ConvertCurrenciesStrategy {
         toCurrency currency: T,
         usingExchangeRate multiplier: Decimal
     ) throws -> Money<T> {
-        return try Self.convert(money, to: currency, rate: multiplier, roundingMode: .bankers)
+        try Self.convert(money, to: currency, rate: multiplier, roundingMode: .bankers)
     }
 
     static func convert<T: Currency, U: Currency>(
