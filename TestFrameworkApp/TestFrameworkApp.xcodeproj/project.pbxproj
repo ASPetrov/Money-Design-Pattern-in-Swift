@@ -101,9 +101,9 @@
 		904682F21BE0CE0800EE830A /* TestFrameworkApp */ = {
 			isa = PBXGroup;
 			children = (
+				904682F31BE0CE0800EE830A /* TestFrameworkApp.swift */,
+				904683541BE0D1D200EE830A /* Features */,
 				904683581BE0D23400EE830A /* Resources */,
-				904683551BE0D1E300EE830A /* Storyboards/Xibs */,
-				904683541BE0D1D200EE830A /* Classes */,
 				904682FF1BE0CE0800EE830A /* Info.plist */,
 			);
 			path = TestFrameworkApp;
@@ -127,55 +127,31 @@
 			path = TestFrameworkAppUITests;
 			sourceTree = "<group>";
 		};
-		904683541BE0D1D200EE830A /* Classes */ = {
+		904683541BE0D1D200EE830A /* Features */ = {
 			isa = PBXGroup;
 			children = (
-				904683571BE0D21A00EE830A /* Controllers */,
-				904683561BE0D21300EE830A /* Globals */,
+				904683571BE0D21A00EE830A /* Conversion */,
 			);
-			name = Classes;
+			path = Features;
 			sourceTree = "<group>";
 		};
-		904683551BE0D1E300EE830A /* Storyboards/Xibs */ = {
-			isa = PBXGroup;
-			children = (
-				904682FC1BE0CE0800EE830A /* LaunchScreen.storyboard */,
-			);
-			name = Storyboards/Xibs;
-			sourceTree = "<group>";
-		};
-		904683561BE0D21300EE830A /* Globals */ = {
-			isa = PBXGroup;
-			children = (
-				904682F31BE0CE0800EE830A /* TestFrameworkApp.swift */,
-			);
-			name = Globals;
-			sourceTree = "<group>";
-		};
-		904683571BE0D21A00EE830A /* Controllers */ = {
+		904683571BE0D21A00EE830A /* Conversion */ = {
 			isa = PBXGroup;
 			children = (
 				904682F51BE0CE0800EE830A /* ConversionView.swift */,
 				F051C1A201FE000000000015 /* ConversionModel.swift */,
 			);
-			name = Controllers;
+			path = Conversion;
 			sourceTree = "<group>";
 		};
 		904683581BE0D23400EE830A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				904683591BE0D23D00EE830A /* Images */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-		};
-		904683591BE0D23D00EE830A /* Images */ = {
-			isa = PBXGroup;
-			children = (
 				904682FA1BE0CE0800EE830A /* Assets.xcassets */,
+				904682FC1BE0CE0800EE830A /* LaunchScreen.storyboard */,
 				F051C1A201FE000000000016 /* Localizable.strings */,
 			);
-			name = Images;
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
