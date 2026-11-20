@@ -1,8 +1,12 @@
 import SwiftUI
 
 struct ConversionView: View {
-    @ObservedObject var model: ConversionModel
+    @ObservedObject private var model: ConversionModel
     @FocusState private var isAmountFocused: Bool
+
+    init(model: ConversionModel) {
+        self.model = model
+    }
 
     var body: some View {
         NavigationView {

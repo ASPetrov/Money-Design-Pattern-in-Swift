@@ -12,5 +12,6 @@
 --wrap-conditions before-first
 --guard-else auto
 --trailing-commas collections-only
---rules indent,linebreaks,linebreakAtEndOfFile,trailingSpace,consecutiveBlankLines,spaceAroundOperators,spaceAroundBraces,spaceInsideBraces,braces,semicolons,sortImports,wrap,wrapArguments,wrapGuardStatementBodies,trailingCommas,redundantReturn
+--extension-acl on-declarations
+--rules indent,linebreaks,linebreakAtEndOfFile,trailingSpace,consecutiveBlankLines,spaceAroundOperators,spaceAroundBraces,spaceInsideBraces,braces,semicolons,sortImports,wrap,wrapArguments,wrapGuardStatementBodies,trailingCommas,redundantReturn,extensionAccessControl,redundantFileprivate
 --exclude .build,.swiftpm,DerivedData,Pods

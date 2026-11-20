@@ -7,7 +7,7 @@ enum DemoCurrency: String, CaseIterable, Sendable {
     case eur = "EUR"
     case bgn = "BGN"
 
-    var definition: LocaleCurrency? {
+    fileprivate var definition: LocaleCurrency? {
         if self == .bgn {
             return LocaleCurrency(
                 code: rawValue,

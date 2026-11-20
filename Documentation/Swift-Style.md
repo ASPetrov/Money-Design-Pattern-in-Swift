@@ -27,6 +27,12 @@ Review new APIs at the call site:
 - Prefer properties for inexpensive derived values such as `amount`. Document the complexity of computed properties that take more than constant time.
 - For new public APIs, distinguish recoverable invalid input with `throws` when callers need the reason. Document important units, default rounding, and failure conditions that callers cannot infer from the signature.
 
+## Access control
+
+Use `private` for declarations used within a type and its same-file extensions. Use `fileprivate` when another type in the same file needs access. Use implicit `internal` for declarations shared within a module and `public` for supported library API. Mark public extension members explicitly so their visibility is clear where they are declared.
+
+SwiftFormat enforces placement of access modifiers and simplifies redundant `fileprivate` where equivalent. Review any change to public access or public setters for compatibility.
+
 ## Error handling and optionals
 
 Propagate errors with `try` and `throws`, or handle them explicitly where the caller can act on the failure. Avoid silent fallbacks. Use optional binding for expected absence and document what `nil` means in a public API.

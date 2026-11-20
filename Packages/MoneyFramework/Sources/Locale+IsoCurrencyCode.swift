@@ -8,8 +8,8 @@
 
 import Foundation
 
-public extension Locale {
-    static func locale(for isoCurrencyCode: String) -> Locale? {
+extension Locale {
+    public static func locale(for isoCurrencyCode: String) -> Locale? {
         guard Locale.isoCurrencyCodes.contains(isoCurrencyCode) else {
             return nil
         }
