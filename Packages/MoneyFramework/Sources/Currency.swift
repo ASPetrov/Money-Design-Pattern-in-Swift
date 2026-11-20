@@ -59,8 +59,7 @@ extension Currency {
             return nil
         }
 
-        let formatter = NumberFormatter.currencyFormatter
-        formatter.locale = locale
+        let formatter = NumberFormatter(currencyLocale: locale)
 
         formatter.currencyCode = code
         self.init(
@@ -123,8 +122,7 @@ extension Currency {
     }
 
     public func currencyFormatter(with locale: Locale) -> NumberFormatter {
-        let formatter = NumberFormatter.currencyFormatter
-        formatter.locale = locale
+        let formatter = NumberFormatter(currencyLocale: locale)
         formatter.currencyCode = code
         formatter.maximumFractionDigits = minorUnits
         if let symbol {
@@ -199,8 +197,7 @@ extension Currency {
                 with: fallback ?? Locale.locale(for: code) ?? .current
             )
         }
-        let formatter = NumberFormatter.currencyFormatter
-        formatter.locale = locale
+        let formatter = NumberFormatter(currencyLocale: locale)
         formatter.currencyCode = code
         formatter.maximumFractionDigits = minorUnits
         return formatter
@@ -273,8 +270,7 @@ extension LocaleCurrency {
             return nil
         }
 
-        let formatter = NumberFormatter.currencyFormatter
-        formatter.locale = locale
+        let formatter = NumberFormatter(currencyLocale: locale)
 
         self.init(
             code: currencyCode,
@@ -366,9 +362,9 @@ public struct CustomCurrency: CryptoCurrency, Sendable {
 
 extension NumberFormatter {
 
-    fileprivate static var currencyFormatter: NumberFormatter {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        return formatter
+    fileprivate convenience init(currencyLocale: Locale) {
+        self.init()
+        numberStyle = .currency
+        locale = currencyLocale
     }
 }

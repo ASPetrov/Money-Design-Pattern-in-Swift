@@ -27,6 +27,10 @@ Review new APIs at the call site:
 - Prefer properties for inexpensive derived values such as `amount`. Document the complexity of computed properties that take more than constant time.
 - For new public APIs, distinguish recoverable invalid input with `throws` when callers need the reason. Document important units, default rounding, and failure conditions that callers cannot infer from the signature.
 
+## Instance and type methods
+
+Use instance methods for behavior that depends on a receiver or a supplied strategy. Prefer an initializer when constructing and configuring a new instance. Add a static helper only when the operation belongs to the type and has no natural receiver, such as a pure check used before initialization. Static operators follow Swift's operator declaration conventions.
+
 ## Access control
 
 Use `private` for declarations used within a type and its same-file extensions. Use `fileprivate` when another type in the same file needs access. Use implicit `internal` for declarations shared within a module and `public` for supported library API. Mark public extension members explicitly so their visibility is clear where they are declared.

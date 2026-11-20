@@ -134,12 +134,14 @@ public struct Amount: Equatable, Sendable {
         return try Amount(decimal: result)
     }
 
+    // Used both before initialization and when converting or rounding an existing amount.
     private static func validateScale(_ scale: Int) throws {
         guard (0 ... 127).contains(scale) else {
             throw ValidationError.invalidScale
         }
     }
 
+    // Normalizes localized digits before the initializer delegates to self.init.
     private static func asciiDigits(_ string: String) throws -> String {
         var digits = ""
         for scalar in string.unicodeScalars {
@@ -155,6 +157,7 @@ public struct Amount: Equatable, Sendable {
     }
 
     // Normalize both the validated input and Foundation's rendering before comparing them.
+    // Checks decimal round-trip precision before initializing self.
     private static func canonicalDecimalString(_ string: String) -> String? {
         var unsigned = string[...]
         let negative = unsigned.first == "-"

@@ -227,6 +227,19 @@ class CurrencyTests: XCTestCase {
         XCTAssertEqual(result, false, "Currencies should not match")
     }
 
+    func testCurrencyFormattersCanBeConfiguredIndependently() throws {
+        let currency = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: "USD"))
+        let locale = Locale(identifier: "en_US")
+        let first = currency.currencyFormatter(with: locale)
+        first.currencySymbol = "Changed"
+
+        let second = currency.currencyFormatter(with: locale)
+
+        XCTAssertFalse(first === second)
+        XCTAssertEqual(second.numberStyle, .currency)
+        XCTAssertEqual(second.currencySymbol, currency.symbol)
+    }
+
     //
     // MARK: - Test Performance
     //
