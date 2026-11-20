@@ -9,7 +9,7 @@ MoneyFramework uses the Google Swift Style Guide as its baseline. We use four sp
 - When arguments or parameters need wrapping, put the first item on a new line. Use trailing commas in multiline array and dictionary literals.
 - Sort imports alphabetically, place opening braces on the same line when they fit, and omit semicolons between statements.
 
-Omit `return` when a function, computed property, or closure can return its single expression implicitly. Keep explicit returns for early exits and bodies that require them. SwiftFormat checks this with `redundantReturn`. The sample app is exempt while it uses Swift 4 language mode.
+Omit `return` when a function, computed property, or closure can return its single expression implicitly. Keep explicit returns for early exits and bodies that require them. SwiftFormat checks this with `redundantReturn`.
 
 For `guard`, put the body on its own lines. Keep a short single condition on the `guard` line. For multiple conditions, put each condition on its own indented line after `guard` and align `else` with `guard`. SwiftFormat expands inline guard bodies and indents conditions that wrap. Short lists of conditions can still fit on one line, so split them during editing or review.
 

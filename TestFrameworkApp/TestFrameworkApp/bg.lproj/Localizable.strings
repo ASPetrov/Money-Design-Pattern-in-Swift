@@ -1,0 +1,11 @@
+"Amount" = "Сума";
+"From" = "От";
+"To" = "Към";
+"Convert" = "Конвертирай";
+"Conversion" = "Конвертиране";
+"Uses sample rates. No network connection is needed." = "Използва примерни курсове. Не е необходим интернет.";
+"Result" = "Резултат";
+"Currency Converter" = "Валутен калкулатор";
+"Converting…" = "Конвертиране…";
+"Enter a valid amount." = "Въведете валидна сума.";
+"Conversion is unavailable for this currency pair." = "Конвертирането за тази валутна двойка е недостъпно.";

@@ -26,7 +26,7 @@
 
 ## 4. Проверка на валутните курсове и HTTPS — среден приоритет
 
-Примерното приложение разрешава произволни мрежови зареждания, приема курс без проверка на HTTP статуса и използва `try!` при конвертиране. [Info.plist](../TestFrameworkApp/TestFrameworkApp/Info.plist#L25) · [ViewController.swift](../TestFrameworkApp/TestFrameworkApp/ViewController.swift#L83) · [Обработка на отговора](../TestFrameworkApp/TestFrameworkApp/ViewController.swift#L288)
+Старият UIKit клиент приемаше курс без проверка на HTTP статуса и използваше `try!` при конвертиране. Офлайн SwiftUI версията работи с примерни курсове. Премахването на глобалното ATS изключение е част от добавянето на реалния HTTPS доставчик. [Info.plist](../TestFrameworkApp/TestFrameworkApp/Info.plist#L25) · [Спецификация за примерното приложение](Sample-App-Design.md)
 
 - Премахни глобалното изключение от App Transport Security. Приемай курс само при успешен HTTPS отговор с валиден, строго положителен курс за заявената валутна двойка.
 - Стандартната стратегия валидира входния курс и връща грешка, ако резултатът е непредставим. Примерното приложение обработва грешките от мрежата, декодирането и конвертирането и показва съобщение при неуспех. [ConvertCurrenciesStrategy.swift](../Classes/Swift/ConvertCurrenciesStrategy.swift#L16)

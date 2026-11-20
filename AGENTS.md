@@ -4,7 +4,7 @@ MoneyFramework is a Swift implementation of the Money pattern for iOS. The libra
 
 - `Classes/Swift/` contains the library sources, including `Money`, currency definitions, decimal helpers, and conversion strategies. The CocoaPods spec also packages sources from this directory.
 - `Tests/Swift/` contains the XCTest suites for money and currencies.
-- `MoneyFramework/MoneyFramework.xcodeproj` contains the framework and test targets. `TestFrameworkApp/` contains the separate UIKit sample app.
+- `MoneyFramework/MoneyFramework.xcodeproj` contains the framework and test targets. `TestFrameworkApp/` contains the separate SwiftUI sample app.
 
 ## Build and test
 

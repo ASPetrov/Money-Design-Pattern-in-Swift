@@ -14,7 +14,3 @@
 --trailing-commas collections-only
 --rules indent,linebreaks,linebreakAtEndOfFile,trailingSpace,consecutiveBlankLines,spaceAroundOperators,spaceAroundBraces,spaceInsideBraces,braces,semicolons,sortImports,wrap,wrapArguments,wrapGuardStatementBodies,trailingCommas,redundantReturn
 --exclude .build,.swiftpm,DerivedData,Pods
-
-[Legacy sample app]
---filter **/TestFrameworkApp/**
---disable redundantReturn

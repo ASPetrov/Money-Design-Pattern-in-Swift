@@ -1,0 +1,65 @@
+import SwiftUI
+
+struct ConversionView: View {
+    @ObservedObject var model: ConversionModel
+    @FocusState private var isAmountFocused: Bool
+
+    var body: some View {
+        NavigationView {
+            Form {
+                Section {
+                    TextField("Amount", text: $model.amountText)
+                        .keyboardType(.decimalPad)
+                        .focused($isAmountFocused)
+                        .accessibilityIdentifier("conversion-amount")
+                    currencyPicker("From", selection: $model.source)
+                    currencyPicker("To", selection: $model.destination)
+                    Button("Convert") {
+                        isAmountFocused = false
+                        Task { await model.convert() }
+                    }
+                    .disabled(model.state == .loading)
+                    .accessibilityIdentifier("convert")
+                } header: {
+                    Text("Conversion")
+                } footer: {
+                    Text("Uses sample rates. No network connection is needed.")
+                }
+
+                if model.state != .idle {
+                    Section("Result") {
+                        result
+                    }
+                }
+            }
+            .navigationTitle("Currency Converter")
+        }
+        .navigationViewStyle(.stack)
+    }
+
+    @ViewBuilder
+    private var result: some View {
+        switch model.state {
+        case .idle:
+            EmptyView()
+        case .loading:
+            ProgressView("Converting…")
+        case let .converted(money):
+            Text(money.formatted(locale: model.locale) ?? money.description)
+                .font(.title2)
+                .accessibilityIdentifier("conversion-result")
+        case .failed(.invalidAmount):
+            Text("Enter a valid amount.")
+        case .failed(.rateUnavailable):
+            Text("Conversion is unavailable for this currency pair.")
+        }
+    }
+
+    private func currencyPicker(_ title: LocalizedStringKey, selection: Binding<DemoCurrency>) -> some View {
+        Picker(title, selection: selection) {
+            ForEach(DemoCurrency.allCases, id: \.self) { currency in
+                Text(currency.rawValue).tag(currency)
+            }
+        }
+    }
+}
