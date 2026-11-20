@@ -19,3 +19,9 @@
 ## Първоначална проверка
 
 Текущите манифести бяха оценени със SwiftPM и съвпадат след нормализиране на корените и пътищата. И двата декларират Swift tools 6.0, езиков режим Swift 6, iOS 15 и macOS 12, един автоматично свързван продукт `MoneyFramework` и библиотечна и тестова цел. Нямат външни зависимости. Целите сочат към едни и същи директории за източници и тестове.
+
+## Реализация и проверка
+
+[Workflow-ът](../.github/workflows/swift-package.yml) се изпълнява при push и pull request към `master`. Матрицата избира Xcode 16.0 на `macos-15` за Swift 6.0 и Xcode 26.6 на `macos-26` като по-нова налична конфигурация. Локалната проверка е с Xcode 27.2 и Swift 6.4.2. [Образ macOS 15](https://github.com/actions/runner-images/blob/main/images/macos/macos-15-arm64-Readme.md) · [Образ macOS 26](https://github.com/actions/runner-images/blob/main/images/macos/macos-26-arm64-Readme.md)
+
+От чисто временно копие и двата SPM входа се компилираха, откриха по 71 теста и изпълниха по 69 Swift Testing теста и 2 XCTest измервания. Сравнението прие текущите манифести и върна код 1 с diff при промяна на macOS 12 на macOS 13 във временно копие на вложения манифест. Първото изпълнение в GitHub Actions и резултатът със Swift 6.0 предстоят.

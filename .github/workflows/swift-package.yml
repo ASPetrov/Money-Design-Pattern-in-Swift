@@ -1,0 +1,61 @@
+name: Swift Package
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    name: Package (Xcode ${{ matrix.xcode }})
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-15
+            xcode: "16.0"
+            developer-dir: /Applications/Xcode_16.0.app/Contents/Developer
+          - runner: macos-26
+            xcode: "26.6"
+            developer-dir: /Applications/Xcode_26.6.app/Contents/Developer
+    env:
+      DEVELOPER_DIR: ${{ matrix.developer-dir }}
+      LC_ALL: en_US.UTF-8
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Show selected toolchain
+        run: |
+          xcodebuild -version
+          swift --version
+
+      - name: Compare package manifests
+        run: python3 .github/scripts/compare-manifests.py . Packages/MoneyFramework
+
+      - name: Build and test root package
+        run: |
+          swift build
+          swift test list
+          swift test 2>&1 | tee "$RUNNER_TEMP/swift-root-tests.log"
+          grep -E 'Executed [1-9][0-9]* tests?,' "$RUNNER_TEMP/swift-root-tests.log"
+          grep -E 'Test run with [1-9][0-9]* tests?' "$RUNNER_TEMP/swift-root-tests.log"
+
+      - name: Build and test nested package
+        working-directory: Packages/MoneyFramework
+        run: |
+          swift build
+          swift test list
+          swift test 2>&1 | tee "$RUNNER_TEMP/swift-nested-tests.log"
+          grep -E 'Executed [1-9][0-9]* tests?,' "$RUNNER_TEMP/swift-nested-tests.log"
+          grep -E 'Test run with [1-9][0-9]* tests?' "$RUNNER_TEMP/swift-nested-tests.log"
