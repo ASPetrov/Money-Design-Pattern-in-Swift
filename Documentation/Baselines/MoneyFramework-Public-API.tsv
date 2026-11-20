@@ -1,0 +1,449 @@
+symbol	MoneyFramework	s:14MoneyFramework0A0V	public	swift.struct	Money	struct Money<T> where T : Currency
+symbol	MoneyFramework	s:14MoneyFramework0A0V10isNegativeSbvp	public	swift.property	Money.isNegative	var isNegative: Bool { get }
+symbol	MoneyFramework	s:14MoneyFramework0A0V10isPositiveSbvp	public	swift.property	Money.isPositive	var isPositive: Bool { get }
+symbol	MoneyFramework	s:14MoneyFramework0A0V11descriptionSSvp	public	swift.property	Money.description	var description: String { get }
+symbol	MoneyFramework	s:14MoneyFramework0A0V11subtractingyACyxGACyqd__GKAA8CurrencyRd__lF	public	swift.method	Money.subtracting(_:)	func subtracting<U>(_ money: Money<U>) throws -> Money where U : Currency
+symbol	MoneyFramework	s:14MoneyFramework0A0V12oneMinorUnitSo9NSDecimalavp	public	swift.property	Money.oneMinorUnit	var oneMinorUnit: Decimal { get }
+symbol	MoneyFramework	s:14MoneyFramework0A0V13decimalNumberSo9NSDecimalavp	public	swift.property	Money.decimalNumber	var decimalNumber: Decimal { get }
+symbol	MoneyFramework	s:14MoneyFramework0A0V14absoluteAmountSo9NSDecimalavp	public	swift.property	Money.absoluteAmount	var absoluteAmount: Decimal { get }
+symbol	MoneyFramework	s:14MoneyFramework0A0V15ArithmeticErrorO	public	swift.enum	Money.ArithmeticError	enum ArithmeticError
+symbol	MoneyFramework	s:14MoneyFramework0A0V15ArithmeticErrorO13invalidRatiosyAEyx_GAGmAA8CurrencyRzlF	public	swift.enum.case	Money.ArithmeticError.invalidRatios	case invalidRatios
+symbol	MoneyFramework	s:14MoneyFramework0A0V15ArithmeticErrorO14divisionByZeroyAEyx_GAGmAA8CurrencyRzlF	public	swift.enum.case	Money.ArithmeticError.divisionByZero	case divisionByZero
+symbol	MoneyFramework	s:14MoneyFramework0A0V15ArithmeticErrorO14invalidDivisoryAEyx_GAGmAA8CurrencyRzlF	public	swift.enum.case	Money.ArithmeticError.invalidDivisor	case invalidDivisor
+symbol	MoneyFramework	s:14MoneyFramework0A0V15ArithmeticErrorO21invalidRecipientCountyAEyx_GAGmAA8CurrencyRzlF	public	swift.enum.case	Money.ArithmeticError.invalidRecipientCount	case invalidRecipientCount
+symbol	MoneyFramework	s:14MoneyFramework0A0V15ArithmeticErrorO21totalWeightOutOfRangeyAEyx_GAGmAA8CurrencyRzlF	public	swift.enum.case	Money.ArithmeticError.totalWeightOutOfRange	case totalWeightOutOfRange
+symbol	MoneyFramework	s:14MoneyFramework0A0V15ArithmeticErrorO21unrepresentableResultyAEyx_GAGmAA8CurrencyRzlF	public	swift.enum.case	Money.ArithmeticError.unrepresentableResult	case unrepresentableResult
+symbol	MoneyFramework	s:14MoneyFramework0A0V15ArithmeticErrorO22incompatibleCurrenciesyAEyx_GAGmAA8CurrencyRzlF	public	swift.enum.case	Money.ArithmeticError.incompatibleCurrencies	case incompatibleCurrencies
+symbol	MoneyFramework	s:14MoneyFramework0A0V15ArithmeticErrorO25incompatibleCurrencyScaleyAEyx_GAGmAA0F0RzlF	public	swift.enum.case	Money.ArithmeticError.incompatibleCurrencyScale	case incompatibleCurrencyScale
+symbol	MoneyFramework	s:14MoneyFramework0A0V17checkedMinorUnitsSiyKF	public	swift.method	Money.checkedMinorUnits()	func checkedMinorUnits() throws -> Int
+symbol	MoneyFramework	s:14MoneyFramework0A0V18amountInMinorUnitsSivp	public	swift.property	Money.amountInMinorUnits	var amountInMinorUnits: Int { get }
+symbol	MoneyFramework	s:14MoneyFramework0A0V1loiySbACyxG_AEtFZ	public	swift.func.op	Money.<(_:_:)	static func < (lhs: Money, rhs: Money) -> Bool
+symbol	MoneyFramework	s:14MoneyFramework0A0V1moiyACyxGAE_qd__tAA20DecimalRepresentableRd__lFZ	public	swift.func.op	Money.*(_:_:)	static func * <R>(lhs: Money, rhs: R) -> Money where R : DecimalRepresentable
+symbol	MoneyFramework	s:14MoneyFramework0A0V1moiyACyxGqd___AEtAA20DecimalRepresentableRd__lFZ	public	swift.func.op	Money.*(_:_:)	static func * <R>(lhs: R, rhs: Money) -> Money where R : DecimalRepresentable
+symbol	MoneyFramework	s:14MoneyFramework0A0V1poiyACyxGAE_AEtFZ	public	swift.func.op	Money.+(_:_:)	static func + (lhs: Money, rhs: Money) -> Money
+symbol	MoneyFramework	s:14MoneyFramework0A0V1poiyACyxGAE_qd__tAA20DecimalRepresentableRd__lFZ	public	swift.func.op	Money.+(_:_:)	static func + <R>(lhs: Money, rhs: R) -> Money where R : DecimalRepresentable
+symbol	MoneyFramework	s:14MoneyFramework0A0V1poiyACyxGqd___AEtAA20DecimalRepresentableRd__lFZ	public	swift.func.op	Money.+(_:_:)	static func + <R>(lhs: R, rhs: Money) -> Money where R : DecimalRepresentable
+symbol	MoneyFramework	s:14MoneyFramework0A0V1soiyACyxGAE_AEtFZ	public	swift.func.op	Money.-(_:_:)	static func - (lhs: Money, rhs: Money) -> Money
+symbol	MoneyFramework	s:14MoneyFramework0A0V1soiyACyxGAE_qd__tAA20DecimalRepresentableRd__lFZ	public	swift.func.op	Money.-(_:_:)	static func - <R>(lhs: Money, rhs: R) -> Money where R : DecimalRepresentable
+symbol	MoneyFramework	s:14MoneyFramework0A0V1soiyACyxGqd___AEtAA20DecimalRepresentableRd__lFZ	public	swift.func.op	Money.-(_:_:)	static func - <R>(lhs: R, rhs: Money) -> Money where R : DecimalRepresentable
+symbol	MoneyFramework	s:14MoneyFramework0A0V1sopyACyxGAEFZ	public	swift.func.op	Money.-(_:)	static func - (value: Money) -> Money
+symbol	MoneyFramework	s:14MoneyFramework0A0V27maximumAllocationRecipientsSivpZ	public	swift.type.property	Money.maximumAllocationRecipients	static var maximumAllocationRecipients: Int { get }
+symbol	MoneyFramework	s:14MoneyFramework0A0V2eeoiySbACyxG_AEtFZ	public	swift.func.op	Money.==(_:_:)	static func == (lhs: Money, rhs: Money) -> Bool
+symbol	MoneyFramework	s:14MoneyFramework0A0V3add_12roundingModeACyxGAA20DecimalRepresentable_p_So010NSRoundingE0VtF	public	swift.method	Money.add(_:roundingMode:)	func add(_ newAmount: DecimalRepresentable, roundingMode: Decimal.RoundingMode = .bankers) -> Money
+symbol	MoneyFramework	s:14MoneyFramework0A0V3addyACyxGAEF	public	swift.method	Money.add(_:)	func add(_ money: Money) -> Money
+symbol	MoneyFramework	s:14MoneyFramework0A0V5value8currency12roundingModeACyxGSgAA6AmountV_xSo010NSRoundingF0Vtcfc	public	swift.init	Money.init(value:currency:roundingMode:)	init?(value: Amount, currency: T, roundingMode: Decimal.RoundingMode = .bankers)
+symbol	MoneyFramework	s:14MoneyFramework0A0V5valueAA6AmountVvp	public	swift.property	Money.value	let value: Amount
+symbol	MoneyFramework	s:14MoneyFramework0A0V6addingyACyxGACyqd__GKAA8CurrencyRd__lF	public	swift.method	Money.adding(_:)	func adding<U>(_ money: Money<U>) throws -> Money where U : Currency
+symbol	MoneyFramework	s:14MoneyFramework0A0V6amount4fromSo9NSDecimalaSi_tF	public	swift.method	Money.amount(from:)	func amount(from subunits: Int) -> Decimal
+symbol	MoneyFramework	s:14MoneyFramework0A0V6amount8currency12roundingModeACyxGSgSS_xSo010NSRoundingF0Vtcfc	public	swift.init	Money.init(amount:currency:roundingMode:)	init?(amount: String, currency: T, roundingMode: Decimal.RoundingMode = .bankers)
+symbol	MoneyFramework	s:14MoneyFramework0A0V6amount8currency12roundingModeACyxGSgSo9NSDecimala_xSo010NSRoundingF0Vtcfc	public	swift.init	Money.init(amount:currency:roundingMode:)	init?(amount: Decimal, currency: T, roundingMode: Decimal.RoundingMode = .bankers)
+symbol	MoneyFramework	s:14MoneyFramework0A0V6amount8currency6locale12roundingModeACyxGSgSS_x10Foundation6LocaleVSo010NSRoundingG0Vtcfc	public	swift.init	Money.init(amount:currency:locale:roundingMode:)	init?(amount: String, currency: T, locale: Locale, roundingMode: Decimal.RoundingMode = .bankers)
+symbol	MoneyFramework	s:14MoneyFramework0A0V6amountSo9NSDecimalavp	public	swift.property	Money.amount	var amount: Decimal { get }
+symbol	MoneyFramework	s:14MoneyFramework0A0V6devideyACyxGAA20DecimalRepresentable_pF	public	swift.method	Money.devide(_:)	func devide(_ divisor: DecimalRepresentable) -> Money
+symbol	MoneyFramework	s:14MoneyFramework0A0V6divide2by12roundingModeACyxGAA20DecimalRepresentable_p_So010NSRoundingF0VtKF	public	swift.method	Money.divide(by:roundingMode:)	func divide(by divisor: DecimalRepresentable, roundingMode: Decimal.RoundingMode = .bankers) throws -> Money
+symbol	MoneyFramework	s:14MoneyFramework0A0V6equalsySbACyxGF	public	swift.method	Money.equals(_:)	func equals(_ other: Money) -> Bool
+symbol	MoneyFramework	s:14MoneyFramework0A0V6isZeroSbvp	public	swift.property	Money.isZero	var isZero: Bool { get }
+symbol	MoneyFramework	s:14MoneyFramework0A0V7compare2toSo18NSComparisonResultVACyqd__G_tKAA8CurrencyRd__lF	public	swift.method	Money.compare(to:)	func compare<U>(to other: Money<U>) throws -> ComparisonResult where U : Currency
+symbol	MoneyFramework	s:14MoneyFramework0A0V8allocate14recipientCountSayACyxGGSi_tKF	public	swift.method	Money.allocate(recipientCount:)	func allocate(recipientCount: Int) throws -> [Money]
+symbol	MoneyFramework	s:14MoneyFramework0A0V8allocate6ratiosSayACyxGGSaySiG_tKF	public	swift.method	Money.allocate(ratios:)	func allocate(ratios: [Int]) throws -> [Money]
+symbol	MoneyFramework	s:14MoneyFramework0A0V8allocateySayACyxGGSaySiGF	public	swift.method	Money.allocate(_:)	func allocate(_ ratios: [Int]) -> [Money]
+symbol	MoneyFramework	s:14MoneyFramework0A0V8allocateySayACyxGGSiF	public	swift.method	Money.allocate(_:)	func allocate(_ n: Int) -> [Money]
+symbol	MoneyFramework	s:14MoneyFramework0A0V8currencyACyxGSgx_tcfc	public	swift.init	Money.init(currency:)	init?(currency: T)
+symbol	MoneyFramework	s:14MoneyFramework0A0V8currencyxvp	public	swift.property	Money.currency	let currency: T
+symbol	MoneyFramework	s:14MoneyFramework0A0V8multiply_12roundingModeACyxGAA20DecimalRepresentable_p_So010NSRoundingE0VtF	public	swift.method	Money.multiply(_:roundingMode:)	func multiply(_ multiplier: DecimalRepresentable, roundingMode: Decimal.RoundingMode = .bankers) -> Money
+symbol	MoneyFramework	s:14MoneyFramework0A0V8multiply_8currency12roundingModeACyxGAA20DecimalRepresentable_p_xSo010NSRoundingF0VtF	public	swift.method	Money.multiply(_:currency:roundingMode:)	func multiply(_ multiplier: DecimalRepresentable, currency: T, roundingMode: Decimal.RoundingMode = .bankers) -> Money
+symbol	MoneyFramework	s:14MoneyFramework0A0V8subtract_12roundingModeACyxGAA20DecimalRepresentable_p_So010NSRoundingE0VtF	public	swift.method	Money.subtract(_:roundingMode:)	func subtract(_ newAmount: DecimalRepresentable, roundingMode: Decimal.RoundingMode = .bankers) -> Money
+symbol	MoneyFramework	s:14MoneyFramework0A0V8subtractyACyxGAEF	public	swift.method	Money.subtract(_:)	func subtract(_ money: Money) -> Money
+symbol	MoneyFramework	s:14MoneyFramework0A0V9convertTo_17usingExchangeRate12roundingModeACyqd__Gqd___So9NSDecimalaSo010NSRoundingI0VtKAA8CurrencyRd__lF	public	swift.method	Money.convertTo(_:usingExchangeRate:roundingMode:)	func convertTo<U>(_ currency: U, usingExchangeRate multiplier: Decimal, roundingMode: Decimal.RoundingMode = .bankers) throws -> Money<U> where U : Currency
+symbol	MoneyFramework	s:14MoneyFramework0A0V9convertTo_17usingExchangeRate12roundingModeACyxGx_So9NSDecimalaSo010NSRoundingI0VtKF	public	swift.method	Money.convertTo(_:usingExchangeRate:roundingMode:)	func convertTo(_ currency: T, usingExchangeRate multiplier: Decimal, roundingMode: Decimal.RoundingMode = .bankers) throws -> Money
+symbol	MoneyFramework	s:14MoneyFramework0A0V9convertTo_17usingExchangeRate8strategyACyxGx_So9NSDecimalaAA25ConvertCurrenciesStrategy_ptKF	public	swift.method	Money.convertTo(_:usingExchangeRate:strategy:)	func convertTo(_ currency: T, usingExchangeRate multiplier: Decimal, strategy: ConvertCurrenciesStrategy) throws -> Money
+symbol	MoneyFramework	s:14MoneyFramework0A0V9formatted6localeSSSg10Foundation6LocaleVSg_tF	public	swift.method	Money.formatted(locale:)	func formatted(locale: Locale? = nil) -> String?
+symbol	MoneyFramework	s:14MoneyFramework14CryptoCurrencyP	public	swift.protocol	CryptoCurrency	protocol CryptoCurrency : Currency
+symbol	MoneyFramework	s:14MoneyFramework14CustomCurrencyV	public	swift.struct	CustomCurrency	struct CustomCurrency
+symbol	MoneyFramework	s:14MoneyFramework14CustomCurrencyV10identifier4code4name10minorUnits6symbolACSgAA0D10IdentifierO_S2SSiSSSgtcfc	public	swift.init	CustomCurrency.init(identifier:code:name:minorUnits:symbol:)	init?(identifier: CurrencyIdentifier, code: String, name: String, minorUnits: Int, symbol: String? = nil)
+symbol	MoneyFramework	s:14MoneyFramework14CustomCurrencyV10identifierAA0D10IdentifierOvp	public	swift.property	CustomCurrency.identifier	let identifier: CurrencyIdentifier
+symbol	MoneyFramework	s:14MoneyFramework14CustomCurrencyV10minorUnitsSivp	public	swift.property	CustomCurrency.minorUnits	let minorUnits: Int
+symbol	MoneyFramework	s:14MoneyFramework14CustomCurrencyV4code4name10minorUnits6symbol9separator9delimiterACSgSS_SSSiSSSgA2Ktcfc	public	swift.init	CustomCurrency.init(code:name:minorUnits:symbol:separator:delimiter:)	init?(code: String, name: String, minorUnits: Int, symbol: String?, separator: String?, delimiter: String?)
+symbol	MoneyFramework	s:14MoneyFramework14CustomCurrencyV4codeSSvp	public	swift.property	CustomCurrency.code	let code: String
+symbol	MoneyFramework	s:14MoneyFramework14CustomCurrencyV4nameSSvp	public	swift.property	CustomCurrency.name	let name: String
+symbol	MoneyFramework	s:14MoneyFramework14CustomCurrencyV6symbolSSSgvp	public	swift.property	CustomCurrency.symbol	let symbol: String?
+symbol	MoneyFramework	s:14MoneyFramework14CustomCurrencyV9delimiterSSSgvp	public	swift.property	CustomCurrency.delimiter	var delimiter: String? { get }
+symbol	MoneyFramework	s:14MoneyFramework14CustomCurrencyV9separatorSSSgvp	public	swift.property	CustomCurrency.separator	var separator: String? { get }
+symbol	MoneyFramework	s:14MoneyFramework14LocaleCurrencyV	public	swift.struct	LocaleCurrency	struct LocaleCurrency
+symbol	MoneyFramework	s:14MoneyFramework14LocaleCurrencyV10identifierAA0D10IdentifierOvp	public	swift.property	LocaleCurrency.identifier	var identifier: CurrencyIdentifier { get }
+symbol	MoneyFramework	s:14MoneyFramework14LocaleCurrencyV10minorUnitsSivp	public	swift.property	LocaleCurrency.minorUnits	var minorUnits: Int
+symbol	MoneyFramework	s:14MoneyFramework14LocaleCurrencyV16localeIdentifierACSgSS_tcfc	public	swift.init	LocaleCurrency.init(localeIdentifier:)	init?(localeIdentifier: String)
+symbol	MoneyFramework	s:14MoneyFramework14LocaleCurrencyV4code4name10minorUnits6symbol9separator9delimiterACSS_SSSiSSSgA2Jtcfc	public	swift.init	LocaleCurrency.init(code:name:minorUnits:symbol:separator:delimiter:)	init(code: String, name: String, minorUnits: Int, symbol: String?, separator: String?, delimiter: String?)
+symbol	MoneyFramework	s:14MoneyFramework14LocaleCurrencyV4codeSSvp	public	swift.property	LocaleCurrency.code	var code: String
+symbol	MoneyFramework	s:14MoneyFramework14LocaleCurrencyV4nameSSvp	public	swift.property	LocaleCurrency.name	var name: String
+symbol	MoneyFramework	s:14MoneyFramework14LocaleCurrencyV6localeACSg10Foundation0C0V_tcfc	public	swift.init	LocaleCurrency.init(locale:)	init?(locale: Locale = Locale.current)
+symbol	MoneyFramework	s:14MoneyFramework14LocaleCurrencyV6symbolSSSgvp	public	swift.property	LocaleCurrency.symbol	var symbol: String?
+symbol	MoneyFramework	s:14MoneyFramework14LocaleCurrencyV7currentACSgyFZ	public	swift.type.method	LocaleCurrency.current()	static func current() -> LocaleCurrency?
+symbol	MoneyFramework	s:14MoneyFramework14LocaleCurrencyV8currency3forACSg10Foundation0C0V_tFZ	public	swift.type.method	LocaleCurrency.currency(for:)	static func currency(for locale: Locale) -> LocaleCurrency?
+symbol	MoneyFramework	s:14MoneyFramework14LocaleCurrencyV9delimiterSSSgvp	public	swift.property	LocaleCurrency.delimiter	var delimiter: String?
+symbol	MoneyFramework	s:14MoneyFramework14LocaleCurrencyV9separatorSSSgvp	public	swift.property	LocaleCurrency.separator	var separator: String?
+symbol	MoneyFramework	s:14MoneyFramework18CurrencyIdentifierO	public	swift.enum	CurrencyIdentifier	enum CurrencyIdentifier
+symbol	MoneyFramework	s:14MoneyFramework18CurrencyIdentifierO3isoyACSScACmF	public	swift.enum.case	CurrencyIdentifier.iso(_:)	case iso(String)
+symbol	MoneyFramework	s:14MoneyFramework18CurrencyIdentifierO5assetyACSS_SStcACmF	public	swift.enum.case	CurrencyIdentifier.asset(network:reference:)	case asset(network: String, reference: String)
+symbol	MoneyFramework	s:14MoneyFramework18CurrencyIdentifierO6customyACSS_SStcACmF	public	swift.enum.case	CurrencyIdentifier.custom(namespace:code:)	case custom(namespace: String, code: String)
+symbol	MoneyFramework	s:14MoneyFramework18CurrencyIdentifierO6legacyyACSScACmF	public	swift.enum.case	CurrencyIdentifier.legacy(_:)	case legacy(String)
+symbol	MoneyFramework	s:14MoneyFramework20DecimalRepresentableP	public	swift.protocol	DecimalRepresentable	protocol DecimalRepresentable
+symbol	MoneyFramework	s:14MoneyFramework20DecimalRepresentableP13decimalNumberSo9NSDecimalavp	public	swift.property	DecimalRepresentable.decimalNumber	var decimalNumber: Decimal { get }
+symbol	MoneyFramework	s:14MoneyFramework21NormalConvertStrategyC	public	swift.class	NormalConvertStrategy	final class NormalConvertStrategy
+symbol	MoneyFramework	s:14MoneyFramework21NormalConvertStrategyC9convertTo_10toCurrency17usingExchangeRateAA0A0VyxGAI_xSo9NSDecimalatKAA0I0RzlF	public	swift.method	NormalConvertStrategy.convertTo(_:toCurrency:usingExchangeRate:)	func convertTo<T>(_ money: Money<T>, toCurrency currency: T, usingExchangeRate multiplier: Decimal) throws -> Money<T> where T : Currency
+symbol	MoneyFramework	s:14MoneyFramework21NormalConvertStrategyCACycfc	public	swift.init	NormalConvertStrategy.init()	init()
+symbol	MoneyFramework	s:14MoneyFramework25ConvertCurrenciesStrategyP	public	swift.protocol	ConvertCurrenciesStrategy	protocol ConvertCurrenciesStrategy
+symbol	MoneyFramework	s:14MoneyFramework25ConvertCurrenciesStrategyP9convertTo_10toCurrency17usingExchangeRateAA0A0Vyqd__GAI_qd__So9NSDecimalatKAA0I0Rd__lF	public	swift.method	ConvertCurrenciesStrategy.convertTo(_:toCurrency:usingExchangeRate:)	func convertTo<T>(_ money: Money<T>, toCurrency currency: T, usingExchangeRate multiplier: Decimal) throws -> Money<T> where T : Currency
+symbol	MoneyFramework	s:14MoneyFramework30ConvertCurrenciesStrategyErrorO	public	swift.enum	ConvertCurrenciesStrategyError	enum ConvertCurrenciesStrategyError
+symbol	MoneyFramework	s:14MoneyFramework30ConvertCurrenciesStrategyErrorO12sameCurrencyyA2CmF	public	swift.enum.case	ConvertCurrenciesStrategyError.sameCurrency	case sameCurrency
+symbol	MoneyFramework	s:14MoneyFramework30ConvertCurrenciesStrategyErrorO19invalidExchangeRateyA2CmF	public	swift.enum.case	ConvertCurrenciesStrategyError.invalidExchangeRate	case invalidExchangeRate
+symbol	MoneyFramework	s:14MoneyFramework30ConvertCurrenciesStrategyErrorO21unrepresentableResultyA2CmF	public	swift.enum.case	ConvertCurrenciesStrategyError.unrepresentableResult	case unrepresentableResult
+symbol	MoneyFramework	s:14MoneyFramework30ConvertCurrenciesStrategyErrorO25incompatibleCurrencyScaleyA2CmF	public	swift.enum.case	ConvertCurrenciesStrategyError.incompatibleCurrencyScale	case incompatibleCurrencyScale
+symbol	MoneyFramework	s:14MoneyFramework6AmountV	public	swift.struct	Amount	struct Amount
+symbol	MoneyFramework	s:14MoneyFramework6AmountV10minorUnits5scaleACSi_SitKcfc	public	swift.init	Amount.init(minorUnits:scale:)	init(minorUnits: Int, scale: Int) throws
+symbol	MoneyFramework	s:14MoneyFramework6AmountV10minorUnits5scaleS2i_tKF	public	swift.method	Amount.minorUnits(scale:)	func minorUnits(scale: Int) throws -> Int
+symbol	MoneyFramework	s:14MoneyFramework6AmountV12decimalValueSo9NSDecimalavp	public	swift.property	Amount.decimalValue	let decimalValue: Decimal
+symbol	MoneyFramework	s:14MoneyFramework6AmountV13decimalNumberSo9NSDecimalavp	public	swift.property	Amount.decimalNumber	var decimalNumber: Decimal { get }
+symbol	MoneyFramework	s:14MoneyFramework6AmountV13decimalStringACSS_tKcfc	public	swift.init	Amount.init(decimalString:)	init(decimalString: String) throws
+symbol	MoneyFramework	s:14MoneyFramework6AmountV15ValidationErrorO	public	swift.enum	Amount.ValidationError	enum ValidationError
+symbol	MoneyFramework	s:14MoneyFramework6AmountV15ValidationErrorO12invalidScaleyA2EmF	public	swift.enum.case	Amount.ValidationError.invalidScale	case invalidScale
+symbol	MoneyFramework	s:14MoneyFramework6AmountV15ValidationErrorO13invalidFormatyA2EmF	public	swift.enum.case	Amount.ValidationError.invalidFormat	case invalidFormat
+symbol	MoneyFramework	s:14MoneyFramework6AmountV15ValidationErrorO20fractionalMinorUnitsyA2EmF	public	swift.enum.case	Amount.ValidationError.fractionalMinorUnits	case fractionalMinorUnits
+symbol	MoneyFramework	s:14MoneyFramework6AmountV15ValidationErrorO20minorUnitsOutOfRangeyA2EmF	public	swift.enum.case	Amount.ValidationError.minorUnitsOutOfRange	case minorUnitsOutOfRange
+symbol	MoneyFramework	s:14MoneyFramework6AmountV15ValidationErrorO20unrepresentableValueyA2EmF	public	swift.enum.case	Amount.ValidationError.unrepresentableValue	case unrepresentableValue
+symbol	MoneyFramework	s:14MoneyFramework6AmountV15localizedString6localeACSS_10Foundation6LocaleVtKcfc	public	swift.init	Amount.init(localizedString:locale:)	init(localizedString: String, locale: Locale) throws
+symbol	MoneyFramework	s:14MoneyFramework6AmountV4zeroACvpZ	public	swift.type.property	Amount.zero	static let zero: Amount
+symbol	MoneyFramework	s:14MoneyFramework6AmountV7decimalACSo9NSDecimala_tKcfc	public	swift.init	Amount.init(decimal:)	init(decimal: Decimal) throws
+symbol	MoneyFramework	s:14MoneyFramework6AmountV7integerACSi_tcfc	public	swift.init	Amount.init(integer:)	init(integer: Int)
+symbol	MoneyFramework	s:14MoneyFramework8CurrencyP	public	swift.protocol	Currency	protocol Currency : Equatable
+symbol	MoneyFramework	s:14MoneyFramework8CurrencyP10identifierAA0C10IdentifierOvp	public	swift.property	Currency.identifier	var identifier: CurrencyIdentifier { get }
+symbol	MoneyFramework	s:14MoneyFramework8CurrencyP10minorUnitsSivp	public	swift.property	Currency.minorUnits	var minorUnits: Int { get }
+symbol	MoneyFramework	s:14MoneyFramework8CurrencyP4code4name10minorUnits6symbol9separator9delimiterxSgSS_SSSiSSSgA2Ktcfc	public	swift.init	Currency.init(code:name:minorUnits:symbol:separator:delimiter:)	init?(code: String, name: String, minorUnits: Int, symbol: String?, separator: String?, delimiter: String?)
+symbol	MoneyFramework	s:14MoneyFramework8CurrencyP4codeSSvp	public	swift.property	Currency.code	var code: String { get }
+symbol	MoneyFramework	s:14MoneyFramework8CurrencyP4nameSSvp	public	swift.property	Currency.name	var name: String { get }
+symbol	MoneyFramework	s:14MoneyFramework8CurrencyP6symbolSSSgvp	public	swift.property	Currency.symbol	var symbol: String? { get }
+symbol	MoneyFramework	s:14MoneyFramework8CurrencyP9delimiterSSSgvp	public	swift.property	Currency.delimiter	var delimiter: String? { get }
+symbol	MoneyFramework	s:14MoneyFramework8CurrencyP9separatorSSSgvp	public	swift.property	Currency.separator	var separator: String? { get }
+symbol	MoneyFramework	s:14MoneyFramework8CurrencyPAAE03isoC4CodexSgSS_tcfc	public	swift.init	Currency.init(isoCurrencyCode:)	init?(isoCurrencyCode: String)
+symbol	MoneyFramework	s:14MoneyFramework8CurrencyPAAE03isoC4CodexSgSS_tcfc::SYNTHESIZED::s:14MoneyFramework14CustomCurrencyV	public	swift.init	CustomCurrency.init(isoCurrencyCode:)	init?(isoCurrencyCode: String)
+symbol	MoneyFramework	s:14MoneyFramework8CurrencyPAAE03isoC4CodexSgSS_tcfc::SYNTHESIZED::s:14MoneyFramework14LocaleCurrencyV	public	swift.init	LocaleCurrency.init(isoCurrencyCode:)	init?(isoCurrencyCode: String)
+symbol	MoneyFramework	s:14MoneyFramework8CurrencyPAAE10identifierAA0C10IdentifierOvp	public	swift.property	Currency.identifier	var identifier: CurrencyIdentifier { get }
+symbol	MoneyFramework	s:14MoneyFramework8CurrencyPAAE17currencyFormatter4withSo08NSNumberE0C10Foundation6LocaleV_tF	public	swift.method	Currency.currencyFormatter(with:)	func currencyFormatter(with locale: Locale) -> NumberFormatter
+symbol	MoneyFramework	s:14MoneyFramework8CurrencyPAAE17currencyFormatter4withSo08NSNumberE0C10Foundation6LocaleV_tF::SYNTHESIZED::s:14MoneyFramework14CustomCurrencyV	public	swift.method	CustomCurrency.currencyFormatter(with:)	func currencyFormatter(with locale: Locale) -> NumberFormatter
+symbol	MoneyFramework	s:14MoneyFramework8CurrencyPAAE17currencyFormatter4withSo08NSNumberE0C10Foundation6LocaleV_tF::SYNTHESIZED::s:14MoneyFramework14LocaleCurrencyV	public	swift.method	LocaleCurrency.currencyFormatter(with:)	func currencyFormatter(with locale: Locale) -> NumberFormatter
+symbol	MoneyFramework	s:14MoneyFramework8CurrencyPAAE2eeoiySbx_xtFZ	public	swift.func.op	Currency.==(_:_:)	static func == (lhs: Self, rhs: Self) -> Bool
+symbol	MoneyFramework	s:14MoneyFramework8CurrencyPAAE2eeoiySbx_xtFZ::SYNTHESIZED::s:14MoneyFramework14CustomCurrencyV	public	swift.func.op	CustomCurrency.==(_:_:)	static func == (lhs: Self, rhs: Self) -> Bool
+symbol	MoneyFramework	s:14MoneyFramework8CurrencyPAAE2eeoiySbx_xtFZ::SYNTHESIZED::s:14MoneyFramework14LocaleCurrencyV	public	swift.func.op	LocaleCurrency.==(_:_:)	static func == (lhs: Self, rhs: Self) -> Bool
+symbol	MoneyFramework	s:14MoneyFramework8CurrencyPAAE6number4from6localeSo8NSNumberCSgSS_10Foundation6LocaleVSgtF	public	swift.method	Currency.number(from:locale:)	func number(from string: String, locale: Locale? = nil) -> NSNumber?
+symbol	MoneyFramework	s:14MoneyFramework8CurrencyPAAE6number4from6localeSo8NSNumberCSgSS_10Foundation6LocaleVSgtF::SYNTHESIZED::s:14MoneyFramework14CustomCurrencyV	public	swift.method	CustomCurrency.number(from:locale:)	func number(from string: String, locale: Locale? = nil) -> NSNumber?
+symbol	MoneyFramework	s:14MoneyFramework8CurrencyPAAE6number4from6localeSo8NSNumberCSgSS_10Foundation6LocaleVSgtF::SYNTHESIZED::s:14MoneyFramework14LocaleCurrencyV	public	swift.method	LocaleCurrency.number(from:locale:)	func number(from string: String, locale: Locale? = nil) -> NSNumber?
+symbol	MoneyFramework	s:14MoneyFramework8CurrencyPAAE6string4from6localeSSSgSo8NSNumberC_10Foundation6LocaleVSgtF	public	swift.method	Currency.string(from:locale:)	func string(from number: NSNumber, locale: Locale? = nil) -> String?
+symbol	MoneyFramework	s:14MoneyFramework8CurrencyPAAE6string4from6localeSSSgSo8NSNumberC_10Foundation6LocaleVSgtF::SYNTHESIZED::s:14MoneyFramework14CustomCurrencyV	public	swift.method	CustomCurrency.string(from:locale:)	func string(from number: NSNumber, locale: Locale? = nil) -> String?
+symbol	MoneyFramework	s:14MoneyFramework8CurrencyPAAE6string4from6localeSSSgSo8NSNumberC_10Foundation6LocaleVSgtF::SYNTHESIZED::s:14MoneyFramework14LocaleCurrencyV	public	swift.method	LocaleCurrency.string(from:locale:)	func string(from number: NSNumber, locale: Locale? = nil) -> String?
+symbol	MoneyFramework	s:SLsE3zzloiySnyxGx_xtFZ::SYNTHESIZED::s:14MoneyFramework0A0V	public	swift.func.op	Money...<(_:_:)	static func ..< (minimum: Self, maximum: Self) -> Range<Self>
+symbol	MoneyFramework	s:SLsE3zzlopys16PartialRangeUpToVyxGxFZ::SYNTHESIZED::s:14MoneyFramework0A0V	public	swift.func.op	Money...<(_:)	static func ..< (maximum: Self) -> PartialRangeUpTo<Self>
+symbol	MoneyFramework	s:SLsE3zzzoPys16PartialRangeFromVyxGxFZ::SYNTHESIZED::s:14MoneyFramework0A0V	public	swift.func.op	Money....(_:)	static func ... (minimum: Self) -> PartialRangeFrom<Self>
+symbol	MoneyFramework	s:SLsE3zzzoiySNyxGx_xtFZ::SYNTHESIZED::s:14MoneyFramework0A0V	public	swift.func.op	Money....(_:_:)	static func ... (minimum: Self, maximum: Self) -> ClosedRange<Self>
+symbol	MoneyFramework	s:SLsE3zzzopys19PartialRangeThroughVyxGxFZ::SYNTHESIZED::s:14MoneyFramework0A0V	public	swift.func.op	Money....(_:)	static func ... (maximum: Self) -> PartialRangeThrough<Self>
+symbol	MoneyFramework	s:SLsRi_zRi0_zrlE1goiySbx_xtFZ::SYNTHESIZED::s:14MoneyFramework0A0V	public	swift.func.op	Money.>(_:_:)	static func > (lhs: borrowing Self, rhs: borrowing Self) -> Bool
+symbol	MoneyFramework	s:SLsRi_zRi0_zrlE2geoiySbx_xtFZ::SYNTHESIZED::s:14MoneyFramework0A0V	public	swift.func.op	Money.>=(_:_:)	static func >= (lhs: borrowing Self, rhs: borrowing Self) -> Bool
+symbol	MoneyFramework	s:SLsRi_zRi0_zrlE2leoiySbx_xtFZ::SYNTHESIZED::s:14MoneyFramework0A0V	public	swift.func.op	Money.<=(_:_:)	static func <= (lhs: borrowing Self, rhs: borrowing Self) -> Bool
+symbol	MoneyFramework	s:SQsRi_zRi0_zrlE2neoiySbx_xtFZ::SYNTHESIZED::s:14MoneyFramework0A0V	public	swift.func.op	Money.!=(_:_:)	static func != (lhs: borrowing Self, rhs: borrowing Self) -> Bool
+symbol	MoneyFramework	s:SQsRi_zRi0_zrlE2neoiySbx_xtFZ::SYNTHESIZED::s:14MoneyFramework0A0V15ArithmeticErrorO	public	swift.func.op	Money.ArithmeticError.!=(_:_:)	static func != (lhs: borrowing Self, rhs: borrowing Self) -> Bool
+symbol	MoneyFramework	s:SQsRi_zRi0_zrlE2neoiySbx_xtFZ::SYNTHESIZED::s:14MoneyFramework14CustomCurrencyV	public	swift.func.op	CustomCurrency.!=(_:_:)	static func != (lhs: borrowing Self, rhs: borrowing Self) -> Bool
+symbol	MoneyFramework	s:SQsRi_zRi0_zrlE2neoiySbx_xtFZ::SYNTHESIZED::s:14MoneyFramework14LocaleCurrencyV	public	swift.func.op	LocaleCurrency.!=(_:_:)	static func != (lhs: borrowing Self, rhs: borrowing Self) -> Bool
+symbol	MoneyFramework	s:SQsRi_zRi0_zrlE2neoiySbx_xtFZ::SYNTHESIZED::s:14MoneyFramework18CurrencyIdentifierO	public	swift.func.op	CurrencyIdentifier.!=(_:_:)	static func != (lhs: borrowing Self, rhs: borrowing Self) -> Bool
+symbol	MoneyFramework	s:SQsRi_zRi0_zrlE2neoiySbx_xtFZ::SYNTHESIZED::s:14MoneyFramework30ConvertCurrenciesStrategyErrorO	public	swift.func.op	ConvertCurrenciesStrategyError.!=(_:_:)	static func != (lhs: borrowing Self, rhs: borrowing Self) -> Bool
+symbol	MoneyFramework	s:SQsRi_zRi0_zrlE2neoiySbx_xtFZ::SYNTHESIZED::s:14MoneyFramework6AmountV	public	swift.func.op	Amount.!=(_:_:)	static func != (lhs: borrowing Self, rhs: borrowing Self) -> Bool
+symbol	MoneyFramework	s:SQsRi_zRi0_zrlE2neoiySbx_xtFZ::SYNTHESIZED::s:14MoneyFramework6AmountV15ValidationErrorO	public	swift.func.op	Amount.ValidationError.!=(_:_:)	static func != (lhs: borrowing Self, rhs: borrowing Self) -> Bool
+symbol	MoneyFramework	s:s5ErrorP10FoundationE20localizedDescriptionSSvp::SYNTHESIZED::s:14MoneyFramework0A0V15ArithmeticErrorO	public	swift.property	Money.ArithmeticError.localizedDescription	var localizedDescription: String { get }
+symbol	MoneyFramework	s:s5ErrorP10FoundationE20localizedDescriptionSSvp::SYNTHESIZED::s:14MoneyFramework30ConvertCurrenciesStrategyErrorO	public	swift.property	ConvertCurrenciesStrategyError.localizedDescription	var localizedDescription: String { get }
+symbol	MoneyFramework	s:s5ErrorP10FoundationE20localizedDescriptionSSvp::SYNTHESIZED::s:14MoneyFramework6AmountV15ValidationErrorO	public	swift.property	Amount.ValidationError.localizedDescription	var localizedDescription: String { get }
+symbol	MoneyFramework@Foundation	s:10Foundation6LocaleV14MoneyFrameworkE6locale3forACSgSS_tFZ	public	swift.type.method	Locale.locale(for:)	static func locale(for isoCurrencyCode: String) -> Locale?
+symbol	MoneyFramework@Foundation	s:So9NSDecimala14MoneyFrameworkE13decimalNumberABvp	public	swift.property	Decimal.decimalNumber	var decimalNumber: Decimal { get }
+symbol	MoneyFramework@Foundation	s:e:s:10Foundation6LocaleV14MoneyFrameworkE6locale3forACSgSS_tFZ	public	swift.extension	Locale	extension Locale
+symbol	MoneyFramework@Foundation	s:e:s:So9NSDecimala14MoneyFrameworkE13decimalNumberABvp	public	swift.extension	Decimal	extension Decimal
+symbol	MoneyFramework@Swift	s:SS14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	public	swift.property	String.decimalNumber	var decimalNumber: Decimal { get }
+symbol	MoneyFramework@Swift	s:Sd14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	public	swift.property	Double.decimalNumber	var decimalNumber: Decimal { get }
+symbol	MoneyFramework@Swift	s:Si14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	public	swift.property	Int.decimalNumber	var decimalNumber: Decimal { get }
+symbol	MoneyFramework@Swift	s:Su14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	public	swift.property	UInt.decimalNumber	var decimalNumber: Decimal { get }
+symbol	MoneyFramework@Swift	s:e:s:SS14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	public	swift.extension	String	extension String
+symbol	MoneyFramework@Swift	s:e:s:Sd14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	public	swift.extension	Double	extension Double
+symbol	MoneyFramework@Swift	s:e:s:Si14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	public	swift.extension	Int	extension Int
+symbol	MoneyFramework@Swift	s:e:s:Su14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	public	swift.extension	UInt	extension UInt
+symbol	MoneyFramework@Swift	s:e:s:s4Int8V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	public	swift.extension	Int8	extension Int8
+symbol	MoneyFramework@Swift	s:e:s:s5Int16V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	public	swift.extension	Int16	extension Int16
+symbol	MoneyFramework@Swift	s:e:s:s5Int32V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	public	swift.extension	Int32	extension Int32
+symbol	MoneyFramework@Swift	s:e:s:s5Int64V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	public	swift.extension	Int64	extension Int64
+symbol	MoneyFramework@Swift	s:e:s:s5UInt8V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	public	swift.extension	UInt8	extension UInt8
+symbol	MoneyFramework@Swift	s:e:s:s6UInt16V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	public	swift.extension	UInt16	extension UInt16
+symbol	MoneyFramework@Swift	s:e:s:s6UInt32V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	public	swift.extension	UInt32	extension UInt32
+symbol	MoneyFramework@Swift	s:e:s:s6UInt64V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	public	swift.extension	UInt64	extension UInt64
+symbol	MoneyFramework@Swift	s:s4Int8V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	public	swift.property	Int8.decimalNumber	var decimalNumber: Decimal { get }
+symbol	MoneyFramework@Swift	s:s5Int16V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	public	swift.property	Int16.decimalNumber	var decimalNumber: Decimal { get }
+symbol	MoneyFramework@Swift	s:s5Int32V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	public	swift.property	Int32.decimalNumber	var decimalNumber: Decimal { get }
+symbol	MoneyFramework@Swift	s:s5Int64V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	public	swift.property	Int64.decimalNumber	var decimalNumber: Decimal { get }
+symbol	MoneyFramework@Swift	s:s5UInt8V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	public	swift.property	UInt8.decimalNumber	var decimalNumber: Decimal { get }
+symbol	MoneyFramework@Swift	s:s6UInt16V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	public	swift.property	UInt16.decimalNumber	var decimalNumber: Decimal { get }
+symbol	MoneyFramework@Swift	s:s6UInt32V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	public	swift.property	UInt32.decimalNumber	var decimalNumber: Decimal { get }
+symbol	MoneyFramework@Swift	s:s6UInt64V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	public	swift.property	UInt64.decimalNumber	var decimalNumber: Decimal { get }
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework0A0V	s:SL	Swift.Comparable	{"swiftConstraints":[{"kind":"conformance","lhs":"T","rhs":"Currency","rhsPrecise":"s:14MoneyFramework8CurrencyP"}]}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework0A0V	s:SQ	Swift.Equatable	{"swiftConstraints":[{"kind":"conformance","lhs":"T","rhs":"Currency","rhsPrecise":"s:14MoneyFramework8CurrencyP"}]}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework0A0V	s:SQ	Swift.Equatable	{"swiftConstraints":[{"kind":"conformance","lhs":"T","rhs":"Currency","rhsPrecise":"s:14MoneyFramework8CurrencyP"}]}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework0A0V	s:s23CustomStringConvertibleP	Swift.CustomStringConvertible	{"swiftConstraints":[{"kind":"conformance","lhs":"T","rhs":"Currency","rhsPrecise":"s:14MoneyFramework8CurrencyP"}]}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework0A0V	s:s8CopyableP	Swift.Copyable	{"swiftConstraints":[{"kind":"conformance","lhs":"T","rhs":"Currency","rhsPrecise":"s:14MoneyFramework8CurrencyP"}]}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework0A0V	s:s9EscapableP	Swift.Escapable	{"swiftConstraints":[{"kind":"conformance","lhs":"T","rhs":"Currency","rhsPrecise":"s:14MoneyFramework8CurrencyP"}]}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework0A0V15ArithmeticErrorO	s:SH	Swift.Hashable	{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework0A0V15ArithmeticErrorO	s:SQ	Swift.Equatable	{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework0A0V15ArithmeticErrorO	s:s16SendableMetatypeP	Swift.SendableMetatype	{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework0A0V15ArithmeticErrorO	s:s5ErrorP	Swift.Error	{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework0A0V15ArithmeticErrorO	s:s8SendableP	Swift.Sendable	{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework14CryptoCurrencyP	s:14MoneyFramework8CurrencyP		{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework14CryptoCurrencyP	s:SQ	Swift.Equatable	{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework14CustomCurrencyV	s:14MoneyFramework14CryptoCurrencyP		{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework14CustomCurrencyV	s:14MoneyFramework8CurrencyP		{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework14CustomCurrencyV	s:SQ	Swift.Equatable	{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework14CustomCurrencyV	s:s16SendableMetatypeP	Swift.SendableMetatype	{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework14CustomCurrencyV	s:s8SendableP	Swift.Sendable	{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework14LocaleCurrencyV	s:14MoneyFramework8CurrencyP		{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework14LocaleCurrencyV	s:SQ	Swift.Equatable	{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework18CurrencyIdentifierO	s:SH	Swift.Hashable	{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework18CurrencyIdentifierO	s:SQ	Swift.Equatable	{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework18CurrencyIdentifierO	s:s16SendableMetatypeP	Swift.SendableMetatype	{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework18CurrencyIdentifierO	s:s8SendableP	Swift.Sendable	{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework21NormalConvertStrategyC	s:14MoneyFramework25ConvertCurrenciesStrategyP		{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework30ConvertCurrenciesStrategyErrorO	s:SH	Swift.Hashable	{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework30ConvertCurrenciesStrategyErrorO	s:SQ	Swift.Equatable	{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework30ConvertCurrenciesStrategyErrorO	s:s16SendableMetatypeP	Swift.SendableMetatype	{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework30ConvertCurrenciesStrategyErrorO	s:s5ErrorP	Swift.Error	{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework30ConvertCurrenciesStrategyErrorO	s:s8SendableP	Swift.Sendable	{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework6AmountV	s:14MoneyFramework20DecimalRepresentableP		{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework6AmountV	s:SQ	Swift.Equatable	{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework6AmountV	s:s16SendableMetatypeP	Swift.SendableMetatype	{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework6AmountV	s:s8CopyableP	Swift.Copyable	{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework6AmountV	s:s8SendableP	Swift.Sendable	{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework6AmountV	s:s9EscapableP	Swift.Escapable	{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework6AmountV15ValidationErrorO	s:SH	Swift.Hashable	{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework6AmountV15ValidationErrorO	s:SQ	Swift.Equatable	{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework6AmountV15ValidationErrorO	s:s16SendableMetatypeP	Swift.SendableMetatype	{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework6AmountV15ValidationErrorO	s:s5ErrorP	Swift.Error	{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework6AmountV15ValidationErrorO	s:s8SendableP	Swift.Sendable	{}
+relationship	MoneyFramework	conformsTo	s:14MoneyFramework8CurrencyP	s:SQ	Swift.Equatable	{}
+relationship	MoneyFramework	defaultImplementationOf	s:14MoneyFramework8CurrencyPAAE10identifierAA0C10IdentifierOvp	s:14MoneyFramework8CurrencyP10identifierAA0C10IdentifierOvp		{}
+relationship	MoneyFramework	defaultImplementationOf	s:14MoneyFramework8CurrencyPAAE2eeoiySbx_xtFZ	s:SQ2eeoiySbx_xtFZ	Swift.Equatable.==(_:_:)	{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V10isNegativeSbvp	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V10isPositiveSbvp	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V11descriptionSSvp	s:14MoneyFramework0A0V		{"sourceOrigin":{"displayName":"CustomStringConvertible.description","identifier":"s:s23CustomStringConvertibleP11descriptionSSvp"}}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V11subtractingyACyxGACyqd__GKAA8CurrencyRd__lF	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V12oneMinorUnitSo9NSDecimalavp	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V13decimalNumberSo9NSDecimalavp	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V14absoluteAmountSo9NSDecimalavp	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V15ArithmeticErrorO	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V15ArithmeticErrorO13invalidRatiosyAEyx_GAGmAA8CurrencyRzlF	s:14MoneyFramework0A0V15ArithmeticErrorO		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V15ArithmeticErrorO14divisionByZeroyAEyx_GAGmAA8CurrencyRzlF	s:14MoneyFramework0A0V15ArithmeticErrorO		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V15ArithmeticErrorO14invalidDivisoryAEyx_GAGmAA8CurrencyRzlF	s:14MoneyFramework0A0V15ArithmeticErrorO		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V15ArithmeticErrorO21invalidRecipientCountyAEyx_GAGmAA8CurrencyRzlF	s:14MoneyFramework0A0V15ArithmeticErrorO		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V15ArithmeticErrorO21totalWeightOutOfRangeyAEyx_GAGmAA8CurrencyRzlF	s:14MoneyFramework0A0V15ArithmeticErrorO		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V15ArithmeticErrorO21unrepresentableResultyAEyx_GAGmAA8CurrencyRzlF	s:14MoneyFramework0A0V15ArithmeticErrorO		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V15ArithmeticErrorO22incompatibleCurrenciesyAEyx_GAGmAA8CurrencyRzlF	s:14MoneyFramework0A0V15ArithmeticErrorO		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V15ArithmeticErrorO25incompatibleCurrencyScaleyAEyx_GAGmAA0F0RzlF	s:14MoneyFramework0A0V15ArithmeticErrorO		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V17checkedMinorUnitsSiyKF	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V18amountInMinorUnitsSivp	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V1loiySbACyxG_AEtFZ	s:14MoneyFramework0A0V		{"sourceOrigin":{"displayName":"Comparable.<(_:_:)","identifier":"s:SL1loiySbx_xtFZ"}}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V1moiyACyxGAE_qd__tAA20DecimalRepresentableRd__lFZ	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V1moiyACyxGqd___AEtAA20DecimalRepresentableRd__lFZ	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V1poiyACyxGAE_AEtFZ	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V1poiyACyxGAE_qd__tAA20DecimalRepresentableRd__lFZ	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V1poiyACyxGqd___AEtAA20DecimalRepresentableRd__lFZ	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V1soiyACyxGAE_AEtFZ	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V1soiyACyxGAE_qd__tAA20DecimalRepresentableRd__lFZ	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V1soiyACyxGqd___AEtAA20DecimalRepresentableRd__lFZ	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V1sopyACyxGAEFZ	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V27maximumAllocationRecipientsSivpZ	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V2eeoiySbACyxG_AEtFZ	s:14MoneyFramework0A0V		{"sourceOrigin":{"displayName":"Equatable.==(_:_:)","identifier":"s:SQ2eeoiySbx_xtFZ"}}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V3add_12roundingModeACyxGAA20DecimalRepresentable_p_So010NSRoundingE0VtF	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V3addyACyxGAEF	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V5value8currency12roundingModeACyxGSgAA6AmountV_xSo010NSRoundingF0Vtcfc	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V5valueAA6AmountVvp	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V6addingyACyxGACyqd__GKAA8CurrencyRd__lF	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V6amount4fromSo9NSDecimalaSi_tF	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V6amount8currency12roundingModeACyxGSgSS_xSo010NSRoundingF0Vtcfc	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V6amount8currency12roundingModeACyxGSgSo9NSDecimala_xSo010NSRoundingF0Vtcfc	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V6amount8currency6locale12roundingModeACyxGSgSS_x10Foundation6LocaleVSo010NSRoundingG0Vtcfc	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V6amountSo9NSDecimalavp	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V6devideyACyxGAA20DecimalRepresentable_pF	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V6divide2by12roundingModeACyxGAA20DecimalRepresentable_p_So010NSRoundingF0VtKF	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V6equalsySbACyxGF	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V6isZeroSbvp	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V7compare2toSo18NSComparisonResultVACyqd__G_tKAA8CurrencyRd__lF	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V8allocate14recipientCountSayACyxGGSi_tKF	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V8allocate6ratiosSayACyxGGSaySiG_tKF	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V8allocateySayACyxGGSaySiGF	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V8allocateySayACyxGGSiF	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V8currencyACyxGSgx_tcfc	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V8currencyxvp	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V8multiply_12roundingModeACyxGAA20DecimalRepresentable_p_So010NSRoundingE0VtF	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V8multiply_8currency12roundingModeACyxGAA20DecimalRepresentable_p_xSo010NSRoundingF0VtF	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V8subtract_12roundingModeACyxGAA20DecimalRepresentable_p_So010NSRoundingE0VtF	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V8subtractyACyxGAEF	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V9convertTo_17usingExchangeRate12roundingModeACyqd__Gqd___So9NSDecimalaSo010NSRoundingI0VtKAA8CurrencyRd__lF	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V9convertTo_17usingExchangeRate12roundingModeACyxGx_So9NSDecimalaSo010NSRoundingI0VtKF	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V9convertTo_17usingExchangeRate8strategyACyxGx_So9NSDecimalaAA25ConvertCurrenciesStrategy_ptKF	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework0A0V9formatted6localeSSSg10Foundation6LocaleVSg_tF	s:14MoneyFramework0A0V		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework14CustomCurrencyV10identifier4code4name10minorUnits6symbolACSgAA0D10IdentifierO_S2SSiSSSgtcfc	s:14MoneyFramework14CustomCurrencyV		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework14CustomCurrencyV10identifierAA0D10IdentifierOvp	s:14MoneyFramework14CustomCurrencyV		{"sourceOrigin":{"displayName":"Currency.identifier","identifier":"s:14MoneyFramework8CurrencyP10identifierAA0C10IdentifierOvp"}}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework14CustomCurrencyV10minorUnitsSivp	s:14MoneyFramework14CustomCurrencyV		{"sourceOrigin":{"displayName":"Currency.minorUnits","identifier":"s:14MoneyFramework8CurrencyP10minorUnitsSivp"}}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework14CustomCurrencyV4code4name10minorUnits6symbol9separator9delimiterACSgSS_SSSiSSSgA2Ktcfc	s:14MoneyFramework14CustomCurrencyV		{"sourceOrigin":{"displayName":"Currency.init(code:name:minorUnits:symbol:separator:delimiter:)","identifier":"s:14MoneyFramework8CurrencyP4code4name10minorUnits6symbol9separator9delimiterxSgSS_SSSiSSSgA2Ktcfc"}}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework14CustomCurrencyV4codeSSvp	s:14MoneyFramework14CustomCurrencyV		{"sourceOrigin":{"displayName":"Currency.code","identifier":"s:14MoneyFramework8CurrencyP4codeSSvp"}}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework14CustomCurrencyV4nameSSvp	s:14MoneyFramework14CustomCurrencyV		{"sourceOrigin":{"displayName":"Currency.name","identifier":"s:14MoneyFramework8CurrencyP4nameSSvp"}}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework14CustomCurrencyV6symbolSSSgvp	s:14MoneyFramework14CustomCurrencyV		{"sourceOrigin":{"displayName":"Currency.symbol","identifier":"s:14MoneyFramework8CurrencyP6symbolSSSgvp"}}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework14CustomCurrencyV9delimiterSSSgvp	s:14MoneyFramework14CustomCurrencyV		{"sourceOrigin":{"displayName":"Currency.delimiter","identifier":"s:14MoneyFramework8CurrencyP9delimiterSSSgvp"}}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework14CustomCurrencyV9separatorSSSgvp	s:14MoneyFramework14CustomCurrencyV		{"sourceOrigin":{"displayName":"Currency.separator","identifier":"s:14MoneyFramework8CurrencyP9separatorSSSgvp"}}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework14LocaleCurrencyV10identifierAA0D10IdentifierOvp	s:14MoneyFramework14LocaleCurrencyV		{"sourceOrigin":{"displayName":"Currency.identifier","identifier":"s:14MoneyFramework8CurrencyP10identifierAA0C10IdentifierOvp"}}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework14LocaleCurrencyV10minorUnitsSivp	s:14MoneyFramework14LocaleCurrencyV		{"sourceOrigin":{"displayName":"Currency.minorUnits","identifier":"s:14MoneyFramework8CurrencyP10minorUnitsSivp"}}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework14LocaleCurrencyV16localeIdentifierACSgSS_tcfc	s:14MoneyFramework14LocaleCurrencyV		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework14LocaleCurrencyV4code4name10minorUnits6symbol9separator9delimiterACSS_SSSiSSSgA2Jtcfc	s:14MoneyFramework14LocaleCurrencyV		{"sourceOrigin":{"displayName":"Currency.init(code:name:minorUnits:symbol:separator:delimiter:)","identifier":"s:14MoneyFramework8CurrencyP4code4name10minorUnits6symbol9separator9delimiterxSgSS_SSSiSSSgA2Ktcfc"}}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework14LocaleCurrencyV4codeSSvp	s:14MoneyFramework14LocaleCurrencyV		{"sourceOrigin":{"displayName":"Currency.code","identifier":"s:14MoneyFramework8CurrencyP4codeSSvp"}}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework14LocaleCurrencyV4nameSSvp	s:14MoneyFramework14LocaleCurrencyV		{"sourceOrigin":{"displayName":"Currency.name","identifier":"s:14MoneyFramework8CurrencyP4nameSSvp"}}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework14LocaleCurrencyV6localeACSg10Foundation0C0V_tcfc	s:14MoneyFramework14LocaleCurrencyV		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework14LocaleCurrencyV6symbolSSSgvp	s:14MoneyFramework14LocaleCurrencyV		{"sourceOrigin":{"displayName":"Currency.symbol","identifier":"s:14MoneyFramework8CurrencyP6symbolSSSgvp"}}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework14LocaleCurrencyV7currentACSgyFZ	s:14MoneyFramework14LocaleCurrencyV		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework14LocaleCurrencyV8currency3forACSg10Foundation0C0V_tFZ	s:14MoneyFramework14LocaleCurrencyV		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework14LocaleCurrencyV9delimiterSSSgvp	s:14MoneyFramework14LocaleCurrencyV		{"sourceOrigin":{"displayName":"Currency.delimiter","identifier":"s:14MoneyFramework8CurrencyP9delimiterSSSgvp"}}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework14LocaleCurrencyV9separatorSSSgvp	s:14MoneyFramework14LocaleCurrencyV		{"sourceOrigin":{"displayName":"Currency.separator","identifier":"s:14MoneyFramework8CurrencyP9separatorSSSgvp"}}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework18CurrencyIdentifierO3isoyACSScACmF	s:14MoneyFramework18CurrencyIdentifierO		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework18CurrencyIdentifierO5assetyACSS_SStcACmF	s:14MoneyFramework18CurrencyIdentifierO		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework18CurrencyIdentifierO6customyACSS_SStcACmF	s:14MoneyFramework18CurrencyIdentifierO		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework18CurrencyIdentifierO6legacyyACSScACmF	s:14MoneyFramework18CurrencyIdentifierO		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework21NormalConvertStrategyC9convertTo_10toCurrency17usingExchangeRateAA0A0VyxGAI_xSo9NSDecimalatKAA0I0RzlF	s:14MoneyFramework21NormalConvertStrategyC		{"sourceOrigin":{"displayName":"ConvertCurrenciesStrategy.convertTo(_:toCurrency:usingExchangeRate:)","identifier":"s:14MoneyFramework25ConvertCurrenciesStrategyP9convertTo_10toCurrency17usingExchangeRateAA0A0Vyqd__GAI_qd__So9NSDecimalatKAA0I0Rd__lF"}}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework21NormalConvertStrategyCACycfc	s:14MoneyFramework21NormalConvertStrategyC		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework30ConvertCurrenciesStrategyErrorO12sameCurrencyyA2CmF	s:14MoneyFramework30ConvertCurrenciesStrategyErrorO		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework30ConvertCurrenciesStrategyErrorO19invalidExchangeRateyA2CmF	s:14MoneyFramework30ConvertCurrenciesStrategyErrorO		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework30ConvertCurrenciesStrategyErrorO21unrepresentableResultyA2CmF	s:14MoneyFramework30ConvertCurrenciesStrategyErrorO		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework30ConvertCurrenciesStrategyErrorO25incompatibleCurrencyScaleyA2CmF	s:14MoneyFramework30ConvertCurrenciesStrategyErrorO		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework6AmountV10minorUnits5scaleACSi_SitKcfc	s:14MoneyFramework6AmountV		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework6AmountV10minorUnits5scaleS2i_tKF	s:14MoneyFramework6AmountV		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework6AmountV12decimalValueSo9NSDecimalavp	s:14MoneyFramework6AmountV		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework6AmountV13decimalNumberSo9NSDecimalavp	s:14MoneyFramework6AmountV		{"sourceOrigin":{"displayName":"DecimalRepresentable.decimalNumber","identifier":"s:14MoneyFramework20DecimalRepresentableP13decimalNumberSo9NSDecimalavp"}}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework6AmountV13decimalStringACSS_tKcfc	s:14MoneyFramework6AmountV		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework6AmountV15ValidationErrorO	s:14MoneyFramework6AmountV		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework6AmountV15ValidationErrorO12invalidScaleyA2EmF	s:14MoneyFramework6AmountV15ValidationErrorO		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework6AmountV15ValidationErrorO13invalidFormatyA2EmF	s:14MoneyFramework6AmountV15ValidationErrorO		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework6AmountV15ValidationErrorO20fractionalMinorUnitsyA2EmF	s:14MoneyFramework6AmountV15ValidationErrorO		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework6AmountV15ValidationErrorO20minorUnitsOutOfRangeyA2EmF	s:14MoneyFramework6AmountV15ValidationErrorO		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework6AmountV15ValidationErrorO20unrepresentableValueyA2EmF	s:14MoneyFramework6AmountV15ValidationErrorO		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework6AmountV15localizedString6localeACSS_10Foundation6LocaleVtKcfc	s:14MoneyFramework6AmountV		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework6AmountV4zeroACvpZ	s:14MoneyFramework6AmountV		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework6AmountV7decimalACSo9NSDecimala_tKcfc	s:14MoneyFramework6AmountV		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework6AmountV7integerACSi_tcfc	s:14MoneyFramework6AmountV		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework8CurrencyPAAE03isoC4CodexSgSS_tcfc	s:14MoneyFramework8CurrencyP		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework8CurrencyPAAE03isoC4CodexSgSS_tcfc::SYNTHESIZED::s:14MoneyFramework14CustomCurrencyV	s:14MoneyFramework14CustomCurrencyV		{"sourceOrigin":{"displayName":"Currency.init(isoCurrencyCode:)","identifier":"s:14MoneyFramework8CurrencyPAAE03isoC4CodexSgSS_tcfc"}}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework8CurrencyPAAE03isoC4CodexSgSS_tcfc::SYNTHESIZED::s:14MoneyFramework14LocaleCurrencyV	s:14MoneyFramework14LocaleCurrencyV		{"sourceOrigin":{"displayName":"Currency.init(isoCurrencyCode:)","identifier":"s:14MoneyFramework8CurrencyPAAE03isoC4CodexSgSS_tcfc"}}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework8CurrencyPAAE17currencyFormatter4withSo08NSNumberE0C10Foundation6LocaleV_tF	s:14MoneyFramework8CurrencyP		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework8CurrencyPAAE17currencyFormatter4withSo08NSNumberE0C10Foundation6LocaleV_tF::SYNTHESIZED::s:14MoneyFramework14CustomCurrencyV	s:14MoneyFramework14CustomCurrencyV		{"sourceOrigin":{"displayName":"Currency.currencyFormatter(with:)","identifier":"s:14MoneyFramework8CurrencyPAAE17currencyFormatter4withSo08NSNumberE0C10Foundation6LocaleV_tF"}}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework8CurrencyPAAE17currencyFormatter4withSo08NSNumberE0C10Foundation6LocaleV_tF::SYNTHESIZED::s:14MoneyFramework14LocaleCurrencyV	s:14MoneyFramework14LocaleCurrencyV		{"sourceOrigin":{"displayName":"Currency.currencyFormatter(with:)","identifier":"s:14MoneyFramework8CurrencyPAAE17currencyFormatter4withSo08NSNumberE0C10Foundation6LocaleV_tF"}}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework8CurrencyPAAE2eeoiySbx_xtFZ	s:14MoneyFramework8CurrencyP		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework8CurrencyPAAE2eeoiySbx_xtFZ::SYNTHESIZED::s:14MoneyFramework14CustomCurrencyV	s:14MoneyFramework14CustomCurrencyV		{"sourceOrigin":{"displayName":"Currency.==(_:_:)","identifier":"s:14MoneyFramework8CurrencyPAAE2eeoiySbx_xtFZ"}}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework8CurrencyPAAE2eeoiySbx_xtFZ::SYNTHESIZED::s:14MoneyFramework14LocaleCurrencyV	s:14MoneyFramework14LocaleCurrencyV		{"sourceOrigin":{"displayName":"Currency.==(_:_:)","identifier":"s:14MoneyFramework8CurrencyPAAE2eeoiySbx_xtFZ"}}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework8CurrencyPAAE6number4from6localeSo8NSNumberCSgSS_10Foundation6LocaleVSgtF	s:14MoneyFramework8CurrencyP		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework8CurrencyPAAE6number4from6localeSo8NSNumberCSgSS_10Foundation6LocaleVSgtF::SYNTHESIZED::s:14MoneyFramework14CustomCurrencyV	s:14MoneyFramework14CustomCurrencyV		{"sourceOrigin":{"displayName":"Currency.number(from:locale:)","identifier":"s:14MoneyFramework8CurrencyPAAE6number4from6localeSo8NSNumberCSgSS_10Foundation6LocaleVSgtF"}}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework8CurrencyPAAE6number4from6localeSo8NSNumberCSgSS_10Foundation6LocaleVSgtF::SYNTHESIZED::s:14MoneyFramework14LocaleCurrencyV	s:14MoneyFramework14LocaleCurrencyV		{"sourceOrigin":{"displayName":"Currency.number(from:locale:)","identifier":"s:14MoneyFramework8CurrencyPAAE6number4from6localeSo8NSNumberCSgSS_10Foundation6LocaleVSgtF"}}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework8CurrencyPAAE6string4from6localeSSSgSo8NSNumberC_10Foundation6LocaleVSgtF	s:14MoneyFramework8CurrencyP		{}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework8CurrencyPAAE6string4from6localeSSSgSo8NSNumberC_10Foundation6LocaleVSgtF::SYNTHESIZED::s:14MoneyFramework14CustomCurrencyV	s:14MoneyFramework14CustomCurrencyV		{"sourceOrigin":{"displayName":"Currency.string(from:locale:)","identifier":"s:14MoneyFramework8CurrencyPAAE6string4from6localeSSSgSo8NSNumberC_10Foundation6LocaleVSgtF"}}
+relationship	MoneyFramework	memberOf	s:14MoneyFramework8CurrencyPAAE6string4from6localeSSSgSo8NSNumberC_10Foundation6LocaleVSgtF::SYNTHESIZED::s:14MoneyFramework14LocaleCurrencyV	s:14MoneyFramework14LocaleCurrencyV		{"sourceOrigin":{"displayName":"Currency.string(from:locale:)","identifier":"s:14MoneyFramework8CurrencyPAAE6string4from6localeSSSgSo8NSNumberC_10Foundation6LocaleVSgtF"}}
+relationship	MoneyFramework	memberOf	s:SLsE3zzloiySnyxGx_xtFZ::SYNTHESIZED::s:14MoneyFramework0A0V	s:14MoneyFramework0A0V		{"sourceOrigin":{"displayName":"Comparable...<(_:_:)","identifier":"s:SLsE3zzloiySnyxGx_xtFZ"}}
+relationship	MoneyFramework	memberOf	s:SLsE3zzlopys16PartialRangeUpToVyxGxFZ::SYNTHESIZED::s:14MoneyFramework0A0V	s:14MoneyFramework0A0V		{"sourceOrigin":{"displayName":"Comparable...<(_:)","identifier":"s:SLsE3zzlopys16PartialRangeUpToVyxGxFZ"}}
+relationship	MoneyFramework	memberOf	s:SLsE3zzzoPys16PartialRangeFromVyxGxFZ::SYNTHESIZED::s:14MoneyFramework0A0V	s:14MoneyFramework0A0V		{"sourceOrigin":{"displayName":"Comparable....(_:)","identifier":"s:SLsE3zzzoPys16PartialRangeFromVyxGxFZ"}}
+relationship	MoneyFramework	memberOf	s:SLsE3zzzoiySNyxGx_xtFZ::SYNTHESIZED::s:14MoneyFramework0A0V	s:14MoneyFramework0A0V		{"sourceOrigin":{"displayName":"Comparable....(_:_:)","identifier":"s:SLsE3zzzoiySNyxGx_xtFZ"}}
+relationship	MoneyFramework	memberOf	s:SLsE3zzzopys19PartialRangeThroughVyxGxFZ::SYNTHESIZED::s:14MoneyFramework0A0V	s:14MoneyFramework0A0V		{"sourceOrigin":{"displayName":"Comparable....(_:)","identifier":"s:SLsE3zzzopys19PartialRangeThroughVyxGxFZ"}}
+relationship	MoneyFramework	memberOf	s:SLsRi_zRi0_zrlE1goiySbx_xtFZ::SYNTHESIZED::s:14MoneyFramework0A0V	s:14MoneyFramework0A0V		{"sourceOrigin":{"displayName":"Comparable.>(_:_:)","identifier":"s:SLsRi_zRi0_zrlE1goiySbx_xtFZ"}}
+relationship	MoneyFramework	memberOf	s:SLsRi_zRi0_zrlE2geoiySbx_xtFZ::SYNTHESIZED::s:14MoneyFramework0A0V	s:14MoneyFramework0A0V		{"sourceOrigin":{"displayName":"Comparable.>=(_:_:)","identifier":"s:SLsRi_zRi0_zrlE2geoiySbx_xtFZ"}}
+relationship	MoneyFramework	memberOf	s:SLsRi_zRi0_zrlE2leoiySbx_xtFZ::SYNTHESIZED::s:14MoneyFramework0A0V	s:14MoneyFramework0A0V		{"sourceOrigin":{"displayName":"Comparable.<=(_:_:)","identifier":"s:SLsRi_zRi0_zrlE2leoiySbx_xtFZ"}}
+relationship	MoneyFramework	memberOf	s:SQsRi_zRi0_zrlE2neoiySbx_xtFZ::SYNTHESIZED::s:14MoneyFramework0A0V	s:14MoneyFramework0A0V		{"sourceOrigin":{"displayName":"Equatable.!=(_:_:)","identifier":"s:SQsRi_zRi0_zrlE2neoiySbx_xtFZ"}}
+relationship	MoneyFramework	memberOf	s:SQsRi_zRi0_zrlE2neoiySbx_xtFZ::SYNTHESIZED::s:14MoneyFramework0A0V15ArithmeticErrorO	s:14MoneyFramework0A0V15ArithmeticErrorO		{"sourceOrigin":{"displayName":"Equatable.!=(_:_:)","identifier":"s:SQsRi_zRi0_zrlE2neoiySbx_xtFZ"}}
+relationship	MoneyFramework	memberOf	s:SQsRi_zRi0_zrlE2neoiySbx_xtFZ::SYNTHESIZED::s:14MoneyFramework14CustomCurrencyV	s:14MoneyFramework14CustomCurrencyV		{"sourceOrigin":{"displayName":"Equatable.!=(_:_:)","identifier":"s:SQsRi_zRi0_zrlE2neoiySbx_xtFZ"}}
+relationship	MoneyFramework	memberOf	s:SQsRi_zRi0_zrlE2neoiySbx_xtFZ::SYNTHESIZED::s:14MoneyFramework14LocaleCurrencyV	s:14MoneyFramework14LocaleCurrencyV		{"sourceOrigin":{"displayName":"Equatable.!=(_:_:)","identifier":"s:SQsRi_zRi0_zrlE2neoiySbx_xtFZ"}}
+relationship	MoneyFramework	memberOf	s:SQsRi_zRi0_zrlE2neoiySbx_xtFZ::SYNTHESIZED::s:14MoneyFramework18CurrencyIdentifierO	s:14MoneyFramework18CurrencyIdentifierO		{"sourceOrigin":{"displayName":"Equatable.!=(_:_:)","identifier":"s:SQsRi_zRi0_zrlE2neoiySbx_xtFZ"}}
+relationship	MoneyFramework	memberOf	s:SQsRi_zRi0_zrlE2neoiySbx_xtFZ::SYNTHESIZED::s:14MoneyFramework30ConvertCurrenciesStrategyErrorO	s:14MoneyFramework30ConvertCurrenciesStrategyErrorO		{"sourceOrigin":{"displayName":"Equatable.!=(_:_:)","identifier":"s:SQsRi_zRi0_zrlE2neoiySbx_xtFZ"}}
+relationship	MoneyFramework	memberOf	s:SQsRi_zRi0_zrlE2neoiySbx_xtFZ::SYNTHESIZED::s:14MoneyFramework6AmountV	s:14MoneyFramework6AmountV		{"sourceOrigin":{"displayName":"Equatable.!=(_:_:)","identifier":"s:SQsRi_zRi0_zrlE2neoiySbx_xtFZ"}}
+relationship	MoneyFramework	memberOf	s:SQsRi_zRi0_zrlE2neoiySbx_xtFZ::SYNTHESIZED::s:14MoneyFramework6AmountV15ValidationErrorO	s:14MoneyFramework6AmountV15ValidationErrorO		{"sourceOrigin":{"displayName":"Equatable.!=(_:_:)","identifier":"s:SQsRi_zRi0_zrlE2neoiySbx_xtFZ"}}
+relationship	MoneyFramework	memberOf	s:s5ErrorP10FoundationE20localizedDescriptionSSvp::SYNTHESIZED::s:14MoneyFramework0A0V15ArithmeticErrorO	s:14MoneyFramework0A0V15ArithmeticErrorO		{"sourceOrigin":{"displayName":"Error.localizedDescription","identifier":"s:s5ErrorP10FoundationE20localizedDescriptionSSvp"}}
+relationship	MoneyFramework	memberOf	s:s5ErrorP10FoundationE20localizedDescriptionSSvp::SYNTHESIZED::s:14MoneyFramework30ConvertCurrenciesStrategyErrorO	s:14MoneyFramework30ConvertCurrenciesStrategyErrorO		{"sourceOrigin":{"displayName":"Error.localizedDescription","identifier":"s:s5ErrorP10FoundationE20localizedDescriptionSSvp"}}
+relationship	MoneyFramework	memberOf	s:s5ErrorP10FoundationE20localizedDescriptionSSvp::SYNTHESIZED::s:14MoneyFramework6AmountV15ValidationErrorO	s:14MoneyFramework6AmountV15ValidationErrorO		{"sourceOrigin":{"displayName":"Error.localizedDescription","identifier":"s:s5ErrorP10FoundationE20localizedDescriptionSSvp"}}
+relationship	MoneyFramework	requirementOf	s:14MoneyFramework20DecimalRepresentableP13decimalNumberSo9NSDecimalavp	s:14MoneyFramework20DecimalRepresentableP		{}
+relationship	MoneyFramework	requirementOf	s:14MoneyFramework25ConvertCurrenciesStrategyP9convertTo_10toCurrency17usingExchangeRateAA0A0Vyqd__GAI_qd__So9NSDecimalatKAA0I0Rd__lF	s:14MoneyFramework25ConvertCurrenciesStrategyP		{}
+relationship	MoneyFramework	requirementOf	s:14MoneyFramework8CurrencyP10identifierAA0C10IdentifierOvp	s:14MoneyFramework8CurrencyP		{}
+relationship	MoneyFramework	requirementOf	s:14MoneyFramework8CurrencyP10minorUnitsSivp	s:14MoneyFramework8CurrencyP		{}
+relationship	MoneyFramework	requirementOf	s:14MoneyFramework8CurrencyP4code4name10minorUnits6symbol9separator9delimiterxSgSS_SSSiSSSgA2Ktcfc	s:14MoneyFramework8CurrencyP		{}
+relationship	MoneyFramework	requirementOf	s:14MoneyFramework8CurrencyP4codeSSvp	s:14MoneyFramework8CurrencyP		{}
+relationship	MoneyFramework	requirementOf	s:14MoneyFramework8CurrencyP4nameSSvp	s:14MoneyFramework8CurrencyP		{}
+relationship	MoneyFramework	requirementOf	s:14MoneyFramework8CurrencyP6symbolSSSgvp	s:14MoneyFramework8CurrencyP		{}
+relationship	MoneyFramework	requirementOf	s:14MoneyFramework8CurrencyP9delimiterSSSgvp	s:14MoneyFramework8CurrencyP		{}
+relationship	MoneyFramework	requirementOf	s:14MoneyFramework8CurrencyP9separatorSSSgvp	s:14MoneyFramework8CurrencyP		{}
+relationship	MoneyFramework@Foundation	conformsTo	s:e:s:So9NSDecimala14MoneyFrameworkE13decimalNumberABvp	s:14MoneyFramework20DecimalRepresentableP		{}
+relationship	MoneyFramework@Foundation	conformsTo	s:e:s:So9NSDecimala14MoneyFrameworkE13decimalNumberABvp	s:s8CopyableP	Swift.Copyable	{}
+relationship	MoneyFramework@Foundation	conformsTo	s:e:s:So9NSDecimala14MoneyFrameworkE13decimalNumberABvp	s:s9EscapableP	Swift.Escapable	{}
+relationship	MoneyFramework@Foundation	extensionTo	s:e:s:10Foundation6LocaleV14MoneyFrameworkE6locale3forACSgSS_tFZ	s:10Foundation6LocaleV	Foundation.Locale	{}
+relationship	MoneyFramework@Foundation	extensionTo	s:e:s:So9NSDecimala14MoneyFrameworkE13decimalNumberABvp	c:@SA@NSDecimal	Foundation.Decimal	{}
+relationship	MoneyFramework@Foundation	memberOf	s:10Foundation6LocaleV14MoneyFrameworkE6locale3forACSgSS_tFZ	s:e:s:10Foundation6LocaleV14MoneyFrameworkE6locale3forACSgSS_tFZ	Foundation.Locale	{}
+relationship	MoneyFramework@Foundation	memberOf	s:So9NSDecimala14MoneyFrameworkE13decimalNumberABvp	s:e:s:So9NSDecimala14MoneyFrameworkE13decimalNumberABvp	Foundation.Decimal	{"sourceOrigin":{"displayName":"DecimalRepresentable.decimalNumber","identifier":"s:14MoneyFramework20DecimalRepresentableP13decimalNumberSo9NSDecimalavp"}}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:SS14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:14MoneyFramework20DecimalRepresentableP		{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:SS14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:s8CopyableP	Swift.Copyable	{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:SS14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:s9EscapableP	Swift.Escapable	{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:Sd14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:14MoneyFramework20DecimalRepresentableP		{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:Sd14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:s8CopyableP	Swift.Copyable	{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:Sd14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:s9EscapableP	Swift.Escapable	{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:Si14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:14MoneyFramework20DecimalRepresentableP		{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:Si14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:s8CopyableP	Swift.Copyable	{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:Si14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:s9EscapableP	Swift.Escapable	{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:Su14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:14MoneyFramework20DecimalRepresentableP		{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:Su14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:s8CopyableP	Swift.Copyable	{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:Su14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:s9EscapableP	Swift.Escapable	{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:s4Int8V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:14MoneyFramework20DecimalRepresentableP		{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:s4Int8V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:s8CopyableP	Swift.Copyable	{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:s4Int8V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:s9EscapableP	Swift.Escapable	{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:s5Int16V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:14MoneyFramework20DecimalRepresentableP		{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:s5Int16V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:s8CopyableP	Swift.Copyable	{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:s5Int16V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:s9EscapableP	Swift.Escapable	{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:s5Int32V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:14MoneyFramework20DecimalRepresentableP		{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:s5Int32V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:s8CopyableP	Swift.Copyable	{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:s5Int32V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:s9EscapableP	Swift.Escapable	{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:s5Int64V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:14MoneyFramework20DecimalRepresentableP		{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:s5Int64V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:s8CopyableP	Swift.Copyable	{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:s5Int64V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:s9EscapableP	Swift.Escapable	{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:s5UInt8V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:14MoneyFramework20DecimalRepresentableP		{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:s5UInt8V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:s8CopyableP	Swift.Copyable	{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:s5UInt8V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:s9EscapableP	Swift.Escapable	{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:s6UInt16V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:14MoneyFramework20DecimalRepresentableP		{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:s6UInt16V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:s8CopyableP	Swift.Copyable	{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:s6UInt16V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:s9EscapableP	Swift.Escapable	{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:s6UInt32V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:14MoneyFramework20DecimalRepresentableP		{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:s6UInt32V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:s8CopyableP	Swift.Copyable	{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:s6UInt32V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:s9EscapableP	Swift.Escapable	{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:s6UInt64V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:14MoneyFramework20DecimalRepresentableP		{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:s6UInt64V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:s8CopyableP	Swift.Copyable	{}
+relationship	MoneyFramework@Swift	conformsTo	s:e:s:s6UInt64V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:s9EscapableP	Swift.Escapable	{}
+relationship	MoneyFramework@Swift	extensionTo	s:e:s:SS14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:SS	Swift.String	{}
+relationship	MoneyFramework@Swift	extensionTo	s:e:s:Sd14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:Sd	Swift.Double	{}
+relationship	MoneyFramework@Swift	extensionTo	s:e:s:Si14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:Si	Swift.Int	{}
+relationship	MoneyFramework@Swift	extensionTo	s:e:s:Su14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:Su	Swift.UInt	{}
+relationship	MoneyFramework@Swift	extensionTo	s:e:s:s4Int8V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:s4Int8V	Swift.Int8	{}
+relationship	MoneyFramework@Swift	extensionTo	s:e:s:s5Int16V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:s5Int16V	Swift.Int16	{}
+relationship	MoneyFramework@Swift	extensionTo	s:e:s:s5Int32V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:s5Int32V	Swift.Int32	{}
+relationship	MoneyFramework@Swift	extensionTo	s:e:s:s5Int64V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:s5Int64V	Swift.Int64	{}
+relationship	MoneyFramework@Swift	extensionTo	s:e:s:s5UInt8V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:s5UInt8V	Swift.UInt8	{}
+relationship	MoneyFramework@Swift	extensionTo	s:e:s:s6UInt16V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:s6UInt16V	Swift.UInt16	{}
+relationship	MoneyFramework@Swift	extensionTo	s:e:s:s6UInt32V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:s6UInt32V	Swift.UInt32	{}
+relationship	MoneyFramework@Swift	extensionTo	s:e:s:s6UInt64V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:s6UInt64V	Swift.UInt64	{}
+relationship	MoneyFramework@Swift	memberOf	s:SS14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:e:s:SS14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	Swift.String	{"sourceOrigin":{"displayName":"DecimalRepresentable.decimalNumber","identifier":"s:14MoneyFramework20DecimalRepresentableP13decimalNumberSo9NSDecimalavp"}}
+relationship	MoneyFramework@Swift	memberOf	s:Sd14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:e:s:Sd14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	Swift.Double	{"sourceOrigin":{"displayName":"DecimalRepresentable.decimalNumber","identifier":"s:14MoneyFramework20DecimalRepresentableP13decimalNumberSo9NSDecimalavp"}}
+relationship	MoneyFramework@Swift	memberOf	s:Si14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:e:s:Si14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	Swift.Int	{"sourceOrigin":{"displayName":"DecimalRepresentable.decimalNumber","identifier":"s:14MoneyFramework20DecimalRepresentableP13decimalNumberSo9NSDecimalavp"}}
+relationship	MoneyFramework@Swift	memberOf	s:Su14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:e:s:Su14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	Swift.UInt	{"sourceOrigin":{"displayName":"DecimalRepresentable.decimalNumber","identifier":"s:14MoneyFramework20DecimalRepresentableP13decimalNumberSo9NSDecimalavp"}}
+relationship	MoneyFramework@Swift	memberOf	s:s4Int8V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:e:s:s4Int8V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	Swift.Int8	{"sourceOrigin":{"displayName":"DecimalRepresentable.decimalNumber","identifier":"s:14MoneyFramework20DecimalRepresentableP13decimalNumberSo9NSDecimalavp"}}
+relationship	MoneyFramework@Swift	memberOf	s:s5Int16V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:e:s:s5Int16V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	Swift.Int16	{"sourceOrigin":{"displayName":"DecimalRepresentable.decimalNumber","identifier":"s:14MoneyFramework20DecimalRepresentableP13decimalNumberSo9NSDecimalavp"}}
+relationship	MoneyFramework@Swift	memberOf	s:s5Int32V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:e:s:s5Int32V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	Swift.Int32	{"sourceOrigin":{"displayName":"DecimalRepresentable.decimalNumber","identifier":"s:14MoneyFramework20DecimalRepresentableP13decimalNumberSo9NSDecimalavp"}}
+relationship	MoneyFramework@Swift	memberOf	s:s5Int64V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:e:s:s5Int64V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	Swift.Int64	{"sourceOrigin":{"displayName":"DecimalRepresentable.decimalNumber","identifier":"s:14MoneyFramework20DecimalRepresentableP13decimalNumberSo9NSDecimalavp"}}
+relationship	MoneyFramework@Swift	memberOf	s:s5UInt8V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:e:s:s5UInt8V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	Swift.UInt8	{"sourceOrigin":{"displayName":"DecimalRepresentable.decimalNumber","identifier":"s:14MoneyFramework20DecimalRepresentableP13decimalNumberSo9NSDecimalavp"}}
+relationship	MoneyFramework@Swift	memberOf	s:s6UInt16V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:e:s:s6UInt16V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	Swift.UInt16	{"sourceOrigin":{"displayName":"DecimalRepresentable.decimalNumber","identifier":"s:14MoneyFramework20DecimalRepresentableP13decimalNumberSo9NSDecimalavp"}}
+relationship	MoneyFramework@Swift	memberOf	s:s6UInt32V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:e:s:s6UInt32V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	Swift.UInt32	{"sourceOrigin":{"displayName":"DecimalRepresentable.decimalNumber","identifier":"s:14MoneyFramework20DecimalRepresentableP13decimalNumberSo9NSDecimalavp"}}
+relationship	MoneyFramework@Swift	memberOf	s:s6UInt64V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	s:e:s:s6UInt64V14MoneyFrameworkE13decimalNumberSo9NSDecimalavp	Swift.UInt64	{"sourceOrigin":{"displayName":"DecimalRepresentable.decimalNumber","identifier":"s:14MoneyFramework20DecimalRepresentableP13decimalNumberSo9NSDecimalavp"}}
