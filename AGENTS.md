@@ -1,10 +1,10 @@
 # Repository guide
 
-MoneyFramework is a Swift implementation of the Money pattern for iOS. The library and its tests use Swift 6 language mode. The Swift package declares iOS 15 and macOS 12 as minimum deployment targets. The legacy Xcode project retains its original deployment settings.
+MoneyFramework is a Swift implementation of the Money pattern for iOS and macOS. The library and its tests use Swift 6 language mode. The Swift package declares iOS 15 and macOS 12 as minimum deployment targets.
 
-- `Packages/MoneyFramework/Sources/` contains the library sources, including `Money`, currency definitions, decimal helpers, and conversion strategies. The CocoaPods spec also packages sources from this directory.
+- `Packages/MoneyFramework/Sources/` contains the library sources, including `Money`, currency definitions, decimal helpers, and conversion strategies.
 - `Packages/MoneyFramework/Tests/` contains the XCTest suites for money and currencies.
-- `MoneyFramework/MoneyFramework.xcodeproj` contains the framework and test targets. `TestFrameworkApp/` contains the separate SwiftUI sample app.
+- `TestFrameworkApp/` contains the separate SwiftUI sample app and its tests. `MoneyFramework/MoneyFramework.xcodeproj` retains the historical framework and universal binary schemes.
 
 ## Build and test
 
@@ -18,11 +18,11 @@ xcodebuild -scheme MoneyFramework \
   test
 ```
 
-See [the baseline](Documentation/Baseline.md) for the legacy Xcode commands and the known formatted USD parsing failure.
+For the sample app, open `TestFrameworkApp/TestFrameworkApp.xcodeproj` and use its shared `TestFrameworkApp` scheme to run and test on an iOS simulator. See [the baseline](Documentation/Baseline.md) for historical Xcode commands and test results.
 
 ## Library changes
 
-Keep monetary calculations in `Decimal`. When changing arithmetic, allocation, or currency conversion, check how currency minor units and rounding affect the result. Exchange-rate inputs and conversion strategies belong in the existing conversion API. When adding Swift files, confirm that the applicable Xcode target includes them.
+Keep monetary calculations in `Decimal`. When changing arithmetic, allocation, or currency conversion, check how currency minor units and rounding affect the result. Exchange-rate inputs and conversion strategies belong in the existing conversion API. Put library and package test files in their respective SPM target directories and check target membership when adding files to the sample app.
 
 ## Implementation plan
 

@@ -28,7 +28,7 @@ The project includes the `MoneyFramework` library, an offline SwiftUI demo, and 
    https://github.com/ASPetrov/Money-Design-Pattern-in-Swift.git
    ```
 
-3. Select **Branch** and enter `master`.
+3. Select **Up to Next Major Version** and enter `2.0.0`.
 4. Add the **MoneyFramework** library product to your application target.
 
 ### Swift Package Manager
@@ -38,7 +38,7 @@ Add the repository to the `dependencies` array in your `Package.swift`:
 ```swift
 .package(
     url: "https://github.com/ASPetrov/Money-Design-Pattern-in-Swift.git",
-    branch: "master"
+    from: "2.0.0"
 )
 ```
 
@@ -57,7 +57,13 @@ Import the module in your Swift source files:
 import MoneyFramework
 ```
 
-**Package availability:** The selected branch or release tag must contain `Package.swift`. The `master` instructions apply once the Swift Package Manager changes have been pushed to that branch.
+Version-based installation requires the `2.0.0` tag to be available in the Git repository. For local development, clone this repository and add its root directory as a local Swift package.
+
+### Migrating from CocoaPods
+
+1. Remove the `MoneyFramework` entry from your `Podfile` and run `pod install` to update the workspace. Keep any other pod declarations your project uses.
+2. Add the Swift package and link the `MoneyFramework` product to each target that imports it. Existing `import MoneyFramework` statements still use the same module name.
+3. Build and test your targets. Check the minimum platform versions above and migrate any currency conversions to the API shown in the walkthrough.
 
 ## Documentation
 
