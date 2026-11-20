@@ -187,6 +187,10 @@ extension Money {
 
     // MARK: - Convert
 
+    /// Converts to a currency of the same type using target units per source unit.
+    /// The rate must be positive and finite. The result rounds to the target currency's scale using `.bankers` by default.
+    /// - Throws: `ConvertCurrenciesStrategyError` for an invalid rate, the same currency,
+    ///   a conflicting scale, or an unrepresentable result.
     public func convertTo(
         _ currency: T,
         usingExchangeRate multiplier: Decimal,
@@ -195,6 +199,10 @@ extension Money {
         try NormalConvertStrategy.convert(self, to: currency, rate: multiplier, roundingMode: roundingMode)
     }
 
+    /// Converts to a different currency type using target units per source unit.
+    /// The rate must be positive and finite. The result rounds to the target currency's scale using `.bankers` by default.
+    /// - Throws: `ConvertCurrenciesStrategyError` for an invalid rate, the same currency,
+    ///   a conflicting scale, or an unrepresentable result.
     public func convertTo<U: Currency>(
         _ currency: U,
         usingExchangeRate multiplier: Decimal,
@@ -254,6 +262,9 @@ extension Money {
         try! checkedMinorUnits()
     }
 
+    /// Returns the signed count of the currency's smallest units, such as cents for USD.
+    /// - Throws: `Amount.ValidationError` if the scale is invalid or the count is fractional
+    ///   or outside the range of `Int`.
     public func checkedMinorUnits() throws -> Int {
         try value.minorUnits(scale: currency.minorUnits)
     }
@@ -269,8 +280,12 @@ extension Money {
 }
 
 extension Money: CustomStringConvertible {
+    /// Formats the amount using the default locale selection, or returns an empty string on failure.
+    /// Access can search the available locales and format the digits. Use `formatted(locale:)` to select a locale.
     public var description: String { formatted() ?? "" }
 
+    /// Formats the amount for the supplied locale, or returns `nil` if formatting fails.
+    /// With no locale, ISO currencies use their currency locale and custom currencies use the current locale.
     public func formatted(locale: Locale? = nil) -> String? {
         currency.string(from: NSDecimalNumber(decimal: amount), locale: locale)
     }
@@ -377,6 +392,8 @@ extension Money {
         )
     }
 
+    /// Divides by a dimensionless number and rounds to the currency's minor units using `.bankers` by default.
+    /// - Throws: `ArithmeticError` if the divisor is zero or invalid, or the result is unrepresentable.
     public func divide(
         by divisor: DecimalRepresentable,
         roundingMode: Decimal.RoundingMode = .bankers
@@ -403,7 +420,8 @@ extension Money {
         return rounded
     }
 
-    /// For validated inputs. Use divide(by:) to handle errors.
+    /// Divides a validated amount with the default rounding mode. Traps if the division fails.
+    @available(*, deprecated, message: "Use try divide(by:) to handle invalid divisors and unrepresentable results.")
     public func devide(_ divisor: DecimalRepresentable) -> Money {
         try! divide(by: divisor)
     }
