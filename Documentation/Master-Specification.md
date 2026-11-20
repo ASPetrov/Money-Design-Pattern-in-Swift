@@ -61,7 +61,7 @@
 
 ### 12. Swift Testing в приложението
 
-Мигрирай съществуващите unit сценарии на `ConversionModel` върху текущото поведение. Потвърди отделно откриването на UI сценария в XCTest. Така миграцията има собствена проверка преди промяната на жизнения цикъл на задачите. [Миграция към Swift Testing](Swift-Testing-Migration.md)
+**Завършен.** Четирите unit сценария на `ConversionModel` са пренесени към Swift Testing с изолация на `MainActor` и минаха на iPadOS 27.2 Simulator. Първият опит на iOS 27.0 прекъсна преди свързване с тестовия процес. Xcode откри и четирите unit теста, както и съществуващия `OfflineConversionTests` в XCTest. Действителното изпълнение на UI сценария остава отделна проверка. [Миграция към Swift Testing](Swift-Testing-Migration.md) · [Карта на сценариите](Swift-Test-Scenario-Map.md)
 
 ### 13. Swift Concurrency в приложението
 

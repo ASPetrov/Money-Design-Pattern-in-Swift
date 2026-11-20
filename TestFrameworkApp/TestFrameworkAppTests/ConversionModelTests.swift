@@ -1,10 +1,10 @@
 import Foundation
 @testable import TestFrameworkApp
-import XCTest
+import Testing
 
-final class ConversionModelTests: XCTestCase {
+struct ConversionModelTests {
     @MainActor
-    func testConvertsSelectedCurrenciesUsingSampleRates() async throws {
+    @Test func convertsSelectedCurrenciesUsingSampleRates() async {
         let model = ConversionModel(rateProvider: SampleRateProvider(), locale: Locale(identifier: "en_US"))
         model.amountText = "10.50"
         model.source = .usd
@@ -13,30 +13,31 @@ final class ConversionModelTests: XCTestCase {
         await model.convert()
 
         guard case let .converted(result) = model.state else {
-            return XCTFail("Expected a conversion result")
+            Issue.record("Expected a conversion result")
+            return
         }
-        XCTAssertEqual(result.currency.code, "EUR")
-        XCTAssertEqual(result.amount, Decimal(string: "8.40"))
+        #expect(result.currency.code == "EUR")
+        #expect(result.amount == Decimal(string: "8.40"))
 
         model.destination = .bgn
-        XCTAssertEqual(model.state, .idle)
+        #expect(model.state == .idle)
     }
 
     @MainActor
-    func testRejectsInvalidAmountBeforeConversion() async {
+    @Test func rejectsInvalidAmountBeforeConversion() async {
         let provider = UnavailableRates()
         let model = ConversionModel(rateProvider: provider, locale: Locale(identifier: "en_US"))
         model.amountText = "10oops"
 
         await model.convert()
 
-        XCTAssertEqual(model.state, .failed(.invalidAmount))
+        #expect(model.state == .failed(.invalidAmount))
         let requestCount = await provider.requestCount
-        XCTAssertEqual(requestCount, 0)
+        #expect(requestCount == 0)
     }
 
     @MainActor
-    func testSameCurrencyUsesTheOriginalAmount() async throws {
+    @Test func sameCurrencyUsesTheOriginalAmount() async {
         let provider = UnavailableRates()
         let model = ConversionModel(rateProvider: provider, locale: Locale(identifier: "de_DE"))
         model.amountText = "1,25"
@@ -45,21 +46,22 @@ final class ConversionModelTests: XCTestCase {
         await model.convert()
 
         let requestCount = await provider.requestCount
-        XCTAssertEqual(requestCount, 0)
+        #expect(requestCount == 0)
         guard case let .converted(result) = model.state else {
-            return XCTFail("Expected the amount in the original currency")
+            Issue.record("Expected the amount in the original currency")
+            return
         }
-        XCTAssertEqual(result.amount, Decimal(string: "1.25"))
+        #expect(result.amount == Decimal(string: "1.25"))
     }
 
     @MainActor
-    func testReportsProviderFailure() async {
+    @Test func reportsProviderFailure() async {
         let model = ConversionModel(rateProvider: UnavailableRates(), locale: Locale(identifier: "en_US"))
         model.amountText = "10"
 
         await model.convert()
 
-        XCTAssertEqual(model.state, .failed(.rateUnavailable))
+        #expect(model.state == .failed(.rateUnavailable))
     }
 }
 
