@@ -21,7 +21,7 @@ Deployment Target:  10.0
 
 ## Offline SwiftUI demo
 
-Open `TestFrameworkApp/TestFrameworkApp.xcodeproj` in Xcode, select the shared `TestFrameworkApp` scheme and an iOS simulator, then choose **Run**. The demo targets iOS 15 or later and resolves `MoneyFramework` from the local Swift package.
+Open `TestFrameworkApp/TestFrameworkApp.xcodeproj` in Xcode, select the shared `TestFrameworkApp` scheme and an iOS simulator, then choose **Run**. The demo targets iOS 15 or later and resolves `MoneyFramework` from the local Swift package at `Packages/MoneyFramework`.
 
 The converter uses fixed sample rates for USD, EUR, and BGN. Enter `10`, select USD and EUR, and tap **Convert** to see `8 EUR` in your locale's format. The demo requires no internet connection or API key.
 

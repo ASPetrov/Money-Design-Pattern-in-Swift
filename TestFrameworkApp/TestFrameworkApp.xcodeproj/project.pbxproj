@@ -277,7 +277,7 @@
 			productRefGroup = 904682F11BE0CE0800EE830A /* Products */;
 			projectDirPath = "";
 			packageReferences = (
-				F051C1A201FE000000000013 /* XCLocalSwiftPackageReference ".." */,
+				F051C1A201FE000000000013 /* XCLocalSwiftPackageReference "../Packages/MoneyFramework" */,
 			);
 			projectRoot = "";
 			targets = (
@@ -597,9 +597,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		F051C1A201FE000000000013 /* XCLocalSwiftPackageReference ".." */ = {
+		F051C1A201FE000000000013 /* XCLocalSwiftPackageReference "../Packages/MoneyFramework" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = ..;
+			relativePath = ../Packages/MoneyFramework;
 		};
 /* End XCLocalSwiftPackageReference section */
 

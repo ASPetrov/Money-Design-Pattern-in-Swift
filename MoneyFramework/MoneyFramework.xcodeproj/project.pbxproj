@@ -133,7 +133,7 @@
 				904683461BE0D0D300EE830A /* Swift */,
 			);
 			name = Classes;
-			path = ../../Classes;
+			path = ../../Packages/MoneyFramework/Sources;
 			sourceTree = "<group>";
 		};
 		904683461BE0D0D300EE830A /* Swift */ = {
@@ -146,7 +146,7 @@
 				4123B130244B2A1B005800C1 /* ConvertCurrenciesStrategy.swift */,
 				4123B132244C41A8005800C1 /* Locale+IsoCurrencyCode.swift */,
 			);
-			path = Swift;
+			path = MoneyFramework;
 			sourceTree = "<group>";
 		};
 		9046834B1BE0D10700EE830A /* Tests */ = {
@@ -155,7 +155,7 @@
 				9046834C1BE0D10700EE830A /* Swift */,
 			);
 			name = Tests;
-			path = ../../Tests;
+			path = ../../Packages/MoneyFramework/Tests;
 			sourceTree = "<group>";
 		};
 		9046834C1BE0D10700EE830A /* Swift */ = {
@@ -166,7 +166,7 @@
 				F051C1A201FE000000000001 /* AmountTests.swift */,
 				F051C1A201FE000000000003 /* CustomCurrencyTests.swift */,
 			);
-			path = Swift;
+			path = MoneyFrameworkTests;
 			sourceTree = "<group>";
 		};
 		904683531BE0D1B200EE830A /* Headers */ = {

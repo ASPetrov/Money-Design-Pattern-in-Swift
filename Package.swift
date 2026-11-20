@@ -12,11 +12,11 @@ let package = Package(
         .library(name: "MoneyFramework", targets: ["MoneyFramework"]),
     ],
     targets: [
-        .target(name: "MoneyFramework", path: "Classes/Swift"),
+        .target(name: "MoneyFramework", path: "Packages/MoneyFramework/Sources/MoneyFramework"),
         .testTarget(
             name: "MoneyFrameworkTests",
             dependencies: ["MoneyFramework"],
-            path: "Tests/Swift"
+            path: "Packages/MoneyFramework/Tests/MoneyFrameworkTests"
         ),
     ],
     swiftLanguageModes: [.v6]

@@ -4,13 +4,13 @@
 
 ## 1. Дефиниране на пакета
 
-- Добави `Package.swift` в корена. Дефинирай библиотечен продукт и модул `MoneyFramework` с източници от `Classes/Swift`, както и XCTest цел `MoneyFrameworkTests` с тестове от `Tests/Swift` и зависимост от библиотеката. Запази съществуващите директории и използвай един набор от източници. Пакетът няма външни зависимости. [Swift PackageDescription](https://docs.swift.org/package-manager/PackageDescription/PackageDescription.html)
+- Добави `Package.swift` в корена. Дефинирай библиотечен продукт и модул `MoneyFramework` с източници от `Packages/MoneyFramework/Sources/MoneyFramework`, както и XCTest цел `MoneyFrameworkTests` с тестове от `Packages/MoneyFramework/Tests/MoneyFrameworkTests` и зависимост от библиотеката. Кореновият манифест поддържа инсталиране по Git URL. Вложеният манифест в `Packages/MoneyFramework` използва същите файлове. При промени в продукта, платформите или езиковия режим обнови и двата манифеста. Пакетът няма външни зависимости. [Swift PackageDescription](https://docs.swift.org/package-manager/PackageDescription/PackageDescription.html)
 - Определи минималните версии на Swift tools, Xcode и iOS чрез компилация и тестове с избрания набор инструменти. Текущата рамка декларира iOS 10 и използва Swift 4 езиков режим. Провери дали този минимум за iOS остава постижим. Ако трябва да се повиши, документирай новия минимум и ефекта за потребителите. Укажи езиковия режим отделно от версията на инструмента, когато е необходимо.
 - Запази публичния API при миграцията. Промени в паричната аритметика и валидиращите операции са описани в [спецификацията за корекции](Security-Remediation.md).
 
 ## 2. Интегриране на примерното приложение
 
-- Добави пакета от корена на хранилището като локална Xcode зависимост и свържи продукта `MoneyFramework` към целта на SwiftUI приложението в етап 5.1. [Спецификация за примерното приложение](Sample-App-Design.md) Използвай относителен път, валиден при ново клониране. [Добавяне на локален пакет в Xcode](https://developer.apple.com/documentation/xcode/editing-a-package-dependency-as-a-local-package)
+- Добави пакета от `Packages/MoneyFramework` като локална Xcode зависимост и свържи продукта `MoneyFramework` към целта на SwiftUI приложението в етап 5.1. [Спецификация за примерното приложение](Sample-App-Design.md) Използвай относителен път, валиден при ново клониране. [Добавяне на локален пакет в Xcode](https://developer.apple.com/documentation/xcode/editing-a-package-dependency-as-a-local-package)
 - Премахни референцията към вложения `MoneyFramework.xcodeproj`, остарелите зависимости между цели, ръчното свързване и вграждането на `MoneyFramework.framework`. След като SPM поеме компилацията и тестовете, провери потребителите на старите Xcode схеми и реши дали проектът на рамката и схемата за универсален бинарен пакет могат да бъдат премахнати. Ако се запазят за съществуващ начин на употреба, опиши го изрично.
 
 ## 3. Премахване на CocoaPods и инструкции за миграция
