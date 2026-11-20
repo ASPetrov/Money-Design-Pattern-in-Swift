@@ -372,6 +372,8 @@ extension Money: Equatable {
     }
 }
 
+extension Money: Sendable where T: Sendable {}
+
 extension Money: Comparable {
     /// Requires matching currency identifiers and scales. Use `compare(to:)` for unvalidated currencies.
     public static func < (lhs: Money, rhs: Money) -> Bool {

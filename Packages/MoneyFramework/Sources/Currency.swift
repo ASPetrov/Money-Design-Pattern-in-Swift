@@ -232,7 +232,7 @@ extension Currency {
 public protocol CryptoCurrency: Currency { }
 
 /// LocaleCurrency a refinement of Currency so we can get it from Locale.
-public struct LocaleCurrency: Currency {
+public struct LocaleCurrency: Currency, Sendable {
 
     // MARK: - Currency
 
