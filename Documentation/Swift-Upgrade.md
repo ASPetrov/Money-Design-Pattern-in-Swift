@@ -4,7 +4,7 @@
 
 Целевият компилатор е Swift 6.4.2, последната стабилна версия към 20 ноември 2026 г. Локалният Xcode 27.2 (27B52) предоставя този компилатор. Крайният езиков режим е Swift 6 за библиотеката, тестовете и примерното приложение. Версията на компилатора, езиковият режим и минималната версия на операционната система се определят отделно. [Swift 6.4.2](https://forums.swift.org/t/announcing-swift-6-4-2/90337) · [Ръководство за миграция към Swift 6](https://www.swift.org/migration/)
 
-Xcode проектите съдържат настройки за Swift 4. Рамката декларира iOS 10, а примерното приложение — iOS 11. Предварителната проверка на `Packages/MoneyFramework/Sources/MoneyFramework` с `swiftc -swift-version 6 -typecheck` на macOS мина без грешки и показа предупреждения за остарели Foundation API в `Currency.swift` и `Locale+IsoCurrencyCode.swift`. Тази проверка обхваща само източниците на библиотеката за macOS.
+Xcode проектите съдържат настройки за Swift 4. Рамката декларира iOS 10, а примерното приложение — iOS 11. Предварителната проверка на `Packages/MoneyFramework/Sources` с `swiftc -swift-version 6 -typecheck` на macOS мина без грешки и показа предупреждения за остарели Foundation API в `Currency.swift` и `Locale+IsoCurrencyCode.swift`. Тази проверка обхваща само източниците на библиотеката за macOS.
 
 ## Ред на имплементация
 

@@ -2,8 +2,8 @@
 
 MoneyFramework is a Swift implementation of the Money pattern for iOS. The library and its tests use Swift 6 language mode. The Swift package declares iOS 15 and macOS 12 as minimum deployment targets. The legacy Xcode project retains its original deployment settings.
 
-- `Packages/MoneyFramework/Sources/MoneyFramework/` contains the library sources, including `Money`, currency definitions, decimal helpers, and conversion strategies. The CocoaPods spec also packages sources from this directory.
-- `Packages/MoneyFramework/Tests/MoneyFrameworkTests/` contains the XCTest suites for money and currencies.
+- `Packages/MoneyFramework/Sources/` contains the library sources, including `Money`, currency definitions, decimal helpers, and conversion strategies. The CocoaPods spec also packages sources from this directory.
+- `Packages/MoneyFramework/Tests/` contains the XCTest suites for money and currencies.
 - `MoneyFramework/MoneyFramework.xcodeproj` contains the framework and test targets. `TestFrameworkApp/` contains the separate SwiftUI sample app.
 
 ## Build and test

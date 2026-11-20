@@ -36,7 +36,7 @@ xcodebuild -project MoneyFramework/MoneyFramework.xcodeproj \
 
 Примерното приложение се компилира. Стойността 15.0 е само параметър на проверката и настройките в хранилището запазват текущите си стойности.
 
-XCTest на iPhone 18 Pro с iOS 27.2 изпълни 53 теста. Минаха 52. `testCanCreateMoneyWithAmountAsFormattedString` се провали, защото създаването на USD сума от низа `"$1"` върна `nil`. [MoneyTests.swift](../Packages/MoneyFramework/Tests/MoneyFrameworkTests/MoneyTests.swift#L49)
+XCTest на iPhone 18 Pro с iOS 27.2 изпълни 53 теста. Минаха 52. `testCanCreateMoneyWithAmountAsFormattedString` се провали, защото създаването на USD сума от низа `"$1"` върна `nil`. [MoneyTests.swift](../Packages/MoneyFramework/Tests/MoneyTests.swift#L49)
 
 ## Компилационна проверка от потребителски код
 
