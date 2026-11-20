@@ -24,22 +24,28 @@ final class ConversionModelTests: XCTestCase {
 
     @MainActor
     func testRejectsInvalidAmountBeforeConversion() async {
-        let model = ConversionModel(rateProvider: SampleRateProvider(), locale: Locale(identifier: "en_US"))
+        let provider = UnavailableRates()
+        let model = ConversionModel(rateProvider: provider, locale: Locale(identifier: "en_US"))
         model.amountText = "10oops"
 
         await model.convert()
 
         XCTAssertEqual(model.state, .failed(.invalidAmount))
+        let requestCount = await provider.requestCount
+        XCTAssertEqual(requestCount, 0)
     }
 
     @MainActor
     func testSameCurrencyUsesTheOriginalAmount() async throws {
-        let model = ConversionModel(rateProvider: UnavailableRates(), locale: Locale(identifier: "de_DE"))
+        let provider = UnavailableRates()
+        let model = ConversionModel(rateProvider: provider, locale: Locale(identifier: "de_DE"))
         model.amountText = "1,25"
         model.destination = model.source
 
         await model.convert()
 
+        let requestCount = await provider.requestCount
+        XCTAssertEqual(requestCount, 0)
         guard case let .converted(result) = model.state else {
             return XCTFail("Expected the amount in the original currency")
         }
@@ -57,10 +63,13 @@ final class ConversionModelTests: XCTestCase {
     }
 }
 
-private struct UnavailableRates: ExchangeRateProviding {
-    struct RateUnavailable: Error {}
+private actor UnavailableRates: ExchangeRateProviding {
+    private struct RateUnavailable: Error {}
+
+    private(set) var requestCount = 0
 
     func rate(from source: DemoCurrency, to destination: DemoCurrency) async throws -> Decimal {
+        requestCount += 1
         throw RateUnavailable()
     }
 }

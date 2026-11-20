@@ -3,6 +3,31 @@ import MoneyFramework
 import XCTest
 
 final class AmountTests: XCTestCase {
+    func testSignedAndUnsignedScalarsPreserveTheirBoundaryValues() throws {
+        let locale = Locale(identifier: "en_US_POSIX")
+        let cases: [(any DecimalRepresentable, String)] = [
+            (Int64.min, "-9223372036854775808"),
+            (UInt64.max, "18446744073709551615"),
+        ]
+
+        for (scalar, text) in cases {
+            let expected = try XCTUnwrap(Decimal(string: text, locale: locale))
+            XCTAssertEqual(scalar.decimalNumber, expected, text)
+        }
+    }
+
+    func testCheckedDivisionUsesExactAmountScalarsAndRejectsInvalidStrings() throws {
+        let currency = try XCTUnwrap(LocaleCurrency(isoCurrencyCode: "EUR"))
+        let money = try XCTUnwrap(Money(amount: Decimal(1), currency: currency))
+        let divisor = try Amount(decimalString: "0.125")
+
+        XCTAssertEqual(divisor.decimalNumber, Decimal(125) / 1000)
+        XCTAssertEqual(try money.divide(by: divisor).amount, 8)
+        XCTAssertThrowsError(try money.divide(by: "invalid")) {
+            XCTAssertEqual($0 as? Money<LocaleCurrency>.ArithmeticError, .invalidDivisor)
+        }
+    }
+
     func testExactConstructionAndMinorUnits() throws {
         XCTAssertEqual(Amount.zero.decimalValue, .zero)
         XCTAssertEqual(try Amount(integer: Int.min).minorUnits(scale: 0), Int.min)
