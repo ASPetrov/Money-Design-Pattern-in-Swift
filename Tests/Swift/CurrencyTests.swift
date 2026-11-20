@@ -6,9 +6,9 @@
 //  Copyright (c) 2015 Aleksandar Petrov. All rights reserved.
 //
 
-import UIKit
+import Foundation
 import XCTest
-@testable import MoneyFramework
+import MoneyFramework
 
 // NOTE: Factory methods are build over constructors - no need to be tested
 // TODO: Test formatter methods

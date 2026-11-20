@@ -1,6 +1,6 @@
 # Repository guide
 
-MoneyFramework is a Swift implementation of the Money pattern for iOS. The framework target uses Swift 4 language mode and declares iOS 10 as its deployment target.
+MoneyFramework is a Swift implementation of the Money pattern for iOS. The library and its tests use Swift 6 language mode. The Swift package declares iOS 15 and macOS 12 as minimum deployment targets. The legacy Xcode project retains its original deployment settings.
 
 - `Classes/Swift/` contains the library sources, including `Money`, currency definitions, decimal helpers, and conversion strategies. The CocoaPods spec also packages sources from this directory.
 - `Tests/Swift/` contains the XCTest suites for money and currencies.
@@ -8,16 +8,15 @@ MoneyFramework is a Swift implementation of the Money pattern for iOS. The frame
 
 ## Build and test
 
-Use the shared `MoneyFramework` scheme. Set `SIMULATOR_NAME` to an available iOS simulator listed by `xcrun simctl list devices booted` or `xcrun simctl list devices available`.
+From the repository root, use `swift build`, `swift test list`, and `swift test` for the package. For iOS Simulator, use the package scheme and specify an available device and runtime.
 
 ```sh
-xcodebuild -project MoneyFramework/MoneyFramework.xcodeproj \
-  -scheme MoneyFramework \
-  -destination "platform=iOS Simulator,name=${SIMULATOR_NAME}" \
+xcodebuild -scheme MoneyFramework \
+  -destination 'platform=iOS Simulator,name=iPhone 18 Pro,OS=27.2' \
   test
 ```
 
-For a build without a simulator device, use the same project and scheme with `-destination 'generic/platform=iOS Simulator' build`.
+See [the baseline](Documentation/Baseline.md) for the legacy Xcode commands and the known formatted USD parsing failure.
 
 ## Library changes
 
