@@ -19,7 +19,7 @@ The project includes the `MoneyFramework` library, an offline SwiftUI demo, and 
 
 ## Installation
 
-Install the published version `2.0.1` from GitHub or use [local installation](#local-installation) for development.
+Install the published version `3.0.0` from GitHub or use [local installation](#local-installation) for development.
 
 ### Xcode
 
@@ -30,7 +30,7 @@ Install the published version `2.0.1` from GitHub or use [local installation](#l
    https://github.com/ASPetrov/Money-Design-Pattern-in-Swift.git
    ```
 
-3. Select **Up to Next Major Version** and enter `2.0.1`.
+3. Select **Up to Next Major Version** and enter `3.0.0`.
 4. Add the **MoneyFramework** library product to your application target.
 
 ### Swift Package Manager
@@ -40,7 +40,7 @@ Add the repository to the `dependencies` array in your `Package.swift`:
 ```swift
 .package(
     url: "https://github.com/ASPetrov/Money-Design-Pattern-in-Swift.git",
-    from: "2.0.1"
+    from: "3.0.0"
 )
 ```
 
@@ -62,6 +62,10 @@ import MoneyFramework
 ### Local installation
 
 Clone this repository. In Xcode, choose **File → Add Package Dependencies → Add Local** and select the repository root containing `Package.swift`. Add the **MoneyFramework** product to your application target.
+
+### Upgrading from 2.x
+
+Replace `money.devide(divisor)` with `try money.divide(by: divisor)`, or handle the `Result` returned by `money.dividingChecked(by: divisor)`. Use `money.amount >= .zero` to test for a nonnegative amount. `money.isPositive` now requires an amount greater than zero.
 
 ### Migrating from CocoaPods
 
