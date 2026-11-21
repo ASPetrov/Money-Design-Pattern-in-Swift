@@ -163,6 +163,16 @@ struct MoneyTests {
         #expect(!(money.isPositive), "Money amount should not be positive")
     }
 
+    @Test(arguments: ["0", "0.001", "-0.001"])
+    func testZeroIsNotPositive(_ input: String) throws {
+        let currency = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
+        let amount = try Amount(decimalString: input)
+        let money = try Money(validating: amount, currency: currency)
+
+        #expect(money.isZero)
+        #expect(!money.isPositive)
+    }
+
     @Test func testAbsolute() throws {
         // Given
         let currency = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))

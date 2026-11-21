@@ -146,8 +146,9 @@ extension Money {
         amount.isSignMinus
     }
 
+    /// Returns whether the rounded monetary amount is greater than zero.
     public var isPositive: Bool {
-        !amount.isSignMinus
+        amount > .zero
     }
 
     public var absoluteAmount: Decimal {
