@@ -43,24 +43,14 @@ public final class NormalConvertStrategy: ConvertCurrenciesStrategy {
         roundingMode: Decimal.RoundingMode
     ) throws -> Money<U> {
         try validateConversion(from: money.currency, to: currency, rate: rate)
-        var amount = money.amount
-        var rate = rate
-        var product = Decimal()
-        let status = NSDecimalMultiply(&product, &amount, &rate, roundingMode)
-        guard status == .noError || status == .lossOfPrecision else {
+        do {
+            let rounded = try MonetaryRounding.calculate(
+                money.amount, rate, operation: .multiply, scale: currency.minorUnits, mode: roundingMode
+            )
+            return try Money(validating: Amount(decimal: rounded), currency: currency, roundingMode: roundingMode)
+        } catch {
             throw ConvertCurrenciesStrategyError.unrepresentableResult
         }
-        guard
-            let result = Money(
-                amount: product,
-                currency: currency,
-                roundingMode: roundingMode
-            ),
-            status != .lossOfPrecision || result.amount != product
-        else {
-            throw ConvertCurrenciesStrategyError.unrepresentableResult
-        }
-        return result
     }
 
     private static func validateConversion<T: Currency, U: Currency>(

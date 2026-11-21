@@ -28,13 +28,7 @@ extension Money {
 
     public func adding<U: Currency>(_ money: Money<U>) throws -> Money {
         try checkCompatibility(with: money)
-        var lhs = amount
-        var rhs = money.amount
-        var sum = Decimal()
-        guard NSDecimalAdd(&sum, &lhs, &rhs, .bankers) == .noError else {
-            throw ArithmeticError.unrepresentableResult
-        }
-        return try result(amount: sum)
+        return try roundedOperation(amount, money.amount, roundingMode: .bankers, operation: .add)
     }
 
     public func add(_ newAmount: DecimalRepresentable, roundingMode: Decimal.RoundingMode = .bankers) -> Money {
@@ -52,7 +46,7 @@ extension Money {
             checkedScalarOperation(
                 amount, decimal,
                 roundingMode: roundingMode,
-                calculate: NSDecimalAdd
+                operation: .add
             )
         }
     }
@@ -75,15 +69,7 @@ extension Money {
 
     public func subtracting<U: Currency>(_ money: Money<U>) throws -> Money {
         try checkCompatibility(with: money)
-        var lhs = amount
-        var rhs = money.amount
-        var difference = Decimal()
-        guard
-            NSDecimalSubtract(&difference, &lhs, &rhs, .bankers) == .noError
-        else {
-            throw ArithmeticError.unrepresentableResult
-        }
-        return try result(amount: difference)
+        return try roundedOperation(amount, money.amount, roundingMode: .bankers, operation: .subtract)
     }
 
     public func subtract(
@@ -107,7 +93,7 @@ extension Money {
             checkedScalarOperation(
                 amount, decimal,
                 roundingMode: roundingMode,
-                calculate: NSDecimalSubtract
+                operation: .subtract
             )
         }
     }
@@ -133,7 +119,7 @@ extension Money {
             checkedScalarOperation(
                 amount, decimal,
                 roundingMode: roundingMode,
-                calculate: NSDecimalMultiply
+                operation: .multiply
             )
         }
     }
@@ -206,28 +192,11 @@ extension Money {
         guard !decimal.isZero else {
             throw ArithmeticError.divisionByZero
         }
-        return try divideDecimal(by: decimal, roundingMode: roundingMode)
-    }
-
-    private func divideDecimal(by divisor: Decimal, roundingMode: Decimal.RoundingMode) throws -> Money {
-        var denominator = divisor
-        var numerator = amount
-        var quotient = Decimal()
-        let status = NSDecimalDivide(
-            &quotient,
-            &numerator,
-            &denominator,
-            roundingMode
+        return try roundedOperation(
+            amount, decimal,
+            roundingMode: roundingMode,
+            operation: .divide
         )
-        // Accept a truncated intermediate only when currency rounding discards further digits.
-        guard status == .noError || status == .lossOfPrecision else {
-            throw ArithmeticError.unrepresentableResult
-        }
-        let rounded = try result(amount: quotient, roundingMode: roundingMode)
-        guard status != .lossOfPrecision || rounded.amount != quotient else {
-            throw ArithmeticError.unrepresentableResult
-        }
-        return rounded
     }
 }
 
@@ -264,7 +233,7 @@ extension Money {
                     decimal,
                     rhs.amount,
                     roundingMode: .bankers,
-                    calculate: NSDecimalSubtract
+                    operation: .subtract
                 )
             }
         }
@@ -280,13 +249,6 @@ extension Money {
 }
 
 extension Money {
-
-    private typealias DecimalCalculation = (
-        UnsafeMutablePointer<Decimal>,
-        UnsafePointer<Decimal>,
-        UnsafePointer<Decimal>,
-        Decimal.RoundingMode
-    ) -> Decimal.CalculationError
 
     private func arithmeticResult(
         _ operation: () throws -> Money
@@ -310,24 +272,38 @@ extension Money {
         _ lhs: Decimal,
         _ rhs: Decimal,
         roundingMode: Decimal.RoundingMode,
-        calculate: DecimalCalculation
+        operation: MonetaryRounding.Operation
     ) -> Result<Money, ArithmeticError> {
         guard !lhs.isNaN, !rhs.isNaN else {
             return .failure(.invalidScalar)
         }
-        var lhs = lhs
-        var rhs = rhs
-        var calculated = Decimal()
-        let status = calculate(&calculated, &lhs, &rhs, roundingMode)
-        guard status == .noError || status == .lossOfPrecision else {
-            return .failure(.unrepresentableResult)
-        }
         return arithmeticResult {
-            let rounded = try result(amount: calculated, roundingMode: roundingMode)
-            guard status != .lossOfPrecision || rounded.amount != calculated else {
-                throw ArithmeticError.unrepresentableResult
-            }
-            return rounded
+            try roundedOperation(
+                lhs,
+                rhs,
+                roundingMode: roundingMode,
+                operation: operation
+            )
+        }
+    }
+
+    private func roundedOperation(
+        _ lhs: Decimal,
+        _ rhs: Decimal,
+        roundingMode: Decimal.RoundingMode,
+        operation: MonetaryRounding.Operation
+    ) throws -> Money {
+        do {
+            let rounded = try MonetaryRounding.calculate(
+                lhs,
+                rhs,
+                operation: operation,
+                scale: currency.minorUnits,
+                mode: roundingMode
+            )
+            return try result(amount: rounded, roundingMode: roundingMode)
+        } catch {
+            throw ArithmeticError.unrepresentableResult
         }
     }
 }

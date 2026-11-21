@@ -10,7 +10,52 @@ import Foundation
 import MoneyFramework
 import Testing
 
+private let roundingCases: [(Int, Decimal.RoundingMode, Int)] = [
+    (4, .bankers, 0), (5, .bankers, 0), (6, .bankers, 1), (15, .bankers, 2),
+    (-4, .bankers, 0), (-5, .bankers, 0), (-6, .bankers, -1), (-15, .bankers, -2),
+    (5, .plain, 1), (-5, .plain, -1),
+    (4, .down, 0), (-4, .down, -1),
+    (4, .up, 1), (-4, .up, 0),
+]
+
 struct MoneyArithmeticTests {
+
+    @Test func testScalarRoundingPastHalfCent() throws {
+        let usd = try #require(LocaleCurrency(isoCurrencyCode: "USD"))
+        let one = try Money(parsing: "1.00", currency: usd)
+        let elevenCents = try Money(parsing: "0.11", currency: usd)
+        let oneCent = try Money(parsing: "0.01", currency: usd)
+        let rounded = try Money(parsing: "1.01", currency: usd)
+
+        #expect(one.addingChecked("0.0050000000000000000000000000000000000001") == .success(rounded))
+        #expect(one.subtractingChecked("-0.0050000000000000000000000000000000000001") == .success(rounded))
+        #expect(elevenCents.multiplyingChecked(by: "9.1363636363636363636363636363636363637") == .success(rounded))
+        #expect(oneCent.dividingChecked(by: "0.0099502487562189054726368159203980099502") == .success(rounded))
+    }
+
+    @Test(arguments: roundingCases, ["USD", "JPY"])
+    func testDivisionAtRoundingBoundaries(
+        example: (amount: Int, mode: Decimal.RoundingMode, units: Int),
+        code: String
+    ) throws {
+        let currency = try #require(LocaleCurrency(isoCurrencyCode: code))
+        let money = try Money(validating: Amount(integer: example.amount), currency: currency)
+        let divisor = code == "JPY" ? 10 : 1000
+
+        let result = try money.divide(by: divisor, roundingMode: example.mode)
+
+        #expect(try result.checkedMinorUnits() == example.units)
+    }
+
+    @Test func testConversionRoundsPastHalfCent() throws {
+        let usd = try #require(LocaleCurrency(isoCurrencyCode: "USD"))
+        let eur = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
+        let source = try Money(parsing: "0.11", currency: usd)
+        let rate = try Amount(decimalString: "9.1363636363636363636363636363636363637")
+        let expected = try Money(parsing: "1.01", currency: eur)
+
+        #expect(try source.convertTo(eur, usingExchangeRate: rate.decimalValue) == expected)
+    }
 
     @Test func testAddMoney() throws {
         // Given
