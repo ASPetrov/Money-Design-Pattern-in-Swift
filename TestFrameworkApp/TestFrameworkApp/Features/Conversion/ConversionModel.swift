@@ -109,8 +109,13 @@ final class ConversionModel: ObservableObject {
     @discardableResult
     func convert() -> Task<Void, Never>? {
         cancelConversion()
-        let source = source
-        let destination = destination
+        return convert(from: source, to: destination)
+    }
+
+    private func convert(
+        from source: DemoCurrency,
+        to destination: DemoCurrency
+    ) -> Task<Void, Never>? {
         guard
             let sourceCurrency = source.definition,
             let destinationCurrency = destination.definition

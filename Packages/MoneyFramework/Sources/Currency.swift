@@ -164,19 +164,17 @@ extension Currency {
             locale: locale,
             currencyLocale: currencyLocale
         )
-        if
-            let amount = try parseCurrencyAffixes(
+        return
+            try parseCurrencyAffixes(
                 string,
                 formatter: formatter,
                 locale: selectedLocale
-            ) {
-            return amount
-        }
-        return try parseNumericAmount(
-            string,
-            locale: locale,
-            fallback: selectedLocale
-        )
+            )
+            ?? parseNumericAmount(
+                string,
+                locale: locale,
+                fallback: selectedLocale
+            )
     }
 
     private func parseNumericAmount(
@@ -210,22 +208,31 @@ extension Currency {
             (formatter.positivePrefix ?? "", formatter.positiveSuffix ?? "", false),
         ] where !prefix.isEmpty || !suffix.isEmpty {
             guard
-                let digits = currencyDigits(in: string, prefix: prefix, suffix: suffix)
+                let digits = currencyDigits(in: string, prefix: prefix, suffix: suffix),
+                let amount = try parseAffixedDigits(digits, formatter: numbers, negative: negative)
             else {
                 continue
             }
-            do {
-                let value = try Amount(
-                    localizedString: digits,
-                    formatter: numbers,
-                    allowsSign: false
-                )
-                return negative ? try Amount(decimal: -value.decimalValue) : value
-            } catch Amount.ValidationError.invalidFormat {
-                continue
-            }
+            return amount
         }
         return nil
+    }
+
+    private func parseAffixedDigits(
+        _ digits: String,
+        formatter: NumberFormatter,
+        negative: Bool
+    ) throws -> Amount? {
+        do {
+            let amount = try Amount(
+                localizedString: digits,
+                formatter: formatter,
+                allowsSign: false
+            )
+            return negative ? try Amount(decimal: -amount.decimalValue) : amount
+        } catch Amount.ValidationError.invalidFormat {
+            return nil
+        }
     }
 
     private func currencyDigits(

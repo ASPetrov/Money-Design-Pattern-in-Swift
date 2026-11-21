@@ -5,6 +5,9 @@ only_rules:
   - force_try
   - force_unwrapping
   - implicitly_unwrapped_optional
+  - identical_operands
+  - unused_closure_parameter
+  - superfluous_disable_command
   - custom_rules
 
 file_length:

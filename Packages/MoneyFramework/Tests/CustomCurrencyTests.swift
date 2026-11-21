@@ -4,34 +4,22 @@ import Testing
 
 struct CustomCurrencyTests {
 
-    @Test func testCryptoRoundTripsExactlyAcrossLocales() throws {
-        for (code, scale) in [("BTC", 8), ("ETH", 18)] {
-            let currency = try #require(
-                CustomCurrency(
-                    identifier: .asset(
-                        network: code,
-                        reference: "native"
-                    ),
-                    code: code,
-                    name: code,
-                    minorUnits: scale
-                )
-            )
-            for (localeID, separator) in [("en_US", "."), ("de_DE", ",")] {
-                let locale = Locale(identifier: localeID)
-                let quantity =
-                    "0" + separator + String(repeating: "0", count: scale - 1) + "1"
-                let text = quantity + " " + code
-                let money = try #require(
-                    Money(amount: text, currency: currency, locale: locale)
-                )
+    @Test(arguments: [("BTC", 8), ("ETH", 18)], [("en_US", "."), ("de_DE", ",")])
+    func testCryptoRoundTripsExactlyAcrossLocales(
+        asset: (code: String, scale: Int),
+        format: (localeID: String, separator: String)
+    ) throws {
+        let currency = try token(network: asset.code, reference: "native", code: asset.code, scale: asset.scale)
+        let locale = Locale(identifier: format.localeID)
+        let zeros = String(repeating: "0", count: asset.scale - 1)
+        let quantity = "0" + format.separator + zeros + "1"
+        let text = quantity + " " + asset.code
+        let money = try #require(Money(amount: text, currency: currency, locale: locale))
 
-                #expect(try money.checkedMinorUnits() == 1)
-                #expect(money.formatted(locale: locale) == text)
-                #expect(Money(amount: quantity + " USD", currency: currency, locale: locale) == nil)
-                #expect(Money(amount: text + " extra", currency: currency, locale: locale) == nil)
-            }
-        }
+        #expect(try money.checkedMinorUnits() == 1)
+        #expect(money.formatted(locale: locale) == text)
+        #expect(Money(amount: quantity + " USD", currency: currency, locale: locale) == nil)
+        #expect(Money(amount: text + " extra", currency: currency, locale: locale) == nil)
     }
 
     @Test func testArithmeticChecksIdentityAndScale() throws {

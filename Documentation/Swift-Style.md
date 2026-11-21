@@ -67,6 +67,8 @@ SwiftFormat checks mechanical formatting using the root `.swiftformat`. Its wrap
 
 Enable the tracked `pre-commit` hook with `git config --local core.hooksPath .githooks`. The hook runs SwiftFormat and SwiftLint against staged copies of changed Swift files using the staged configurations. Run `swiftformat path/to/File.swift` to apply formatting, review the diff, and stage the intended changes.
 
+SwiftLint flags identical operands, unused closure parameters, and obsolete rule suppressions.
+
 Install SwiftLint with `brew install swiftlint`. To check all SwiftLint rules across tracked Swift files, run this command from the repository root.
 
 ```sh

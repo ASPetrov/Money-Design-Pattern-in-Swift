@@ -2,6 +2,14 @@ import Foundation
 import MoneyFramework
 import Testing
 
+private let unsupportedDoubles: [Double] = [
+    .nan,
+    .infinity,
+    -.infinity,
+    .greatestFiniteMagnitude,
+    .leastNonzeroMagnitude,
+]
+
 struct AmountTests {
 
     @Test func testScalarBoundsPreserveSignedness() throws {
@@ -17,7 +25,7 @@ struct AmountTests {
         }
     }
 
-    @Test(arguments: [Double.nan, .infinity, -.infinity, .greatestFiniteMagnitude, .leastNonzeroMagnitude])
+    @Test(arguments: unsupportedDoubles)
     func testDoubleOutsideDecimalRange(_ value: Double) throws {
         let scalar: any DecimalRepresentable = value
         let currency = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))

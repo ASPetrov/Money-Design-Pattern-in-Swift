@@ -111,10 +111,8 @@ struct ConversionModelTests {
     @Test(.timeLimit(.minutes(1)), arguments: [false, true])
     func testSupersededRequestKeepsNewerResult(fails: Bool) async throws {
         let provider = ControlledRates()
-        let model = ConversionModel(
-            rateProvider: provider,
-            locale: Locale(identifier: "en_US")
-        )
+        let locale = Locale(identifier: "en_US")
+        let model = ConversionModel(rateProvider: provider, locale: locale)
         model.amountText = "10"
         var requests = provider.requests.makeAsyncIterator()
         let olderConversion = try #require(model.convert())
