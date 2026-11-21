@@ -49,6 +49,18 @@ struct MoneyAllocationTests {
         }
     }
 
+    @Test(arguments: [Int.min, -4, 0, 4, Int.max], [1, 3, 5])
+    func testEqualAndUnitWeightsAgree(units: Int, count: Int) throws {
+        let currency = try #require(LocaleCurrency(localeIdentifier: "en_US"))
+        let value = try Amount(minorUnits: units, scale: currency.minorUnits)
+        let money = try Money(validating: value, currency: currency)
+        let equal = try money.allocate(recipientCount: count)
+        let weighted = try money.allocate(ratios: Array(repeating: 1, count: count))
+
+        #expect(equal == weighted)
+        #expect(try equal.map { try $0.checkedMinorUnits() }.reduce(0, +) == units)
+    }
+
     @Test func testWeightedSharesHandleZeroAndIntMin() throws {
         let currency = try #require(LocaleCurrency(localeIdentifier: "en_US"))
         let value = try Amount(minorUnits: Int.min, scale: 2)
