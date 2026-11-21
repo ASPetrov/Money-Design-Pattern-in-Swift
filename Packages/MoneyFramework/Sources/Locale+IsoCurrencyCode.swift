@@ -9,6 +9,8 @@
 import Foundation
 
 extension Locale {
+    private static let sortedIdentifiers = Locale.availableIdentifiers.sorted()
+
     public static func locale(for isoCurrencyCode: String) -> Locale? {
         guard Locale.isoCurrencyCodes.contains(isoCurrencyCode) else {
             return nil
@@ -19,7 +21,7 @@ extension Locale {
         }
 
         guard
-            let availableLocale = Locale.availableLocales(for: isoCurrencyCode).first
+            let availableLocale = Locale.firstLocale(for: isoCurrencyCode)
         else {
             let localeComponents = [
                 NSLocale.Key.currencyCode.rawValue: isoCurrencyCode,
@@ -35,11 +37,9 @@ extension Locale {
         return Locale(identifier: canonical)
     }
 
-    private static func availableLocales(for currencyCode: String) -> [Locale] {
-        Locale.availableIdentifiers
-            .sorted()
+    private static func firstLocale(for currencyCode: String) -> Locale? {
+        sortedIdentifiers.lazy
             .map { Locale(identifier: $0) }
-            .filter { $0.currencyCode == currencyCode }
+            .first { $0.currencyCode == currencyCode }
     }
-
 }
