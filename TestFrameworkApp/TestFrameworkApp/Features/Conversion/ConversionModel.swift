@@ -127,7 +127,12 @@ final class ConversionModel: ObservableObject {
             return nil
         }
 
-        return startConversion(money, to: destinationCurrency)
+        return startConversion(
+            money,
+            to: destinationCurrency,
+            from: source,
+            destination: destination
+        )
     }
 
     private func inputMoney(currency: LocaleCurrency) -> Money<LocaleCurrency>? {
@@ -142,10 +147,10 @@ final class ConversionModel: ObservableObject {
 
     private func startConversion(
         _ money: Money<LocaleCurrency>,
-        to currency: LocaleCurrency
+        to currency: LocaleCurrency,
+        from source: DemoCurrency,
+        destination: DemoCurrency
     ) -> Task<Void, Never> {
-        let source = source
-        let destination = destination
         let request = UUID()
         activeRequest = request
         state = .loading

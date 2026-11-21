@@ -11,8 +11,8 @@ struct ConversionModelTests {
             locale: Locale(identifier: "en_US")
         )
         model.amountText = "10.50"
-        model.source = .usd
-        model.destination = .eur
+        model.source = .bgn
+        model.destination = .usd
 
         await model.convert()?.value
 
@@ -20,10 +20,10 @@ struct ConversionModelTests {
             Issue.record("Expected a conversion result")
             return
         }
-        #expect(result.currency.code == "EUR")
-        #expect(result.amount == Decimal(string: "8.40"))
+        #expect(result.currency.code == "USD")
+        #expect(result.amount == Decimal(string: "6.56"))
 
-        model.destination = .bgn
+        model.destination = .eur
         #expect(model.state == .idle)
     }
 
@@ -174,6 +174,9 @@ private actor UnavailableRates: ExchangeRateProviding {
 
 private actor ControlledRates: ExchangeRateProviding {
 
+    private typealias RateContinuation =
+        CheckedContinuation<Result<Decimal, Failure>, Never>
+
     enum Failure: Error {
 
         case unavailable
@@ -182,7 +185,7 @@ private actor ControlledRates: ExchangeRateProviding {
     nonisolated var requests: AsyncStream<Int> { arrivals.stream }
     private let arrivals = AsyncStream<Int>.makeStream()
     private var nextRequest = 0
-    private var pending: [Int: CheckedContinuation<Result<Decimal, Failure>, Never>] = [:]
+    private var pending: [Int: RateContinuation] = [:]
     private var cancelled: Set<Int> = []
 
     func rate(
