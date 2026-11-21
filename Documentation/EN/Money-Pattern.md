@@ -29,6 +29,8 @@ For machine-readable decimal text, use `Amount(decimalString: "1234.56")`. For a
 
 Use `Money(parsing:currency:locale:)` when the text includes a currency symbol, such as `" $21.09 "` with USD and `en_US`. Monetary parsing trims whitespace at the ends of the string. Localized parsing accepts a single ASCII sign as well as the locale’s sign. For ISO currency text, an ASCII sign can precede the complete positive form.
 
+For ISO currencies, an explicit locale supplies the symbol and separators used by `string(from:locale:)`. Without one, the library applies currency metadata to a fallback locale found by currency code. Use an explicit locale for user-facing text. The ISO formatter caps fractional digits at the currency scale. Its minimum follows the formatter settings. Custom currency output preserves the decimal digits without grouping or extra trailing zeroes, localizes the sign and decimal separator, and appends the symbol or code. The custom parser also accepts a bare number.
+
 A *minor unit* is the smallest unit used at the currency’s configured scale. For EUR, one minor unit is one cent, so 12.03 EUR corresponds to 1,203 minor units. Do not assume that every currency has two decimal places.
 
 The Tuts+ example passes integer minor units to its `Money` constructor: `100` represents 1 EUR. The Swift examples below start with decimal amounts and use `checkedMinorUnits()` when integer minor units are needed.
