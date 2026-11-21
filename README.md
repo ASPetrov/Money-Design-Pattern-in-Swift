@@ -19,7 +19,7 @@ The project includes the `MoneyFramework` library, an offline SwiftUI demo, and 
 
 ## Installation
 
-Install the published version `3.0.0` from GitHub or use [local installation](#local-installation) for development.
+Install the published version `3.1.0` from GitHub or use [local installation](#local-installation) for development.
 
 ### Xcode
 
@@ -30,7 +30,7 @@ Install the published version `3.0.0` from GitHub or use [local installation](#l
    https://github.com/ASPetrov/Money-Design-Pattern-in-Swift.git
    ```
 
-3. Select **Up to Next Major Version** and enter `3.0.0`.
+3. Select **Up to Next Major Version** and enter `3.1.0`.
 4. Add the **MoneyFramework** library product to your application target.
 
 ### Swift Package Manager
@@ -40,7 +40,7 @@ Add the repository to the `dependencies` array in your `Package.swift`:
 ```swift
 .package(
     url: "https://github.com/ASPetrov/Money-Design-Pattern-in-Swift.git",
-    from: "3.0.0"
+    from: "3.1.0"
 )
 ```
 
@@ -70,6 +70,14 @@ Replace `money.devide(divisor)` with `try money.divide(by: divisor)`, or handle 
 ### Migrating from CocoaPods
 
 See the [CocoaPods migration guide](Documentation/EN/CocoaPods-Migration.md).
+
+### API deprecations in 3.1.0
+
+| Deprecated API | Replacement |
+| --- | --- |
+| `money.decimalNumber` | `money.amount` |
+| `LocaleCurrency.current()` | `LocaleCurrency()` |
+| `LocaleCurrency.currency(for: locale)` | `LocaleCurrency(locale: locale)` |
 
 ## Documentation
 

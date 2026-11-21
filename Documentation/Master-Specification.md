@@ -41,11 +41,11 @@
 - `Float` имплементира `DecimalRepresentable` чрез преобразуването на `Double`. `Float80` остава извън договора заради наличността по архитектури и стесняването на точността. И двата SPM входа минаха с по 88 Swift Testing теста и 2 XCTest измервания, а демото се компилира за iOS Simulator. [Десетични суми](BG/Money-Pattern.md#десетични-суми-и-най-малки-валутни-единици)
 - Тагът `3.0.0` е публикуван върху `8848f1b`. Сравнението на публичния API с `2.0.1` отчете премахването на `Money.devide(_:)` като единствена несъвместима промяна в декларациите. [Таг 3.0.0](https://github.com/ASPetrov/Money-Design-Pattern-in-Swift/tree/3.0.0) · [Миграция от 2.x](../README.md#upgrading-from-2x)
 
-## Оставащи задачи
+- Добавени са предупреждения за остаряване на `Money.decimalNumber`, `LocaleCurrency.current()` и `LocaleCurrency.currency(for:)` за `3.1.0`. Външен SwiftPM пакет потвърди диагностиките и заместителите, а сравнението с `3.0.0` не откри несъвместими промени. [Спецификация за deprecation](Public-API-Deprecations.md)
 
-- Отбелязване на `Money.decimalNumber` и двете фабрики на `LocaleCurrency` като остарели в следваща minor версия. [Спецификация за deprecation](Public-API-Deprecations.md)
+## Отложени задачи
 
-Проверката за App Intents е отложена до поддържана настройка или нов Xcode. [App Intents](Build-Warnings.md)
+Предупреждението за App Intents е с нисък приоритет. Повторна проверка е нужна при поддържана настройка или нов Xcode. [App Intents](Build-Warnings.md)
 
 ## Преглед на публичния API спрямо 3.0.0
 
