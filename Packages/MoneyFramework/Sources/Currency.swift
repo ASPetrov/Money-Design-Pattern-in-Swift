@@ -101,6 +101,7 @@ extension Currency {
     }
 
     /// Returns nil if the input cannot be parsed as an exact monetary amount.
+    /// Leading and trailing whitespace and newlines are ignored.
     public func number(
         from string: String,
         locale: Locale? = nil
@@ -155,6 +156,7 @@ extension Currency {
     }
 
     func parseAmount(_ string: String, locale: Locale?) throws -> Amount {
+        let string = string.trimmingCharacters(in: .whitespacesAndNewlines)
         guard let currencyLocale = isoFormattingLocale() else {
             return try parseCustomAmount(string, locale: locale ?? .current)
         }

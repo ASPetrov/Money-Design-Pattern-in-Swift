@@ -74,6 +74,7 @@ public struct Money<T: Currency> {
     }
 
     /// Parses a monetary string and rounds the amount to the currency's scale.
+    /// Leading and trailing whitespace and newlines are ignored.
     /// - Throws: `Amount.ValidationError` for invalid syntax, precision, or currency scale.
     public init(
         parsing amount: String,

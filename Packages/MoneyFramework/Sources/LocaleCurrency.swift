@@ -5,8 +5,14 @@ public struct LocaleCurrency: Currency, Sendable {
 
     // MARK: - Currency
 
-    public var code: String
-    public var identifier: CurrencyIdentifier { .iso(code.uppercased()) }
+    /// The currency code is stored in uppercase.
+    public var code: String {
+        didSet {
+            code = code.uppercased()
+        }
+    }
+
+    public var identifier: CurrencyIdentifier { .iso(code) }
     public var name: String
     public var minorUnits: Int
     public var symbol: String?
@@ -21,7 +27,7 @@ public struct LocaleCurrency: Currency, Sendable {
         separator: String?,
         delimiter: String?
     ) {
-        self.code = code
+        self.code = code.uppercased()
         self.name = name
         self.minorUnits = minorUnits
         self.symbol = symbol

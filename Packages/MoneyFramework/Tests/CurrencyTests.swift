@@ -14,6 +14,34 @@ import Testing
 
 struct CurrencyTests {
 
+    @Test(arguments: ["USD", "usd", "uSd"])
+    func testCanonicalizesIsoCode(_ code: String) throws {
+        let canonical = try #require(LocaleCurrency(isoCurrencyCode: "USD"))
+        let initialized = LocaleCurrency(
+            code: code,
+            name: canonical.name,
+            minorUnits: canonical.minorUnits,
+            symbol: canonical.symbol,
+            separator: canonical.separator,
+            delimiter: canonical.delimiter
+        )
+        var updated = canonical
+        updated.code = code
+
+        try expectCanonicalUSD(initialized, matching: canonical)
+        try expectCanonicalUSD(updated, matching: canonical)
+    }
+
+    private func expectCanonicalUSD(_ currency: LocaleCurrency, matching canonical: LocaleCurrency) throws {
+        #expect(currency.code == "USD")
+        #expect(currency.identifier == canonical.identifier)
+        for locale: Locale? in [nil, Locale(identifier: "en_US")] {
+            let text = try #require(canonical.string(from: 12, locale: locale))
+            #expect(currency.string(from: 12, locale: locale) == text)
+            #expect(currency.number(from: text, locale: locale)?.decimalValue == Decimal(12))
+        }
+    }
+
     //
     // MARK: - Test Initialization
     //
@@ -148,6 +176,28 @@ struct CurrencyTests {
         #expect(result == false, "Currencies should not match")
     }
 
+    @Test(arguments: [" $21.09 ", "\t$21.09\n", "\u{00A0}$21.09\u{202F}"])
+    func testAcceptsOuterCurrencyWhitespace(_ input: String) throws {
+        let usd = try #require(LocaleCurrency(isoCurrencyCode: "USD"))
+        let expected = Decimal(2109) / 100
+
+        for locale: Locale? in [nil, Locale(identifier: "en_US")] {
+            #expect(usd.number(from: input, locale: locale)?.decimalValue == expected)
+            #expect(try Money(parsing: input, currency: usd, locale: locale).amount == expected)
+        }
+    }
+
+    @Test(arguments: [" $ 21.09 ", " $21 .09 ", " $21.09 extra ", " \t "])
+    func testRejectsMalformedPaddedCurrency(_ input: String) throws {
+        let usd = try #require(LocaleCurrency(isoCurrencyCode: "USD"))
+        let locale = Locale(identifier: "en_US")
+
+        #expect(usd.number(from: input, locale: locale) == nil)
+        #expect(throws: Amount.ValidationError.invalidFormat) {
+            _ = try Money(parsing: input, currency: usd, locale: locale)
+        }
+    }
+
     @Test func testCurrencyNumberParsesExactAmount() throws {
         let currency = try #require(LocaleCurrency(isoCurrencyCode: "USD"))
         let locale = Locale(identifier: "de_DE")
@@ -189,6 +239,7 @@ struct CurrencyTests {
             let text = try #require(currency.string(from: amount, locale: locale))
             #expect(text == "12 ZZZ")
             #expect(currency.number(from: text, locale: locale)?.decimalValue == Decimal(12))
+            #expect(currency.number(from: " \(text) ", locale: locale)?.decimalValue == Decimal(12))
         }
     }
 
