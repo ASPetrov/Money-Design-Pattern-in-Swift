@@ -163,14 +163,22 @@ struct MoneyTests {
         #expect(!(money.isPositive), "Money amount should not be positive")
     }
 
-    @Test(arguments: ["0", "0.001", "-0.001"])
-    func testZeroIsNotPositive(_ input: String) throws {
+    private static let zeroRoundingCases = [
+        ("0", 0),
+        ("0.001", 0), ("-0.001", 0),
+        ("0.005", 0), ("-0.005", 0),
+        ("0.006", 1), ("-0.006", -1),
+    ]
+
+    @Test(arguments: zeroRoundingCases)
+    func testRoundsAroundZero(_ input: String, units: Int) throws {
         let currency = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
         let amount = try Amount(decimalString: input)
         let money = try Money(validating: amount, currency: currency)
 
-        #expect(money.isZero)
-        #expect(!money.isPositive)
+        #expect(try money.checkedMinorUnits() == units)
+        #expect(money.isZero == (units == 0))
+        #expect(money.isPositive == (units > 0))
     }
 
     @Test func testAbsolute() throws {

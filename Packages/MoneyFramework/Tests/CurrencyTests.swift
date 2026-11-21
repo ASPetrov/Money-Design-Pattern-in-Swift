@@ -157,6 +157,17 @@ struct CurrencyTests {
         #expect(currency.number(from: "1.234,56 extra", locale: locale) == nil)
     }
 
+    @Test(arguments: ["12.34,56", "1..234,56", "1.234,5.6"])
+    func testRejectsInvalidGrouping(_ input: String) throws {
+        let currency = try #require(LocaleCurrency(isoCurrencyCode: "USD"))
+        let locale = Locale(identifier: "de_DE")
+
+        #expect(currency.number(from: input, locale: locale) == nil)
+        #expect(throws: Amount.ValidationError.invalidFormat) {
+            _ = try Money(parsing: input, currency: currency, locale: locale)
+        }
+    }
+
     @Test func testDefaultFormattingUsesCurrencySymbol() throws {
         var currency = try #require(LocaleCurrency(isoCurrencyCode: "USD"))
         currency.symbol = "TEST"
