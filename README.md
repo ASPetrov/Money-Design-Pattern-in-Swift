@@ -19,7 +19,7 @@ The project includes the `MoneyFramework` library, an offline SwiftUI demo, and 
 
 ## Installation
 
-Install the published version `2.0.0` from GitHub or use [local installation](#local-installation) for development.
+Install the published version `2.0.1` from GitHub or use [local installation](#local-installation) for development.
 
 ### Xcode
 
@@ -30,7 +30,7 @@ Install the published version `2.0.0` from GitHub or use [local installation](#l
    https://github.com/ASPetrov/Money-Design-Pattern-in-Swift.git
    ```
 
-3. Select **Up to Next Major Version** and enter `2.0.0`.
+3. Select **Up to Next Major Version** and enter `2.0.1`.
 4. Add the **MoneyFramework** library product to your application target.
 
 ### Swift Package Manager
@@ -40,7 +40,7 @@ Add the repository to the `dependencies` array in your `Package.swift`:
 ```swift
 .package(
     url: "https://github.com/ASPetrov/Money-Design-Pattern-in-Swift.git",
-    from: "2.0.0"
+    from: "2.0.1"
 )
 ```
 
