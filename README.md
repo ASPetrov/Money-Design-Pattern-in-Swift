@@ -19,7 +19,7 @@ The project includes the `MoneyFramework` library, an offline SwiftUI demo, and 
 
 ## Installation
 
-Version-based installation requires the published `2.0.0` Git tag. Until it is available, use [local installation](#local-installation).
+Install the published version `2.0.0` from GitHub or use [local installation](#local-installation) for development.
 
 ### Xcode
 
