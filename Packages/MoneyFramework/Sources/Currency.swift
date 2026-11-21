@@ -206,7 +206,19 @@ extension Currency {
         else {
             return nil
         }
-        return String(string.dropFirst(prefix.count).dropLast(suffix.count))
+        var digits = string.dropFirst(prefix.count).dropLast(suffix.count)
+        // The formatter can insert a nonbreaking space next to a currency code.
+        if prefix.last?.isLetter == true, isCurrencySpace(digits.first) {
+            digits = digits.dropFirst()
+        }
+        if suffix.first?.isLetter == true, isCurrencySpace(digits.last) {
+            digits = digits.dropLast()
+        }
+        return String(digits)
+    }
+
+    private func isCurrencySpace(_ character: Character?) -> Bool {
+        character == "\u{00A0}" || character == "\u{202F}"
     }
 
     private func parseCustomAmount(_ string: String, locale: Locale) throws -> Amount {

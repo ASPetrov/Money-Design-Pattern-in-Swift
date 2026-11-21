@@ -175,6 +175,32 @@ struct CustomCurrencyTests {
         }
     }
 
+    @Test(arguments: ["en_US", "fa_IR", "hi_IN", "ja_JP", "fr_FR"], [-12, 12])
+    func testTunisianDinarRoundTrips(
+        localeID: String,
+        units: Int
+    ) throws {
+        let currency = try #require(LocaleCurrency(isoCurrencyCode: "TND"))
+        let locale = Locale(identifier: localeID)
+        let money = try Money(validating: Amount(integer: units), currency: currency)
+        let formatted = try #require(money.formatted(locale: locale))
+
+        #expect(try Money(parsing: formatted, currency: currency, locale: locale) == money)
+    }
+
+    @Test(arguments: [
+        "TND\u{00A0}\u{00A0}12.000",
+        "TND\u{00A0}12,34.000",
+        "-TND\u{00A0}-12.000",
+        "TND\u{00A0}12.000 extra",
+    ])
+    func testRejectsMalformedCurrencySpacing(_ input: String) throws {
+        let currency = try #require(LocaleCurrency(isoCurrencyCode: "TND"))
+        #expect(throws: Amount.ValidationError.invalidFormat) {
+            _ = try Money(parsing: input, currency: currency, locale: Locale(identifier: "en_US"))
+        }
+    }
+
     @Test func testRejectsInvalidExternalCurrencyScale() {
         let externalCurrency = LocaleCurrency(
             code: "USD", name: "US Dollar", minorUnits: -1, symbol: nil, separator: nil, delimiter: nil
