@@ -119,11 +119,17 @@ extension UInt64: DecimalRepresentable {
     }
 }
 
-//extension Float: MoneyRepresentable {
-//    public var decimalNumber: Decimal {
-//        return Decimal(self)
-//    }
-//}
+extension Float: DecimalRepresentable {
+
+    /// Widens the stored binary value to Double before conversion. Nonfinite values return Decimal.nan.
+    public var decimalNumber: Decimal {
+        isFinite ? Double(self).decimalNumber : .nan
+    }
+
+    public var decimalConversion: Result<Decimal, any Error> {
+        Double(self).decimalConversion
+    }
+}
 
 extension Double: DecimalRepresentable {
 
@@ -138,12 +144,6 @@ extension Double: DecimalRepresentable {
         return decimalNumber.decimalConversion
     }
 }
-
-//extension Float80: MoneyRepresentable {
-//    public var decimalNumber: Decimal {
-//        return Decimal(self)
-//    }
-//}
 
 extension String: DecimalRepresentable {
 

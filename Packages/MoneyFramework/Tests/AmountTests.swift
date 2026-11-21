@@ -10,6 +10,19 @@ private let unsupportedDoubles: [Double] = [
     .leastNonzeroMagnitude,
 ]
 
+private let finiteFloats: [Float] = [
+    0.1,
+    0.125,
+    .greatestFiniteMagnitude,
+    .leastNonzeroMagnitude,
+]
+
+private let nonfiniteFloats: [Float] = [
+    .nan,
+    .infinity,
+    -.infinity,
+]
+
 struct AmountTests {
 
     @Test func testScalarBoundsPreserveSignedness() throws {
@@ -43,6 +56,40 @@ struct AmountTests {
         let rounded = try #require(Money(amount: "0.62", currency: currency))
 
         #expect(money.multiplyingChecked(by: 0.125) == .success(rounded))
+    }
+
+    @Test(arguments: finiteFloats)
+    func testFloatUsesWidenedValue(_ value: Float) throws {
+        let scalar: any DecimalRepresentable = value
+        let expected = try Double(value).decimalConversion.get()
+
+        #expect(try scalar.decimalConversion.get() == expected)
+        #expect(scalar.decimalNumber == expected)
+    }
+
+    @Test(arguments: nonfiniteFloats)
+    func testRejectsNonfiniteFloat(_ value: Float) throws {
+        let scalar: any DecimalRepresentable = value
+        let currency = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
+        let money = try #require(Money(amount: Decimal(5), currency: currency))
+
+        #expect(scalar.decimalNumber.isNaN)
+        #expect(throws: Amount.ValidationError.unrepresentableValue) {
+            _ = try scalar.decimalConversion.get()
+        }
+        #expect(money.addingChecked(scalar) == .failure(.invalidScalar))
+        #expect(money.subtractingChecked(scalar) == .failure(.invalidScalar))
+        #expect(money.multiplyingChecked(by: scalar) == .failure(.invalidScalar))
+        #expect(money.dividingChecked(by: scalar) == .failure(.invalidDivisor))
+    }
+
+    @Test func testFiniteFloatKeepsRounding() throws {
+        let currency = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
+        let money = try #require(Money(amount: Decimal(5), currency: currency))
+        let rounded = try #require(Money(amount: "0.62", currency: currency))
+        let scalar: Float = 0.125
+
+        #expect(money.multiplyingChecked(by: scalar) == .success(rounded))
     }
 
     @Test func testDivisionUsesExactScalarsAndFlagsText() throws {

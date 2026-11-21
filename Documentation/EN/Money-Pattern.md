@@ -21,6 +21,8 @@ These are the concerns behind [Martin Fowler’s Money pattern](https://martinfo
 
 Binary floating-point types such as `Float` and `Double` cannot represent many decimal fractions exactly. For example, `0.1` has no exact finite binary representation. For monetary input, parsing decimal text avoids first introducing an approximation through a binary floating-point value.
 
+When used as a scalar, a `Float` is widened to `Double` before its stored binary value is converted to `Decimal`. Checked arithmetic rejects NaN and infinities.
+
 MoneyFramework’s `Amount(decimalString:)` accepts a decimal quantity. In this guide, `"12.03"` means **12.03 units of the currency**, not 12.03 cents. Keep values within the supported precision and range; decimal arithmetic still has limits and rounding rules.
 
 A *minor unit* is the smallest unit used at the currency’s configured scale. For EUR, one minor unit is one cent, so 12.03 EUR corresponds to 1,203 minor units. Do not assume that every currency has two decimal places.
