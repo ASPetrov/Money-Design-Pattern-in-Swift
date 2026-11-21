@@ -32,6 +32,7 @@
 - README, ръководствата на EN и BG, заглавието на MIT лиценза и Swift Style са актуализирани. Примерите минаха във външен пакет и Xcode разреши локално кореновия манифест. [README](../README.md) · [EN](EN/Money-Pattern.md) · [BG](BG/Money-Pattern.md)
 - В `f712550` са отстранени 22 предупреждения на SwiftLint без несъвместими промени в публичния API. Всеки SPM вход изпълни 74 Swift Testing теста и 2 XCTest измервания. Минаха и 7-те теста на демото и офлайн UI сценарият.
 - Тагът `2.0.1` е публикуван върху `f712550` след успешен CI с Xcode 16.0 и 26.6. От чисто клониране са потвърдени ревизията, MIT лицензът и съгласуваността на манифестите. Отделен SwiftPM проект разреши `from: "2.0.1"` през публичния Git URL и изпълни примерите на EN и BG. [Таг 2.0.1](https://github.com/ASPetrov/Money-Design-Pattern-in-Swift/tree/2.0.1) · [GitHub Actions](https://github.com/ASPetrov/Money-Design-Pattern-in-Swift/actions/runs/44876498211)
+- Текущият CI използва една задача с Xcode 27.2 на `xcode-27` и проверява двата SPM входа. Резултатите със Swift 6.0 по-горе са от предишната конфигурация. [CI workflow](../.github/workflows/swift-package.yml)
 
 ## Оставащи задачи
 
