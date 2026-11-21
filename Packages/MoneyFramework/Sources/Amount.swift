@@ -4,6 +4,7 @@ import Foundation
 public struct Amount: Equatable, Sendable {
 
     public enum ValidationError: Error, Equatable {
+
         case invalidFormat
         case unrepresentableValue
         case invalidScale
@@ -28,9 +29,12 @@ public struct Amount: Equatable, Sendable {
 
     /// Parses ASCII digits with an optional sign and a dot as the decimal separator.
     public init(decimalString: String) throws {
-        guard let canonical = Self.canonicalDecimalString(decimalString) else {
+        guard
+            let canonical = Self.canonicalDecimalString(decimalString)
+        else {
             throw ValidationError.invalidFormat
         }
+
         let locale = Locale(identifier: "en_US_POSIX")
         guard
             var parsed = Decimal(string: canonical, locale: locale),
@@ -39,6 +43,7 @@ public struct Amount: Equatable, Sendable {
         else {
             throw ValidationError.unrepresentableValue
         }
+
         decimalValue = parsed
     }
 

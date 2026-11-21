@@ -14,6 +14,7 @@ import Foundation
 
 // !!! value objects should be entirely immutable
 public struct Money<T: Currency> {
+
     public let currency: T
     public let value: Amount
 
@@ -22,6 +23,7 @@ public struct Money<T: Currency> {
     }
 
     public enum ArithmeticError: Error, Equatable {
+
         case invalidScalar
         case invalidDivisor
         case divisionByZero
@@ -60,7 +62,12 @@ public struct Money<T: Currency> {
         roundingMode: Decimal.RoundingMode = .bankers
     ) {
         do {
-            try self.init(parsing: amount, currency: currency, locale: locale, roundingMode: roundingMode)
+            try self.init(
+                parsing: amount,
+                currency: currency,
+                locale: locale,
+                roundingMode: roundingMode
+            )
         } catch {
             return nil
         }
@@ -128,7 +135,10 @@ public struct Money<T: Currency> {
         currency: T,
         roundingMode: Decimal.RoundingMode = .bankers
     ) throws {
-        let rounded = try value.rounded(scale: currency.minorUnits, mode: roundingMode)
+        let rounded = try value.rounded(
+            scale: currency.minorUnits,
+            mode: roundingMode
+        )
         self.currency = currency
         self.value = rounded
     }
@@ -207,6 +217,7 @@ extension Money {
 }
 
 extension Money {
+
     func checkCompatibility<U: Currency>(with other: Money<U>) throws {
         guard currency.identifier == other.currency.identifier else {
             throw ArithmeticError.incompatibleCurrencies
@@ -256,12 +267,16 @@ extension Money {
 
     public func amount(from subunits: Int) -> Decimal {
         requireValidMoneyOperation("major-unit amount") {
-            try Amount(minorUnits: subunits, scale: currency.minorUnits).decimalValue
+            try Amount(
+                minorUnits: subunits,
+                scale: currency.minorUnits
+            ).decimalValue
         }
     }
 }
 
 extension Money: CustomStringConvertible {
+
     /// Formats the amount or returns a diagnostic with its decimal value and currency code.
     public var description: String {
         formatted() ?? "\(amount) \(currency.code) [formatting failed]"
@@ -279,6 +294,7 @@ extension Money: CustomStringConvertible {
 
 // NOTE: value objects are equal if all their fields are equal
 extension Money: Equatable {
+
     public func equals(_ other: Money) -> Bool {
         currency.identifier == other.currency.identifier
             && currency.minorUnits == other.currency.minorUnits
@@ -290,15 +306,20 @@ extension Money: Equatable {
     }
 }
 
-extension Money: Sendable where T: Sendable {}
+extension Money: Sendable where T: Sendable { }
 
 extension Money: Comparable {
+
     /// Requires matching currency identifiers and scales. Use `compare(to:)` for unvalidated currencies.
     public static func < (lhs: Money, rhs: Money) -> Bool {
-        requireValidMoneyOperation("comparison") { try lhs.compare(to: rhs) == .orderedAscending }
+        requireValidMoneyOperation("comparison") {
+            try lhs.compare(to: rhs) == .orderedAscending
+        }
     }
 
-    public func compare<U: Currency>(to other: Money<U>) throws -> ComparisonResult {
+    public func compare<U: Currency>(
+        to other: Money<U>
+    ) throws -> ComparisonResult {
         try checkCompatibility(with: other)
         var lhs = amount
         var rhs = other.amount
@@ -306,7 +327,9 @@ extension Money: Comparable {
     }
 }
 
-func requireValidMoneyOperation<Value>(_ operation: StaticString, _ body: () throws -> Value) -> Value {
+func requireValidMoneyOperation<Value>(
+    _ operation: StaticString, _ body: () throws -> Value
+) -> Value {
     do {
         return try body()
     } catch {

@@ -3,16 +3,28 @@ import MoneyFramework
 import Testing
 
 struct CustomCurrencyTests {
+
     @Test func testCryptoRoundTripsExactlyAcrossLocales() throws {
         for (code, scale) in [("BTC", 8), ("ETH", 18)] {
-            let currency = try #require(CustomCurrency(
-                identifier: .asset(network: code, reference: "native"), code: code, name: code, minorUnits: scale
-            ))
+            let currency = try #require(
+                CustomCurrency(
+                    identifier: .asset(
+                        network: code,
+                        reference: "native"
+                    ),
+                    code: code,
+                    name: code,
+                    minorUnits: scale
+                )
+            )
             for (localeID, separator) in [("en_US", "."), ("de_DE", ",")] {
                 let locale = Locale(identifier: localeID)
-                let quantity = "0" + separator + String(repeating: "0", count: scale - 1) + "1"
+                let quantity =
+                    "0" + separator + String(repeating: "0", count: scale - 1) + "1"
                 let text = quantity + " " + code
-                let money = try #require(Money(amount: text, currency: currency, locale: locale))
+                let money = try #require(
+                    Money(amount: text, currency: currency, locale: locale)
+                )
 
                 #expect(try money.checkedMinorUnits() == 1)
                 #expect(money.formatted(locale: locale) == text)

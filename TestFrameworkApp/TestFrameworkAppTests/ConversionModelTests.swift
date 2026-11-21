@@ -3,9 +3,13 @@ import Foundation
 import Testing
 
 struct ConversionModelTests {
+
     @MainActor
     @Test func testConvertsSelectedPairAtSampleRate() async {
-        let model = ConversionModel(rateProvider: SampleRateProvider(), locale: Locale(identifier: "en_US"))
+        let model = ConversionModel(
+            rateProvider: SampleRateProvider(),
+            locale: Locale(identifier: "en_US")
+        )
         model.amountText = "10.50"
         model.source = .usd
         model.destination = .eur
@@ -26,7 +30,10 @@ struct ConversionModelTests {
     @MainActor
     @Test func testRejectsInvalidAmountBeforeConversion() async {
         let provider = UnavailableRates()
-        let model = ConversionModel(rateProvider: provider, locale: Locale(identifier: "en_US"))
+        let model = ConversionModel(
+            rateProvider: provider,
+            locale: Locale(identifier: "en_US")
+        )
         model.amountText = "10oops"
 
         await model.convert()?.value
@@ -39,7 +46,10 @@ struct ConversionModelTests {
     @MainActor
     @Test func testSameCurrencyUsesTheOriginalAmount() async {
         let provider = UnavailableRates()
-        let model = ConversionModel(rateProvider: provider, locale: Locale(identifier: "de_DE"))
+        let model = ConversionModel(
+            rateProvider: provider,
+            locale: Locale(identifier: "de_DE")
+        )
         model.amountText = "1,25"
         model.destination = model.source
 
@@ -101,7 +111,10 @@ struct ConversionModelTests {
     @Test(.timeLimit(.minutes(1)), arguments: [false, true])
     func testSupersededRequestKeepsNewerResult(fails: Bool) async throws {
         let provider = ControlledRates()
-        let model = ConversionModel(rateProvider: provider, locale: Locale(identifier: "en_US"))
+        let model = ConversionModel(
+            rateProvider: provider,
+            locale: Locale(identifier: "en_US")
+        )
         model.amountText = "10"
         var requests = provider.requests.makeAsyncIterator()
         let olderConversion = try #require(model.convert())
@@ -112,7 +125,8 @@ struct ConversionModelTests {
         await provider.complete(newer, with: .success(2))
         await newerConversion.value
         let expected = model.state
-        let lateRate: Result<Decimal, ControlledRates.Failure> = fails ? .failure(.unavailable) : .success(1)
+        let lateRate: Result<Decimal, ControlledRates.Failure> =
+            fails ? .failure(.unavailable) : .success(1)
         await provider.complete(older, with: lateRate)
         await olderConversion.value
 
@@ -144,6 +158,7 @@ struct ConversionModelTests {
 }
 
 private actor UnavailableRates: ExchangeRateProviding {
+
     private struct RateUnavailable: Error {}
 
     private(set) var requestCount = 0
@@ -158,7 +173,9 @@ private actor UnavailableRates: ExchangeRateProviding {
 }
 
 private actor ControlledRates: ExchangeRateProviding {
+
     enum Failure: Error {
+
         case unavailable
     }
 

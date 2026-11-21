@@ -11,7 +11,6 @@ import MoneyFramework
 import Testing
 
 // NOTE: Factory methods are build over constructors - no need to be tested
-// TODO: Test formatter methods
 
 struct CurrencyTests {
 

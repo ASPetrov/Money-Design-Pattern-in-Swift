@@ -11,6 +11,7 @@ import MoneyFramework
 import Testing
 
 struct MoneyAllocationTests {
+
     @Test func testAllocateToRecepients() throws {
         // Given
         let currency = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
@@ -22,8 +23,6 @@ struct MoneyAllocationTests {
         #expect(array[0].amount == Decimal(string: "0.03"), "First recepient should have 0.03")
         #expect(array[1].amount == Decimal(string: "0.02"), "Second recepient should have 0.02")
     }
-
-    // TODO: Test Allocate to Zero Recepients (throws "Division by zero")
 
     @Test func testAllocateToRecepientsUsingRatios() throws {
         // Given

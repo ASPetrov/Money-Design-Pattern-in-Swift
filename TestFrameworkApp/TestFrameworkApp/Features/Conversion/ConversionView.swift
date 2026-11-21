@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct ConversionView: View {
+
     @ObservedObject private var model: ConversionModel
     @FocusState private var isAmountFocused: Bool
 

@@ -9,6 +9,7 @@
 import Foundation
 
 extension Locale {
+
     private static let sortedIdentifiers = Locale.availableIdentifiers.sorted()
 
     public static func locale(for isoCurrencyCode: String) -> Locale? {

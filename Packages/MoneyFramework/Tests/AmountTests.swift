@@ -3,6 +3,7 @@ import MoneyFramework
 import Testing
 
 struct AmountTests {
+
     @Test func testScalarBoundsPreserveSignedness() throws {
         let locale = Locale(identifier: "en_US_POSIX")
         let cases: [(any DecimalRepresentable, String)] = [

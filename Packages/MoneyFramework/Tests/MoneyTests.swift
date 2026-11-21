@@ -224,9 +224,6 @@ struct MoneyTests {
         #expect(dollars.amount == Decimal(string: "22.47"), "Dollars amount should be 22.47")
     }
 
-    // TODO: Test Convert ot Same Currency (NOTE: throws "Cannot convert to the same currency")
-    // TODO: Test Convert with negative multiplier (NOTE:  throws "Cannot convert using a negative conversion multiplier")
-
     //
     // MARK: - Equal
     //
@@ -304,8 +301,6 @@ struct MoneyTests {
         // Then
         #expect(result, "Money on the left side should have less amount than  money on the right side")
     }
-
-    // TODO: Test with different currencies
 
     @Test func testConversionRoundsAtTargetPrecision() throws {
         let usd = try #require(LocaleCurrency(localeIdentifier: "en_US"))

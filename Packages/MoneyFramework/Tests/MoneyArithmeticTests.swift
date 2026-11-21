@@ -11,6 +11,7 @@ import MoneyFramework
 import Testing
 
 struct MoneyArithmeticTests {
+
     @Test func testAddMoney() throws {
         // Given
         let currency = try #require(LocaleCurrency(localeIdentifier: "en_US"))

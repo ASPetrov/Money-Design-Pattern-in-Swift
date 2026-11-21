@@ -1,6 +1,7 @@
 import XCTest
 
 final class OfflineConversionTests: XCTestCase {
+
     @MainActor
     func testConvertsUsingSampleRates() {
         let app = XCUIApplication()

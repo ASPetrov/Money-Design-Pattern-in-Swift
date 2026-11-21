@@ -3,6 +3,7 @@ import MoneyFramework
 import Testing
 
 struct MoneySendableTests {
+
     @Test func testMoneyCrossesActorsWithBuiltInUnits() async throws {
         let currency = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
         let token = try #require(CustomCurrency(

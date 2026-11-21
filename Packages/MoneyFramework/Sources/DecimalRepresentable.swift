@@ -9,6 +9,7 @@
 import Foundation
 
 public protocol DecimalRepresentable {
+
     var decimalNumber: Decimal { get }
 
     /// Returns the converted scalar or the reason it cannot be converted.
@@ -16,23 +17,31 @@ public protocol DecimalRepresentable {
 }
 
 extension DecimalRepresentable {
+
     public var decimalConversion: Result<Decimal, any Error> {
         let decimal = decimalNumber
-        return decimal.isNaN ? .failure(Amount.ValidationError.unrepresentableValue) : .success(decimal)
+        return decimal.isNaN
+            ? .failure(Amount.ValidationError.unrepresentableValue)
+            : .success(decimal)
     }
 }
 
 extension Decimal: DecimalRepresentable {
+
     public var decimalNumber: Decimal {
         self
     }
 }
 
 extension Amount: DecimalRepresentable {
-    public var decimalNumber: Decimal { decimalValue }
+
+    public var decimalNumber: Decimal {
+        decimalValue
+    }
 }
 
 extension Money {
+
     public var decimalNumber: Decimal {
         amount
     }
@@ -41,60 +50,70 @@ extension Money {
 // Integers
 
 extension Int: DecimalRepresentable {
+
     public var decimalNumber: Decimal {
         Decimal(self)
     }
 }
 
 extension UInt: DecimalRepresentable {
+
     public var decimalNumber: Decimal {
         Decimal(self)
     }
 }
 
 extension Int8: DecimalRepresentable {
+
     public var decimalNumber: Decimal {
         Decimal(self)
     }
 }
 
 extension UInt8: DecimalRepresentable {
+
     public var decimalNumber: Decimal {
         Decimal(self)
     }
 }
 
 extension Int16: DecimalRepresentable {
+
     public var decimalNumber: Decimal {
         Decimal(self)
     }
 }
 
 extension UInt16: DecimalRepresentable {
+
     public var decimalNumber: Decimal {
         Decimal(self)
     }
 }
 
 extension Int32: DecimalRepresentable {
+
     public var decimalNumber: Decimal {
         Decimal(self)
     }
 }
 
 extension UInt32: DecimalRepresentable {
+
     public var decimalNumber: Decimal {
         Decimal(self)
     }
 }
 
 extension Int64: DecimalRepresentable {
+
     public var decimalNumber: Decimal {
         Decimal(self)
     }
 }
 
 extension UInt64: DecimalRepresentable {
+
     public var decimalNumber: Decimal {
         Decimal(self)
     }
@@ -107,6 +126,7 @@ extension UInt64: DecimalRepresentable {
 //}
 
 extension Double: DecimalRepresentable {
+
     public var decimalNumber: Decimal {
         Decimal(self)
     }
@@ -126,6 +146,7 @@ extension Double: DecimalRepresentable {
 //}
 
 extension String: DecimalRepresentable {
+
     /// Requires an exact, locale-independent decimal string. Use decimalConversion to inspect a failure.
     public var decimalNumber: Decimal {
         requireValidMoneyOperation("decimal string conversion") {

@@ -3,6 +3,7 @@ import Foundation
 import MoneyFramework
 
 enum DemoCurrency: String, CaseIterable, Sendable {
+
     case usd = "USD"
     case eur = "EUR"
     case bgn = "BGN"
@@ -23,11 +24,19 @@ enum DemoCurrency: String, CaseIterable, Sendable {
 }
 
 protocol ExchangeRateProviding: Sendable {
-    func rate(from source: DemoCurrency, to destination: DemoCurrency) async throws -> Decimal
+
+    func rate(
+        from source: DemoCurrency,
+        to destination: DemoCurrency
+    ) async throws -> Decimal
 }
 
 struct SampleRateProvider: ExchangeRateProviding {
-    func rate(from source: DemoCurrency, to destination: DemoCurrency) async throws -> Decimal {
+
+    func rate(
+        from source: DemoCurrency,
+        to destination: DemoCurrency
+    ) async throws -> Decimal {
         unitsPerSampleDollar(destination) / unitsPerSampleDollar(source)
     }
 
@@ -42,12 +51,15 @@ struct SampleRateProvider: ExchangeRateProviding {
 
 @MainActor
 final class ConversionModel: ObservableObject {
+
     enum Failure: Equatable {
+
         case invalidAmount
         case rateUnavailable
     }
 
     enum State: Equatable {
+
         case idle
         case loading
         case converted(Money<LocaleCurrency>)
@@ -162,7 +174,9 @@ final class ConversionModel: ObservableObject {
             try Task.checkCancellation()
             let rate = try await provider.rate(from: source, to: destination)
             try Task.checkCancellation()
-            return try .converted(money.convertTo(currency, usingExchangeRate: rate))
+            return try .converted(
+                money.convertTo(currency, usingExchangeRate: rate)
+            )
         } catch is CancellationError {
             return .idle
         } catch {

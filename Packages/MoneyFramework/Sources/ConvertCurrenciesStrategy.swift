@@ -9,6 +9,7 @@
 import Foundation
 
 public protocol ConvertCurrenciesStrategy {
+
     func convertTo<T: Currency>(
         _ money: Money<T>,
         toCurrency currency: T,
@@ -17,6 +18,7 @@ public protocol ConvertCurrenciesStrategy {
 }
 
 public final class NormalConvertStrategy: ConvertCurrenciesStrategy {
+
     public init() {
         // no-op
     }
@@ -70,6 +72,7 @@ public final class NormalConvertStrategy: ConvertCurrenciesStrategy {
             guard source.minorUnits == currency.minorUnits else {
                 throw ConvertCurrenciesStrategyError.incompatibleCurrencyScale
             }
+
             throw ConvertCurrenciesStrategyError.sameCurrency
         }
         guard !rate.isNaN, rate > .zero else {
@@ -79,6 +82,7 @@ public final class NormalConvertStrategy: ConvertCurrenciesStrategy {
 }
 
 public enum ConvertCurrenciesStrategyError: Error, Equatable {
+
     case sameCurrency
     case incompatibleCurrencyScale
     case invalidExchangeRate

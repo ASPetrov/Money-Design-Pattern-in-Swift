@@ -1,5 +1,6 @@
 /// A currency whose identity and scale are supplied by the caller.
 public struct CustomCurrency: CryptoCurrency, Sendable {
+
     public let identifier: CurrencyIdentifier
     public let code: String
     public let name: String

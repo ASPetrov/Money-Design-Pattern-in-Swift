@@ -9,6 +9,7 @@
 import Foundation
 
 extension Money {
+
     /// Requires compatible currencies and a representable result.
     public func add(_ money: Money) -> Money {
         requireValidMoneyOperation("addition") {
@@ -20,7 +21,9 @@ extension Money {
     public func addingChecked<U: Currency>(
         _ money: Money<U>
     ) -> Result<Money, ArithmeticError> {
-        arithmeticResult { try adding(money) }
+        arithmeticResult {
+            try adding(money)
+        }
     }
 
     public func adding<U: Currency>(_ money: Money<U>) throws -> Money {
@@ -67,7 +70,9 @@ extension Money {
     public func subtractingChecked<U: Currency>(
         _ money: Money<U>
     ) -> Result<Money, ArithmeticError> {
-        arithmeticResult { try subtracting(money) }
+        arithmeticResult {
+            try subtracting(money)
+        }
     }
 
     public func subtracting<U: Currency>(_ money: Money<U>) throws -> Money {
@@ -145,8 +150,14 @@ extension Money {
         roundingMode: Decimal.RoundingMode = .bankers
     ) -> Money {
         requireValidMoneyOperation("multiplication with target currency") {
-            if self.currency.identifier == currency.identifier && self.currency.minorUnits == currency.minorUnits {
-                return try multiplyInCurrency(multiplier, currency: currency, roundingMode: roundingMode)
+            if
+                self.currency.identifier == currency.identifier
+                && self.currency.minorUnits == currency.minorUnits {
+                return try multiplyInCurrency(
+                    multiplier,
+                    currency: currency,
+                    roundingMode: roundingMode
+                )
             }
             guard case let .success(rate) = multiplier.decimalConversion else {
                 throw ArithmeticError.invalidScalar
@@ -164,7 +175,9 @@ extension Money {
         currency: T,
         roundingMode: Decimal.RoundingMode
     ) throws -> Money {
-        let product: Money = requireValidMoneyOperation("multiplication with target currency") {
+        let product: Money = requireValidMoneyOperation(
+            "multiplication with target currency"
+        ) {
             multiplyingChecked(
                 by: multiplier,
                 roundingMode: roundingMode
@@ -225,17 +238,10 @@ extension Money {
         }
         return rounded
     }
-
-    /// Divides a validated amount with the default rounding mode. Traps if the division fails.
-    @available(*, deprecated, message: "Use try divide(by:) to handle invalid divisors and unrepresentable results.")
-    public func devide(_ divisor: DecimalRepresentable) -> Money {
-        requireValidMoneyOperation("division") {
-            dividingChecked(by: divisor)
-        }
-    }
 }
 
 extension Money {
+
     public static func + (lhs: Money, rhs: Money) -> Money {
         lhs.add(rhs)
     }
@@ -285,6 +291,7 @@ extension Money {
 }
 
 extension Money {
+
     private typealias DecimalCalculation = (
         UnsafeMutablePointer<Decimal>,
         UnsafePointer<Decimal>,

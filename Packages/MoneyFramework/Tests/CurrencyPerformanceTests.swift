@@ -3,6 +3,7 @@ import MoneyFramework
 import XCTest
 
 final class CurrencyPerformanceTests: XCTestCase {
+
     func testLookupByLocalePerformance() {
         self.measure() {
             _ = LocaleCurrency(localeIdentifier: "en_US")

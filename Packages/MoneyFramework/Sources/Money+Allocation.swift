@@ -11,7 +11,8 @@ extension Money {
             throw ArithmeticError.invalidRecipientCount
         }
         let units = try checkedMinorUnits()
-        let (share, remainder) = units.magnitude.quotientAndRemainder(dividingBy: UInt(recipientCount))
+        let (share, remainder) =
+            units.magnitude.quotientAndRemainder(dividingBy: UInt(recipientCount))
         let isNegative = units < 0
         let standard = try moneyShare(share, isNegative: isNegative)
         var shares = Array(repeating: standard, count: recipientCount)
