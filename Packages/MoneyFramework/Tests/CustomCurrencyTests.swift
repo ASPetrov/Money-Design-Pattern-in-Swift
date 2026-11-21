@@ -25,9 +25,6 @@ struct CustomCurrencyTests {
     @Test func testArithmeticChecksIdentityAndScale() throws {
         let original = try token(network: "test:1", reference: "a")
         let alias = try token(network: "test:1", reference: "a", code: "ALIAS")
-        let otherNetwork = try token(network: "test:2", reference: "a")
-        let otherContract = try token(network: "test:1", reference: "b")
-        let otherScale = try token(network: "test:1", reference: "a", scale: 18)
         let lhs = try #require(Money(amount: Decimal(2), currency: original))
         let rhs = try #require(Money(amount: Decimal(2), currency: alias))
 
@@ -35,6 +32,15 @@ struct CustomCurrencyTests {
         #expect((lhs + rhs).amount == Decimal(4))
         #expect((lhs - rhs).amount == .zero)
         #expect(try lhs.compare(to: rhs) == .orderedSame)
+        #expect(!((lhs as Any) is any DecimalRepresentable))
+    }
+
+    @Test func testRejectsCurrencyConflicts() throws {
+        let original = try token(network: "test:1", reference: "a")
+        let lhs = try #require(Money(amount: Decimal(2), currency: original))
+        let otherNetwork = try token(network: "test:2", reference: "a")
+        let otherContract = try token(network: "test:1", reference: "b")
+        let otherScale = try token(network: "test:1", reference: "a", scale: 18)
         let conflicts: [(CustomCurrency, Money<CustomCurrency>.ArithmeticError)] = [
             (otherNetwork, .incompatibleCurrencies),
             (otherContract, .incompatibleCurrencies),
@@ -42,18 +48,25 @@ struct CustomCurrencyTests {
         ]
         for (currency, expected) in conflicts {
             let incompatible = try #require(Money(amount: Decimal(2), currency: currency))
-            #expect(lhs != incompatible)
-            #expect(throws: expected) {
-                _ = try lhs.adding(incompatible)
-            }
-            #expect(throws: expected) {
-                _ = try lhs.subtracting(incompatible)
-            }
-            #expect(throws: expected) {
-                _ = try lhs.compare(to: incompatible)
-            }
+            expectCurrencyConflict(lhs, incompatible, error: expected)
         }
-        #expect(!((lhs as Any) is any DecimalRepresentable))
+    }
+
+    private func expectCurrencyConflict(
+        _ lhs: Money<CustomCurrency>,
+        _ incompatible: Money<CustomCurrency>,
+        error expected: Money<CustomCurrency>.ArithmeticError
+    ) {
+        #expect(lhs != incompatible)
+        #expect(throws: expected) {
+            _ = try lhs.adding(incompatible)
+        }
+        #expect(throws: expected) {
+            _ = try lhs.subtracting(incompatible)
+        }
+        #expect(throws: expected) {
+            _ = try lhs.compare(to: incompatible)
+        }
     }
 
     @Test func testValidatesCrossTypeConversion() throws {
@@ -70,6 +83,15 @@ struct CustomCurrencyTests {
         #expect(converted.currency == credits)
         #expect(converted.formatted(locale: Locale(identifier: "en_US")) == "3 CR")
         #expect(try converted.convertTo(usd, usingExchangeRate: Decimal(2)).amount == Decimal(6))
+    }
+
+    @Test func testRejectsInvalidConversionRates() throws {
+        let usd = try #require(LocaleCurrency(isoCurrencyCode: "usd"))
+        let credits = try #require(CustomCurrency(
+            identifier: .custom(namespace: "example", code: "credits"),
+            code: "CR", name: "Credits", minorUnits: 0
+        ))
+        let source = try #require(Money(amount: Decimal(1), currency: usd, roundingMode: .plain))
         #expect(throws: ConvertCurrenciesStrategyError.sameCurrency) {
             _ = try source.convertTo(usd, usingExchangeRate: 1)
         }
@@ -78,6 +100,14 @@ struct CustomCurrencyTests {
                 _ = try source.convertTo(credits, usingExchangeRate: rate)
             }
         }
+    }
+
+    @Test func testRejectsConversionOverflow() throws {
+        let usd = try #require(LocaleCurrency(isoCurrencyCode: "usd"))
+        let credits = try #require(CustomCurrency(
+            identifier: .custom(namespace: "example", code: "credits"),
+            code: "CR", name: "Credits", minorUnits: 0
+        ))
         let largeAmount = try #require(Decimal(string: "1e120"))
         let largeRate = try #require(Decimal(string: "1e60"))
         let large = try #require(Money(amount: largeAmount, currency: usd))

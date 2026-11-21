@@ -87,25 +87,7 @@ extension Currency {
         locale: Locale? = nil
     ) -> String? {
         if usesCustomFormatting {
-            var value = number.decimalValue
-            guard !value.isNaN else {
-                return nil
-            }
-
-            let formatter = decimalFormatter(locale: locale ?? .current)
-            var digits = NSDecimalString(
-                &value,
-                Locale(identifier: "en_US_POSIX")
-            )
-            if digits.hasPrefix("-") {
-                digits.removeFirst()
-                digits = (formatter.minusSign ?? "-") + digits
-            }
-            digits = digits.replacingOccurrences(
-                of: ".",
-                with: formatter.decimalSeparator ?? "."
-            )
-            return digits + " " + (symbol ?? code)
+            return customString(from: number, locale: locale ?? .current)
         }
 
         return formattingCurrency(locale: locale).string(from: number)
@@ -142,33 +124,70 @@ extension Currency {
 }
 
 extension Currency {
+    private func customString(from number: NSNumber, locale: Locale) -> String? {
+        var value = number.decimalValue
+        guard !value.isNaN else {
+            return nil
+        }
+
+        let formatter = decimalFormatter(locale: locale)
+        var digits = NSDecimalString(
+            &value,
+            Locale(identifier: "en_US_POSIX")
+        )
+        if digits.hasPrefix("-") {
+            digits.removeFirst()
+            digits = (formatter.minusSign ?? "-") + digits
+        }
+        digits = digits.replacingOccurrences(
+            of: ".",
+            with: formatter.decimalSeparator ?? "."
+        )
+        return digits + " " + (symbol ?? code)
+    }
+
     func parseAmount(_ string: String, locale: Locale?) throws -> Amount {
         if usesCustomFormatting {
             return try parseCustomAmount(string, locale: locale ?? .current)
         }
 
         let selectedLocale = locale ?? Locale.locale(for: code) ?? .current
-        let currencyFormatter = formattingCurrency(
-            locale: locale,
-            fallback: selectedLocale
-        )
-        let numbers = decimalFormatter(locale: selectedLocale)
-        // Try full currency affixes before parsing the numeric portion.
+        let formatter = formattingCurrency(locale: locale, fallback: selectedLocale)
+        if let amount = try parseCurrencyAffixes(string, formatter: formatter, locale: selectedLocale) {
+            return amount
+        }
+        return try parseNumericAmount(string, locale: locale, fallback: selectedLocale)
+    }
+
+    private func parseNumericAmount(_ string: String, locale: Locale?, fallback: Locale) throws -> Amount {
+        if locale == nil {
+            do {
+                return try Amount(decimalString: string)
+            } catch Amount.ValidationError.invalidFormat {
+                return try Amount(
+                    localizedString: string,
+                    locale: fallback
+                )
+            }
+        }
+        return try Amount(localizedString: string, locale: fallback)
+    }
+
+    private func parseCurrencyAffixes(
+        _ string: String,
+        formatter: NumberFormatter,
+        locale: Locale
+    ) throws -> Amount? {
+        let numbers = decimalFormatter(locale: locale)
+        numbers.decimalSeparator = formatter.currencyDecimalSeparator
+        numbers.groupingSeparator = formatter.currencyGroupingSeparator
         for (prefix, suffix, negative) in [
-            (currencyFormatter.negativePrefix ?? "", currencyFormatter.negativeSuffix ?? "", true),
-            (currencyFormatter.positivePrefix ?? "", currencyFormatter.positiveSuffix ?? "", false),
+            (formatter.negativePrefix ?? "", formatter.negativeSuffix ?? "", true),
+            (formatter.positivePrefix ?? "", formatter.positiveSuffix ?? "", false),
         ] where !prefix.isEmpty || !suffix.isEmpty {
-            guard
-                string.hasPrefix(prefix),
-                string.hasSuffix(suffix),
-                string.count > prefix.count + suffix.count
-            else {
+            guard let digits = currencyDigits(in: string, prefix: prefix, suffix: suffix) else {
                 continue
             }
-
-            let digits = String(string.dropFirst(prefix.count).dropLast(suffix.count))
-            numbers.decimalSeparator = currencyFormatter.currencyDecimalSeparator
-            numbers.groupingSeparator = currencyFormatter.currencyGroupingSeparator
             do {
                 let value = try Amount(localizedString: digits, formatter: numbers, allowsSign: false)
                 return negative ? try Amount(decimal: -value.decimalValue) : value
@@ -176,18 +195,18 @@ extension Currency {
                 continue
             }
         }
+        return nil
+    }
 
-        if locale == nil {
-            do {
-                return try Amount(decimalString: string)
-            } catch Amount.ValidationError.invalidFormat {
-                return try Amount(
-                    localizedString: string,
-                    locale: selectedLocale
-                )
-            }
+    private func currencyDigits(in string: String, prefix: String, suffix: String) -> String? {
+        guard
+            string.hasPrefix(prefix),
+            string.hasSuffix(suffix),
+            string.count > prefix.count + suffix.count
+        else {
+            return nil
         }
-        return try Amount(localizedString: string, locale: selectedLocale)
+        return String(string.dropFirst(prefix.count).dropLast(suffix.count))
     }
 
     private func parseCustomAmount(_ string: String, locale: Locale) throws -> Amount {
@@ -308,70 +327,6 @@ extension LocaleCurrency {
 
     public static func currency(for locale: Locale) -> LocaleCurrency? {
         Self(locale: locale)
-    }
-}
-
-/// A currency whose identity and scale are supplied by the caller.
-public struct CustomCurrency: CryptoCurrency, Sendable {
-    public let identifier: CurrencyIdentifier
-    public let code: String
-    public let name: String
-    public let minorUnits: Int
-    public let symbol: String?
-    public var separator: String? { nil }
-    public var delimiter: String? { nil }
-
-    public init?(
-        identifier: CurrencyIdentifier,
-        code: String,
-        name: String,
-        minorUnits: Int,
-        symbol: String? = nil
-    ) {
-        guard
-            Self.hasValidIdentity(identifier),
-            !code.isEmpty,
-            (0 ... 127).contains(minorUnits),
-            symbol != ""
-        else {
-            return nil
-        }
-        self.identifier = identifier
-        self.code = code
-        self.name = name
-        self.minorUnits = minorUnits
-        self.symbol = symbol
-    }
-
-    public init?(
-        code: String,
-        name: String,
-        minorUnits: Int,
-        symbol: String?,
-        separator: String?,
-        delimiter: String?
-    ) {
-        guard separator == nil, delimiter == nil else {
-            return nil
-        }
-        self.init(
-            identifier: .custom(namespace: "local", code: code),
-            code: code,
-            name: name,
-            minorUnits: minorUnits,
-            symbol: symbol
-        )
-    }
-
-    private static func hasValidIdentity(
-        _ identifier: CurrencyIdentifier
-    ) -> Bool {
-        switch identifier {
-        case let .asset(namespace, code), let .custom(namespace, code):
-            return !namespace.isEmpty && !code.isEmpty
-        case .iso, .legacy:
-            return false
-        }
     }
 }
 

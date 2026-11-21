@@ -71,18 +71,7 @@ public struct Amount: Equatable, Sendable {
 
         let grouping = formatter.groupingSeparator ?? ""
         let groups = grouping.isEmpty ? [parts[0]] : parts[0].components(separatedBy: grouping)
-        if groups.count > 1 {
-            let primary = formatter.groupingSize
-            let secondary = formatter.secondaryGroupingSize > 0 ? formatter.secondaryGroupingSize : primary
-            guard
-                groups.last?.count == primary,
-                let first = groups.first,
-                (1 ... max(1, secondary)).contains(first.count),
-                groups.dropFirst().dropLast().allSatisfy({ $0.count == secondary })
-            else {
-                throw ValidationError.invalidFormat
-            }
-        }
+        try Self.validateGrouping(groups, formatter: formatter)
         let whole = try Self.asciiDigits(groups.joined())
         let fraction = parts.count == 2 ? "." + (try Self.asciiDigits(parts[1])) : ""
         try self.init(decimalString: sign + whole + fraction)
@@ -101,17 +90,26 @@ public struct Amount: Equatable, Sendable {
         try self.init(decimal: result)
     }
 
+    private static func validateGrouping(_ groups: [String], formatter: NumberFormatter) throws {
+        guard groups.count > 1 else {
+            return
+        }
+        let primary = formatter.groupingSize
+        let secondary = formatter.secondaryGroupingSize > 0 ? formatter.secondaryGroupingSize : primary
+        guard
+            groups.last?.count == primary,
+            let first = groups.first,
+            (1 ... max(1, secondary)).contains(first.count),
+            groups.dropFirst().dropLast().allSatisfy({ $0.count == secondary })
+        else {
+            throw ValidationError.invalidFormat
+        }
+    }
+
     /// Returns the exact signed minor-unit count, or throws if it is fractional or outside Int.
     public func minorUnits(scale: Int) throws -> Int {
         try Self.validateScale(scale)
-        var value = decimalValue
-        var scaled = Decimal()
-        guard
-            NSDecimalMultiplyByPowerOf10(&scaled, &value, Int16(scale), .plain) == .noError,
-            !scaled.isNaN
-        else {
-            throw ValidationError.minorUnitsOutOfRange
-        }
+        var scaled = try shiftedToMinorUnits(scale: scale)
         var integral = Decimal()
         NSDecimalRound(&integral, &scaled, 0, .down)
         guard integral == scaled else {
@@ -124,6 +122,18 @@ public struct Amount: Equatable, Sendable {
             throw ValidationError.minorUnitsOutOfRange
         }
         return NSDecimalNumber(decimal: scaled).intValue
+    }
+
+    private func shiftedToMinorUnits(scale: Int) throws -> Decimal {
+        var value = decimalValue
+        var scaled = Decimal()
+        guard
+            NSDecimalMultiplyByPowerOf10(&scaled, &value, Int16(scale), .plain) == .noError,
+            !scaled.isNaN
+        else {
+            throw ValidationError.minorUnitsOutOfRange
+        }
+        return scaled
     }
 
     func rounded(scale: Int, mode: Decimal.RoundingMode) throws -> Amount {
@@ -165,12 +175,7 @@ public struct Amount: Equatable, Sendable {
             unsigned.removeFirst()
         }
         let parts = unsigned.split(separator: ".", omittingEmptySubsequences: false)
-        guard
-            let whole = parts.first,
-            parts.count <= 2,
-            !whole.isEmpty,
-            parts.allSatisfy({ !$0.isEmpty && $0.utf8.allSatisfy { (48 ... 57).contains($0) } })
-        else {
+        guard let whole = decimalWholePart(parts) else {
             return nil
         }
         let integral = whole.drop(while: { $0 == "0" })
@@ -180,5 +185,17 @@ public struct Amount: Equatable, Sendable {
         }
         let sign = negative && (!integral.isEmpty || !fraction.isEmpty) ? "-" : ""
         return sign + (integral.isEmpty ? "0" : String(integral)) + (fraction.isEmpty ? "" : "." + fraction)
+    }
+
+    private static func decimalWholePart(_ parts: [Substring]) -> Substring? {
+        guard
+            let whole = parts.first,
+            parts.count <= 2,
+            !whole.isEmpty,
+            parts.allSatisfy({ !$0.isEmpty && $0.utf8.allSatisfy { (48 ... 57).contains($0) } })
+        else {
+            return nil
+        }
+        return whole
     }
 }

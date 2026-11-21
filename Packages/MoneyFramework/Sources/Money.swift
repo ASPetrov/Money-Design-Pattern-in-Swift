@@ -225,16 +225,18 @@ extension Money {
             remaining -= 1
         }
 
-        return try shares.map { share in
-            // The magnitude can be one larger than Int.max only for a negative amount.
-            let signedShare =
-                units < 0 ? Int(bitPattern: 0 &- share) : Int(share)
-            let value = try Amount(
-                minorUnits: signedShare,
-                scale: currency.minorUnits
-            )
-            return try result(amount: value.decimalValue)
-        }
+        return try shares.map { try moneyShare($0, isNegative: units < 0) }
+    }
+
+    private func moneyShare(_ share: UInt, isNegative: Bool) throws -> Money {
+        // The magnitude can be one larger than Int.max only for a negative amount.
+        let signedShare =
+            isNegative ? Int(bitPattern: 0 &- share) : Int(share)
+        let value = try Amount(
+            minorUnits: signedShare,
+            scale: currency.minorUnits
+        )
+        return try result(amount: value.decimalValue)
     }
 }
 

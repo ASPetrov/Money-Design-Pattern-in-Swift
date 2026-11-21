@@ -31,6 +31,10 @@
 - SwiftLint предупреждава над 20 реда в тяло на функция и блокира над 50, включително в тестовете. `Currency.parseAmount` е разделена, а двата SPM входа и staged проверките минаха. [Политика за дължина на телата](Swift-Style.md#function-body-length)
 - README, ръководствата на EN и BG, заглавието на MIT лиценза и Swift Style са актуализирани. Примерите минаха във външен пакет и Xcode разреши локално кореновия манифест. [README](../README.md) · [EN](EN/Money-Pattern.md) · [BG](BG/Money-Pattern.md)
 
+## Оставащи задачи
+
+- Отстранени са 22-те предупреждения от SwiftLint без несъвместими промени в публичния API. Двата SPM входа и тестовете на демото минаха. Остават три диагностики за App Intents от Xcode 27.2. [Спецификация за предупрежденията](Build-Warnings.md)
+
 ## Отделни решения
 
 - При бъдещ преглед за съвместимост оцени публичния достъп до `Currency.currencyFormatter(with:)`, `Locale.locale(for:)` и `Money.decimalNumber`, setter-ите на `LocaleCurrency.code` и `minorUnits` и фабриките `LocaleCurrency.current()` и `currency(for:)`. Промяна изисква решение за версия и миграция.

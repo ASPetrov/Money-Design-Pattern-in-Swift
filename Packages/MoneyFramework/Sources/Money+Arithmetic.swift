@@ -146,17 +146,7 @@ extension Money {
     ) -> Money {
         requireValidMoneyOperation("multiplication with target currency") {
             if self.currency.identifier == currency.identifier && self.currency.minorUnits == currency.minorUnits {
-                let product: Money = requireValidMoneyOperation("multiplication with target currency") {
-                    multiplyingChecked(
-                        by: multiplier,
-                        roundingMode: roundingMode
-                    )
-                }
-                return try Money(
-                    validating: product.value,
-                    currency: currency,
-                    roundingMode: roundingMode
-                )
+                return try multiplyInCurrency(multiplier, currency: currency, roundingMode: roundingMode)
             }
             guard case let .success(rate) = multiplier.decimalConversion else {
                 throw ArithmeticError.invalidScalar
@@ -167,6 +157,24 @@ extension Money {
                 roundingMode: roundingMode
             )
         }
+    }
+
+    private func multiplyInCurrency(
+        _ multiplier: DecimalRepresentable,
+        currency: T,
+        roundingMode: Decimal.RoundingMode
+    ) throws -> Money {
+        let product: Money = requireValidMoneyOperation("multiplication with target currency") {
+            multiplyingChecked(
+                by: multiplier,
+                roundingMode: roundingMode
+            )
+        }
+        return try Money(
+            validating: product.value,
+            currency: currency,
+            roundingMode: roundingMode
+        )
     }
 
     /// Divides by a scalar and reports any arithmetic error.
@@ -191,11 +199,14 @@ extension Money {
         else {
             throw ArithmeticError.invalidDivisor
         }
-        var denominator = decimal
-        guard !denominator.isZero else {
+        guard !decimal.isZero else {
             throw ArithmeticError.divisionByZero
         }
+        return try divideDecimal(by: decimal, roundingMode: roundingMode)
+    }
 
+    private func divideDecimal(by divisor: Decimal, roundingMode: Decimal.RoundingMode) throws -> Money {
+        var denominator = divisor
         var numerator = amount
         var quotient = Decimal()
         let status = NSDecimalDivide(

@@ -101,10 +101,7 @@ struct ConversionModelTests {
     @Test(.timeLimit(.minutes(1)), arguments: [false, true])
     func testSupersededRequestKeepsNewerResult(fails: Bool) async throws {
         let provider = ControlledRates()
-        let model = ConversionModel(
-            rateProvider: provider,
-            locale: Locale(identifier: "en_US")
-        )
+        let model = ConversionModel(rateProvider: provider, locale: Locale(identifier: "en_US"))
         model.amountText = "10"
         var requests = provider.requests.makeAsyncIterator()
         let olderConversion = try #require(model.convert())
@@ -115,15 +112,17 @@ struct ConversionModelTests {
         await provider.complete(newer, with: .success(2))
         await newerConversion.value
         let expected = model.state
-        await provider.complete(
-            older,
-            with: fails ? .failure(.unavailable) : .success(1)
-        )
+        let lateRate: Result<Decimal, ControlledRates.Failure> = fails ? .failure(.unavailable) : .success(1)
+        await provider.complete(older, with: lateRate)
         await olderConversion.value
 
         #expect(await provider.wasCancelled(older))
         #expect(model.state == expected)
-        guard case let .converted(result) = expected else {
+        expectNewerAmount(expected)
+    }
+
+    private func expectNewerAmount(_ state: ConversionModel.State) {
+        guard case let .converted(result) = state else {
             Issue.record("Expected the newer conversion to succeed")
             return
         }

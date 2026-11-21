@@ -40,15 +40,7 @@ public final class NormalConvertStrategy: ConvertCurrenciesStrategy {
         rate: Decimal,
         roundingMode: Decimal.RoundingMode
     ) throws -> Money<U> {
-        if money.currency.identifier == currency.identifier {
-            guard money.currency.minorUnits == currency.minorUnits else {
-                throw ConvertCurrenciesStrategyError.incompatibleCurrencyScale
-            }
-            throw ConvertCurrenciesStrategyError.sameCurrency
-        }
-        guard !rate.isNaN, rate > .zero else {
-            throw ConvertCurrenciesStrategyError.invalidExchangeRate
-        }
+        try validateConversion(from: money.currency, to: currency, rate: rate)
         var amount = money.amount
         var rate = rate
         var product = Decimal()
@@ -67,6 +59,22 @@ public final class NormalConvertStrategy: ConvertCurrenciesStrategy {
             throw ConvertCurrenciesStrategyError.unrepresentableResult
         }
         return result
+    }
+
+    private static func validateConversion<T: Currency, U: Currency>(
+        from source: T,
+        to currency: U,
+        rate: Decimal
+    ) throws {
+        if source.identifier == currency.identifier {
+            guard source.minorUnits == currency.minorUnits else {
+                throw ConvertCurrenciesStrategyError.incompatibleCurrencyScale
+            }
+            throw ConvertCurrenciesStrategyError.sameCurrency
+        }
+        guard !rate.isNaN, rate > .zero else {
+            throw ConvertCurrenciesStrategyError.invalidExchangeRate
+        }
     }
 }
 

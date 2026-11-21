@@ -60,6 +60,9 @@ struct AmountTests {
         #expect(throws: (any Error).self) {
             _ = try Amount(minorUnits: 1, scale: Int.max)
         }
+    }
+
+    @Test func testRejectsUnrepresentableMinorUnits() throws {
         #expect(throws: (any Error).self) {
             _ = try Amount(decimalString: "0.001").minorUnits(scale: 2)
         }

@@ -82,6 +82,10 @@ struct MoneyAllocationTests {
                 _ = try money.allocate(ratios: ratios)
             }
         }
+    }
+
+    @Test func testAllocationRejectsMinorUnitOverflow() throws {
+        let currency = try #require(LocaleCurrency(localeIdentifier: "en_US"))
         let large = try #require(Money(amount: Decimal(Int.max), currency: currency))
         #expect(throws: Amount.ValidationError.minorUnitsOutOfRange) {
             _ = try large.checkedMinorUnits()

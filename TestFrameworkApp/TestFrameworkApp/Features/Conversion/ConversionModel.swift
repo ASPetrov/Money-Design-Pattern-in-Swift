@@ -107,47 +107,67 @@ final class ConversionModel: ObservableObject {
             return nil
         }
 
-        let money: Money<LocaleCurrency>
-        do {
-            let amount = try Amount(localizedString: amountText, locale: locale)
-            money = try Money(validating: amount, currency: sourceCurrency)
-        } catch {
-            state = .failed(.invalidAmount)
+        guard let money = inputMoney(currency: sourceCurrency) else {
             return nil
         }
-
         if source == destination {
             state = .converted(money)
             return nil
         }
 
+        return startConversion(money, to: destinationCurrency)
+    }
+
+    private func inputMoney(currency: LocaleCurrency) -> Money<LocaleCurrency>? {
+        do {
+            let amount = try Amount(localizedString: amountText, locale: locale)
+            return try Money(validating: amount, currency: currency)
+        } catch {
+            state = .failed(.invalidAmount)
+            return nil
+        }
+    }
+
+    private func startConversion(
+        _ money: Money<LocaleCurrency>,
+        to currency: LocaleCurrency
+    ) -> Task<Void, Never> {
+        let source = source
+        let destination = destination
         let request = UUID()
         activeRequest = request
         state = .loading
         let task = Task { [weak self, rateProvider] in
-            do {
-                try Task.checkCancellation()
-                let rate = try await rateProvider.rate(
-                    from: source,
-                    to: destination
-                )
-                try Task.checkCancellation()
-                let result = try money.convertTo(
-                    destinationCurrency,
-                    usingExchangeRate: rate
-                )
-                self?.finish(request, with: .converted(result))
-            } catch is CancellationError {
-                self?.finish(request, with: .idle)
-            } catch {
-                self?.finish(
-                    request,
-                    with: Task.isCancelled ? .idle : .failed(.rateUnavailable)
-                )
-            }
+            let result = await Self.conversionState(
+                money,
+                to: currency,
+                from: source,
+                destination: destination,
+                provider: rateProvider
+            )
+            self?.finish(request, with: result)
         }
         conversionTask = task
         return task
+    }
+
+    private static func conversionState(
+        _ money: Money<LocaleCurrency>,
+        to currency: LocaleCurrency,
+        from source: DemoCurrency,
+        destination: DemoCurrency,
+        provider: any ExchangeRateProviding
+    ) async -> State {
+        do {
+            try Task.checkCancellation()
+            let rate = try await provider.rate(from: source, to: destination)
+            try Task.checkCancellation()
+            return try .converted(money.convertTo(currency, usingExchangeRate: rate))
+        } catch is CancellationError {
+            return .idle
+        } catch {
+            return Task.isCancelled ? .idle : .failed(.rateUnavailable)
+        }
     }
 
     func cancelConversion() {
