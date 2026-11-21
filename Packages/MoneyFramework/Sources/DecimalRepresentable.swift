@@ -149,8 +149,8 @@ extension String: DecimalRepresentable {
 
     /// Requires an exact, locale-independent decimal string. Use decimalConversion to inspect a failure.
     public var decimalNumber: Decimal {
-        requireValidMoneyOperation("decimal string conversion") {
-            try Amount(decimalString: self).decimalValue
+        MoneyOperation.require("decimal string conversion") {
+            decimalConversion
         }
     }
 

@@ -40,14 +40,14 @@ extension Money {
 
     /// For validated inputs. Use allocate(recipientCount:) to handle errors.
     public func allocate(_ n: Int) -> [Money] {
-        requireValidMoneyOperation("equal allocation") {
+        MoneyOperation.require("equal allocation") {
             try allocate(recipientCount: n)
         }
     }
 
     /// For validated inputs. Use allocate(ratios:) to handle errors.
     public func allocate(_ ratios: [Int]) -> [Money] {
-        requireValidMoneyOperation("weighted allocation") {
+        MoneyOperation.require("weighted allocation") {
             try allocate(ratios: ratios)
         }
     }

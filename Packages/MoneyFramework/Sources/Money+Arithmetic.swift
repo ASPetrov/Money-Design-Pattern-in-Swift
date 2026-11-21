@@ -12,7 +12,7 @@ extension Money {
 
     /// Requires compatible currencies and a representable result.
     public func add(_ money: Money) -> Money {
-        requireValidMoneyOperation("addition") {
+        MoneyOperation.require("addition") {
             addingChecked(money)
         }
     }
@@ -38,7 +38,7 @@ extension Money {
     }
 
     public func add(_ newAmount: DecimalRepresentable, roundingMode: Decimal.RoundingMode = .bankers) -> Money {
-        requireValidMoneyOperation("scalar addition") {
+        MoneyOperation.require("scalar addition") {
             addingChecked(newAmount, roundingMode: roundingMode)
         }
     }
@@ -48,9 +48,7 @@ extension Money {
         _ scalar: DecimalRepresentable,
         roundingMode: Decimal.RoundingMode = .bankers
     ) -> Result<Money, ArithmeticError> {
-        scalar.decimalConversion.mapError { _ in
-            ArithmeticError.invalidScalar
-        }.flatMap { decimal in
+        withDecimalScalar(scalar) { decimal in
             checkedScalarOperation(
                 amount, decimal,
                 roundingMode: roundingMode,
@@ -61,7 +59,7 @@ extension Money {
 
     /// Requires compatible currencies and a representable result.
     public func subtract(_ money: Money) -> Money {
-        requireValidMoneyOperation("subtraction") {
+        MoneyOperation.require("subtraction") {
             subtractingChecked(money)
         }
     }
@@ -92,7 +90,7 @@ extension Money {
         _ newAmount: DecimalRepresentable,
         roundingMode: Decimal.RoundingMode = .bankers
     ) -> Money {
-        requireValidMoneyOperation("scalar subtraction") {
+        MoneyOperation.require("scalar subtraction") {
             subtractingChecked(
                 newAmount,
                 roundingMode: roundingMode
@@ -105,9 +103,7 @@ extension Money {
         _ scalar: DecimalRepresentable,
         roundingMode: Decimal.RoundingMode = .bankers
     ) -> Result<Money, ArithmeticError> {
-        scalar.decimalConversion.mapError { _ in
-            ArithmeticError.invalidScalar
-        }.flatMap { decimal in
+        withDecimalScalar(scalar) { decimal in
             checkedScalarOperation(
                 amount, decimal,
                 roundingMode: roundingMode,
@@ -120,7 +116,7 @@ extension Money {
         _ multiplier: DecimalRepresentable,
         roundingMode: Decimal.RoundingMode = .bankers
     ) -> Money {
-        requireValidMoneyOperation("multiplication") {
+        MoneyOperation.require("multiplication") {
             multiplyingChecked(
                 by: multiplier,
                 roundingMode: roundingMode
@@ -133,9 +129,7 @@ extension Money {
         by multiplier: DecimalRepresentable,
         roundingMode: Decimal.RoundingMode = .bankers
     ) -> Result<Money, ArithmeticError> {
-        multiplier.decimalConversion.mapError { _ in
-            ArithmeticError.invalidScalar
-        }.flatMap { decimal in
+        withDecimalScalar(multiplier) { decimal in
             checkedScalarOperation(
                 amount, decimal,
                 roundingMode: roundingMode,
@@ -149,7 +143,7 @@ extension Money {
         currency: T,
         roundingMode: Decimal.RoundingMode = .bankers
     ) -> Money {
-        requireValidMoneyOperation("multiplication with target currency") {
+        MoneyOperation.require("multiplication with target currency") {
             if
                 self.currency.identifier == currency.identifier
                 && self.currency.minorUnits == currency.minorUnits {
@@ -175,19 +169,16 @@ extension Money {
         currency: T,
         roundingMode: Decimal.RoundingMode
     ) throws -> Money {
-        let product: Money = requireValidMoneyOperation(
-            "multiplication with target currency"
-        ) {
-            multiplyingChecked(
-                by: multiplier,
+        switch multiplyingChecked(by: multiplier, roundingMode: roundingMode) {
+        case let .success(product):
+            return try Money(
+                validating: product.value,
+                currency: currency,
                 roundingMode: roundingMode
             )
+        case let .failure(error):
+            throw error
         }
-        return try Money(
-            validating: product.value,
-            currency: currency,
-            roundingMode: roundingMode
-        )
     }
 
     /// Divides by a scalar and reports any arithmetic error.
@@ -267,10 +258,8 @@ extension Money {
     }
 
     public static func - <R: DecimalRepresentable>(lhs: R, rhs: Money) -> Money {
-        requireValidMoneyOperation("scalar minus money") {
-            lhs.decimalConversion.mapError { _ in
-                ArithmeticError.invalidScalar
-            }.flatMap { decimal in
+        MoneyOperation.require("scalar minus money") {
+            rhs.withDecimalScalar(lhs) { decimal in
                 rhs.checkedScalarOperation(
                     decimal,
                     rhs.amount,
@@ -307,6 +296,16 @@ extension Money {
         }
     }
 
+    private func withDecimalScalar(
+        _ scalar: DecimalRepresentable,
+        _ operation: (Decimal) -> Result<Money, ArithmeticError>
+    ) -> Result<Money, ArithmeticError> {
+        guard case let .success(decimal) = scalar.decimalConversion else {
+            return .failure(.invalidScalar)
+        }
+        return operation(decimal)
+    }
+
     private func checkedScalarOperation(
         _ lhs: Decimal,
         _ rhs: Decimal,
@@ -330,17 +329,5 @@ extension Money {
             }
             return rounded
         }
-    }
-}
-
-private func requireValidMoneyOperation<Value, Failure: Error>(
-    _ operation: StaticString,
-    _ body: () -> Result<Value, Failure>
-) -> Value {
-    switch body() {
-    case let .success(value):
-        return value
-    case let .failure(error):
-        preconditionFailure("Money \(operation) failed: \(error)")
     }
 }

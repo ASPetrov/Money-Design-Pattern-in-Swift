@@ -251,7 +251,9 @@ extension Money {
 
     /// For amounts that fit in Int. Use checkedMinorUnits() to handle errors.
     public var amountInMinorUnits: Int {
-        requireValidMoneyOperation("minor-unit count") { try checkedMinorUnits() }
+        MoneyOperation.require("minor-unit count") {
+            try checkedMinorUnits()
+        }
     }
 
     /// Returns the signed count of the currency's smallest units, such as cents for USD.
@@ -266,7 +268,7 @@ extension Money {
     }
 
     public func amount(from subunits: Int) -> Decimal {
-        requireValidMoneyOperation("major-unit amount") {
+        MoneyOperation.require("major-unit amount") {
             try Amount(
                 minorUnits: subunits,
                 scale: currency.minorUnits
@@ -312,7 +314,7 @@ extension Money: Comparable {
 
     /// Requires matching currency identifiers and scales. Use `compare(to:)` for unvalidated currencies.
     public static func < (lhs: Money, rhs: Money) -> Bool {
-        requireValidMoneyOperation("comparison") {
+        MoneyOperation.require("comparison") {
             try lhs.compare(to: rhs) == .orderedAscending
         }
     }
@@ -324,15 +326,5 @@ extension Money: Comparable {
         var lhs = amount
         var rhs = other.amount
         return NSDecimalCompare(&lhs, &rhs)
-    }
-}
-
-func requireValidMoneyOperation<Value>(
-    _ operation: StaticString, _ body: () throws -> Value
-) -> Value {
-    do {
-        return try body()
-    } catch {
-        preconditionFailure("Money \(operation) failed: \(error)")
     }
 }

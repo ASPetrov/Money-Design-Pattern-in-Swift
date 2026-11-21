@@ -105,6 +105,22 @@ struct MoneyArithmeticTests {
         #expect(money.multiply(multiplier, roundingMode: .up).amount == Decimal(string: "0.13"))
     }
 
+    @Test func testMultiplyKeepsTargetCurrency() throws {
+        let euros = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
+        let dollars = try #require(LocaleCurrency(isoCurrencyCode: "USD"))
+        var target = euros
+        target.name = "Target euro"
+        let amount = try Amount(decimalString: "0.25")
+        let money = try Money(validating: amount, currency: euros)
+
+        let product = money.multiply(0.5, currency: target, roundingMode: .plain)
+        #expect(product.amount == Decimal(string: "0.13"))
+        #expect(product.currency.name == target.name)
+        let converted = money.multiply(2, currency: dollars)
+        #expect(converted.amount == Decimal(string: "0.50"))
+        #expect(converted.currency == dollars)
+    }
+
     @Test func testCheckedArithmeticReturnsFailures() throws {
         let eur = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
         let usd = try #require(LocaleCurrency(isoCurrencyCode: "USD"))
