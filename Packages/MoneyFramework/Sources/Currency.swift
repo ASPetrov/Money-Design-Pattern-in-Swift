@@ -91,11 +91,13 @@ extension Currency {
         from number: NSNumber,
         locale: Locale? = nil
     ) -> String? {
-        if usesCustomFormatting {
+        guard let currencyLocale = isoFormattingLocale() else {
             return customString(from: number, locale: locale ?? .current)
         }
-
-        return formattingCurrency(locale: locale).string(from: number)
+        return formattingCurrency(
+            locale: locale,
+            currencyLocale: currencyLocale
+        ).string(from: number)
     }
 
     /// Returns nil if the input cannot be parsed as an exact monetary amount.
@@ -153,12 +155,15 @@ extension Currency {
     }
 
     func parseAmount(_ string: String, locale: Locale?) throws -> Amount {
-        if usesCustomFormatting {
+        guard let currencyLocale = isoFormattingLocale() else {
             return try parseCustomAmount(string, locale: locale ?? .current)
         }
 
-        let selectedLocale = locale ?? Locale.locale(for: code) ?? .current
-        let formatter = formattingCurrency(locale: locale, fallback: selectedLocale)
+        let selectedLocale = locale ?? currencyLocale
+        let formatter = formattingCurrency(
+            locale: locale,
+            currencyLocale: currencyLocale
+        )
         if
             let amount = try parseCurrencyAffixes(
                 string,
@@ -267,12 +272,10 @@ extension Currency {
 
     private func formattingCurrency(
         locale: Locale?,
-        fallback: Locale? = nil
+        currencyLocale: Locale
     ) -> NumberFormatter {
         guard let locale else {
-            return currencyFormatter(
-                with: fallback ?? Locale.locale(for: code) ?? .current
-            )
+            return currencyFormatter(with: currencyLocale)
         }
         let formatter = NumberFormatter(currencyLocale: locale)
         formatter.currencyCode = code
@@ -280,8 +283,8 @@ extension Currency {
         return formatter
     }
 
-    private var usesCustomFormatting: Bool {
-        identifier.usesCustomFormatting || Locale.locale(for: code) == nil
+    private func isoFormattingLocale() -> Locale? {
+        identifier.usesCustomFormatting ? nil : Locale.locale(for: code)
     }
 
     private func decimalFormatter(locale: Locale) -> NumberFormatter {
@@ -295,89 +298,11 @@ extension Currency {
 /// Crypto currency types (Bitcoin etc) should refine CryptoCurrency.
 public protocol CryptoCurrency: Currency { }
 
-/// LocaleCurrency a refinement of Currency so we can get it from Locale.
-public struct LocaleCurrency: Currency, Sendable {
-
-    // MARK: - Currency
-
-    public var code: String
-    public var identifier: CurrencyIdentifier { .iso(code.uppercased()) }
-    public var name: String
-    public var minorUnits: Int
-    public var symbol: String?
-    public var separator: String?
-    public var delimiter: String?
-
-    public init(
-        code: String,
-        name: String,
-        minorUnits: Int,
-        symbol: String?,
-        separator: String?,
-        delimiter: String?
-    ) {
-        self.code = code
-        self.name = name
-        self.minorUnits = minorUnits
-        self.symbol = symbol
-        self.separator = separator
-        self.delimiter = delimiter
-    }
-}
-
-/// LocaleCurrency Convenience  constructors
-extension LocaleCurrency {
-
-    public init?(localeIdentifier: String) {
-        // Check for valid identifier
-        if !Locale.availableIdentifiers.contains(localeIdentifier) {
-            return nil
-        }
-
-        let canonicalIdentifier = Locale.canonicalIdentifier(
-            from: localeIdentifier
-        )
-        let locale = Locale(identifier: canonicalIdentifier)
-
-        self.init(locale: locale)
-    }
-
-    public init?(locale: Locale = Locale.current) {
-        guard let currencyCode = locale.currencyCode else {
-            return nil
-        }
-
-        let formatter = NumberFormatter(currencyLocale: locale)
-        let currencyName =
-            locale.localizedString(forCurrencyCode: currencyCode) ?? currencyCode
-        self.init(
-            code: currencyCode,
-            name: currencyName,
-            minorUnits: formatter.maximumFractionDigits,
-            symbol: formatter.currencySymbol,
-            separator: formatter.currencyDecimalSeparator,
-            delimiter: formatter.currencyGroupingSeparator
-        )
-    }
-}
-
-/// LocaleCurrency factory methods
-extension LocaleCurrency {
-
-    public static func current() -> LocaleCurrency? {
-        Self(locale: Locale.current)
-    }
-
-    public static func currency(for locale: Locale) -> LocaleCurrency? {
-        Self(locale: locale)
-    }
-}
-
 // MARK: - Helpers
 
 extension NumberFormatter {
 
-    fileprivate convenience init(currencyLocale: Locale) {
+    convenience init(currencyLocale: Locale) {
         self.init()
         numberStyle = .currency
         locale = currencyLocale

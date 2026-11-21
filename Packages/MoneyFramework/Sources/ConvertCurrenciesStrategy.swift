@@ -68,12 +68,10 @@ public final class NormalConvertStrategy: ConvertCurrenciesStrategy {
         to currency: U,
         rate: Decimal
     ) throws {
-        if source.identifier == currency.identifier {
-            guard source.minorUnits == currency.minorUnits else {
-                throw ConvertCurrenciesStrategyError.incompatibleCurrencyScale
-            }
-
-            throw ConvertCurrenciesStrategyError.sameCurrency
+        guard source.identifier != currency.identifier else {
+            throw source.minorUnits == currency.minorUnits
+                ? ConvertCurrenciesStrategyError.sameCurrency
+                : ConvertCurrenciesStrategyError.incompatibleCurrencyScale
         }
         guard !rate.isNaN, rate > .zero else {
             throw ConvertCurrenciesStrategyError.invalidExchangeRate

@@ -114,6 +114,20 @@ struct CustomCurrencyTests {
         }
     }
 
+    @Test func testCurrencyConflictPrecedesInvalidRate() throws {
+        let usd = try #require(LocaleCurrency(isoCurrencyCode: "USD"))
+        var otherScale = usd
+        otherScale.minorUnits = usd.minorUnits + 1
+        let source = try Money(validating: Amount(integer: 1), currency: usd)
+
+        #expect(throws: ConvertCurrenciesStrategyError.sameCurrency) {
+            _ = try source.convertTo(usd, usingExchangeRate: .zero)
+        }
+        #expect(throws: ConvertCurrenciesStrategyError.incompatibleCurrencyScale) {
+            _ = try source.convertTo(otherScale, usingExchangeRate: .zero)
+        }
+    }
+
     @Test func testRejectsConversionOverflow() throws {
         let usd = try #require(LocaleCurrency(isoCurrencyCode: "usd"))
         let credits = try #require(CustomCurrency(

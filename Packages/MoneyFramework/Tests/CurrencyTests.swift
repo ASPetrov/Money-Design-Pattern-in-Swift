@@ -148,6 +148,39 @@ struct CurrencyTests {
         #expect(result == false, "Currencies should not match")
     }
 
+    @Test func testCurrencyNumberParsesExactAmount() throws {
+        let currency = try #require(LocaleCurrency(isoCurrencyCode: "USD"))
+        let locale = Locale(identifier: "de_DE")
+        let parsed = try #require(currency.number(from: "1.234,56", locale: locale))
+
+        #expect(parsed.decimalValue == Decimal(123_456) / 100)
+        #expect(currency.number(from: "1.234,56 extra", locale: locale) == nil)
+    }
+
+    @Test func testDefaultFormattingUsesCurrencySymbol() throws {
+        var currency = try #require(LocaleCurrency(isoCurrencyCode: "USD"))
+        currency.symbol = "TEST"
+        let amount = NSDecimalNumber(value: 12)
+        let source = try #require(currency.string(from: amount))
+        let explicit = try #require(currency.string(from: amount, locale: Locale(identifier: "en_US")))
+
+        #expect(source.contains("TEST"))
+        #expect(!explicit.contains("TEST"))
+        #expect(currency.number(from: source)?.decimalValue == Decimal(12))
+    }
+
+    @Test func testUnknownIsoCodeUsesCustomFormat() throws {
+        let currency = LocaleCurrency(
+            code: "ZZZ", name: "Example", minorUnits: 2, symbol: "ZZZ", separator: nil, delimiter: nil
+        )
+        let amount = NSDecimalNumber(value: 12)
+        for locale: Locale? in [nil, Locale(identifier: "de_DE")] {
+            let text = try #require(currency.string(from: amount, locale: locale))
+            #expect(text == "12 ZZZ")
+            #expect(currency.number(from: text, locale: locale)?.decimalValue == Decimal(12))
+        }
+    }
+
     @Test func testConfiguresFormattersIndependently() throws {
         let currency = try #require(LocaleCurrency(isoCurrencyCode: "USD"))
         let locale = Locale(identifier: "en_US")
