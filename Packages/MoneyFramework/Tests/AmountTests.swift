@@ -16,6 +16,26 @@ struct AmountTests {
         }
     }
 
+    @Test(arguments: [Double.nan, .infinity, -.infinity, .greatestFiniteMagnitude, .leastNonzeroMagnitude])
+    func testDoubleOutsideDecimalRange(_ value: Double) throws {
+        let scalar: any DecimalRepresentable = value
+        let currency = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
+        let money = try #require(Money(amount: Decimal(5), currency: currency))
+
+        #expect(money.addingChecked(scalar) == .failure(.invalidScalar))
+        #expect(money.subtractingChecked(scalar) == .failure(.invalidScalar))
+        #expect(money.multiplyingChecked(by: scalar) == .failure(.invalidScalar))
+        #expect(money.dividingChecked(by: scalar) == .failure(.invalidDivisor))
+    }
+
+    @Test func testFiniteDoubleKeepsRounding() throws {
+        let currency = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
+        let money = try #require(Money(amount: Decimal(5), currency: currency))
+        let rounded = try #require(Money(amount: "0.62", currency: currency))
+
+        #expect(money.multiplyingChecked(by: 0.125) == .success(rounded))
+    }
+
     @Test func testDivisionUsesExactScalarsAndFlagsText() throws {
         let currency = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
         let money = try #require(Money(amount: Decimal(1), currency: currency))

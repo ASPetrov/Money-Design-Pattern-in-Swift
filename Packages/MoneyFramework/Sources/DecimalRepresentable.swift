@@ -110,6 +110,13 @@ extension Double: DecimalRepresentable {
     public var decimalNumber: Decimal {
         Decimal(self)
     }
+
+    public var decimalConversion: Result<Decimal, any Error> {
+        guard isFinite else {
+            return .failure(Amount.ValidationError.unrepresentableValue)
+        }
+        return decimalNumber.decimalConversion
+    }
 }
 
 //extension Float80: MoneyRepresentable {
