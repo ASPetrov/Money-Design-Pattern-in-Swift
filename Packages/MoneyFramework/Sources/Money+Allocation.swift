@@ -31,20 +31,7 @@ extension Money {
         else {
             throw ArithmeticError.invalidRecipientCount
         }
-        var totalWeight: UInt = 0
-        for ratio in ratios {
-            guard let weight = UInt(exactly: ratio) else {
-                throw ArithmeticError.invalidRatios
-            }
-            let (sum, overflow) = totalWeight.addingReportingOverflow(weight)
-            guard !overflow else {
-                throw ArithmeticError.totalWeightOutOfRange
-            }
-            totalWeight = sum
-        }
-        guard totalWeight > 0 else {
-            throw ArithmeticError.invalidRatios
-        }
+        let totalWeight = try checkedTotalWeight(of: ratios)
         return try allocate(count: ratios.count, totalWeight: totalWeight) {
             UInt(ratios[$0])
         }
@@ -62,6 +49,24 @@ extension Money {
         requireValidMoneyOperation("weighted allocation") {
             try allocate(ratios: ratios)
         }
+    }
+
+    private func checkedTotalWeight(of ratios: [Int]) throws -> UInt {
+        var totalWeight: UInt = 0
+        for ratio in ratios {
+            guard let weight = UInt(exactly: ratio) else {
+                throw ArithmeticError.invalidRatios
+            }
+            let (sum, overflow) = totalWeight.addingReportingOverflow(weight)
+            guard !overflow else {
+                throw ArithmeticError.totalWeightOutOfRange
+            }
+            totalWeight = sum
+        }
+        guard totalWeight > 0 else {
+            throw ArithmeticError.invalidRatios
+        }
+        return totalWeight
     }
 
     private func allocate(
