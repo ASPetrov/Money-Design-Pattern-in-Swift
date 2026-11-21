@@ -27,6 +27,12 @@ Review new APIs at the call site:
 - Prefer properties for inexpensive derived values such as `amount`. Document the complexity of computed properties that take more than constant time.
 - For new public APIs, distinguish recoverable invalid input with `throws` when callers need the reason. Document important units, default rounding, and failure conditions that callers cannot infer from the signature.
 
+## Identifier names
+
+Keep function and method names, test methods, variables, parameter names, and enum cases to 40 characters. SwiftLint's `identifier_name` enforces the limit for variables, parameters, and enum cases. The `function_name_length` rule checks function names composed of letters, combining marks, numbers, and underscores. Place declaration comments above the signature. The `test` prefix counts toward the limit. Type names use Swift's type naming conventions.
+
+Use lower camel case and established terms. Check that names read clearly at the call site. SwiftLint reports violations of its lowercase-start convention through `identifier_name`. Start every Swift Testing and XCTest test method with `test` followed by a descriptive upper-camel-case suffix, as in `testRejectsInvalidCurrencyCode`. This convention also applies to parameterized and UI tests. Use ordinary names for test helpers. In Swift Testing, use a display name when the scenario needs more context. [Identifier name specification](Swift-Function-Name-Length.md) · [SwiftLint identifier_name](https://realm.github.io/SwiftLint/identifier_name.html)
+
 ## Instance and type methods
 
 Use instance methods for behavior that depends on a receiver or a supplied strategy. Prefer an initializer when constructing and configuring a new instance. Add a static helper only when the operation belongs to the type and has no natural receiver, such as a pure check used before initialization. Static operators follow Swift's operator declaration conventions.
@@ -49,7 +55,7 @@ SwiftFormat checks mechanical formatting using the root `.swiftformat`. Its wrap
 
 Enable the tracked `pre-commit` hook with `git config --local core.hooksPath .githooks`. The hook runs SwiftFormat and SwiftLint against staged copies of changed Swift files using the staged configurations. Run `swiftformat path/to/File.swift` to apply formatting, review the diff, and stage the intended changes.
 
-Install SwiftLint with `brew install swiftlint`. To check the file-length rule across all tracked Swift files, run this command from the repository root.
+Install SwiftLint with `brew install swiftlint`. To check all SwiftLint rules across tracked Swift files, run this command from the repository root.
 
 ```sh
 git ls-files -z -- '*.swift' | xargs -0 swiftlint lint --no-cache --config .swiftlint.yml

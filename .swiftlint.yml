@@ -1,5 +1,6 @@
 only_rules:
   - file_length
+  - identifier_name
   - force_try
   - force_unwrapping
   - implicitly_unwrapped_optional
@@ -9,6 +10,14 @@ file_length:
   warning: 400
   error: 400
   ignore_comment_only_lines: false
+
+identifier_name:
+  min_length: 0
+  max_length:
+    warning: 20
+    error: 40
+  excluded: []
+  validates_start_with_lowercase: error
 
 force_try: error
 force_unwrapping: error
@@ -23,4 +32,11 @@ custom_rules:
     capture_group: 1
     match_kinds: keyword
     message: Handle the thrown error explicitly.
+    severity: error
+
+  function_name_length:
+    regex: '\bfunc\s+`?([\p{L}_][\p{L}\p{M}\p{N}_]{40,})`?\s*(?=[<(])'
+    capture_group: 1
+    match_kinds: [keyword, identifier]
+    message: Keep function names at 40 characters or fewer.
     severity: error

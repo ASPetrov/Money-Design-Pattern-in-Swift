@@ -3,7 +3,7 @@ import MoneyFramework
 import Testing
 
 struct CustomCurrencyTests {
-    @Test func testCryptoAmountsRoundTripExactlyAcrossLocales() throws {
+    @Test func testCryptoRoundTripsExactlyAcrossLocales() throws {
         for (code, scale) in [("BTC", 8), ("ETH", 18)] {
             let currency = try #require(CustomCurrency(
                 identifier: .asset(network: code, reference: "native"), code: code, name: code, minorUnits: scale
@@ -22,7 +22,7 @@ struct CustomCurrencyTests {
         }
     }
 
-    @Test func testIdentityAndScaleAreCheckedBeforeArithmetic() throws {
+    @Test func testArithmeticChecksIdentityAndScale() throws {
         let original = try token(network: "test:1", reference: "a")
         let alias = try token(network: "test:1", reference: "a", code: "ALIAS")
         let otherNetwork = try token(network: "test:2", reference: "a")
@@ -35,12 +35,12 @@ struct CustomCurrencyTests {
         #expect((lhs + rhs).amount == Decimal(4))
         #expect((lhs - rhs).amount == .zero)
         #expect(try lhs.compare(to: rhs) == .orderedSame)
-        let incompatibleCurrencies: [(CustomCurrency, Money<CustomCurrency>.ArithmeticError)] = [
+        let conflicts: [(CustomCurrency, Money<CustomCurrency>.ArithmeticError)] = [
             (otherNetwork, .incompatibleCurrencies),
             (otherContract, .incompatibleCurrencies),
             (otherScale, .incompatibleCurrencyScale),
         ]
-        for (currency, expected) in incompatibleCurrencies {
+        for (currency, expected) in conflicts {
             let incompatible = try #require(Money(amount: Decimal(2), currency: currency))
             #expect(lhs != incompatible)
             #expect(throws: expected) {
@@ -56,7 +56,7 @@ struct CustomCurrencyTests {
         #expect(!((lhs as Any) is any DecimalRepresentable))
     }
 
-    @Test func testExplicitConversionAcrossCurrencyTypesAndValidation() throws {
+    @Test func testValidatesCrossTypeConversion() throws {
         let usd = try #require(LocaleCurrency(isoCurrencyCode: "usd"))
         let credits = try #require(CustomCurrency(
             identifier: .custom(namespace: "example", code: "credits"),
@@ -102,7 +102,7 @@ struct CustomCurrencyTests {
         #expect(result.currency == targetCurrency)
     }
 
-    @Test func testConversionRejectsConflictingScalesForTheSameIdentity() throws {
+    @Test func testConversionRejectsConflictingScales() throws {
         let currency = try token(network: "test:1", reference: "native")
         let conflictingCurrency = try token(network: "test:1", reference: "native", scale: 18)
         let money = try #require(Money(amount: Decimal(1), currency: currency))
@@ -112,7 +112,7 @@ struct CustomCurrencyTests {
         }
     }
 
-    @Test func testLargeETHRemainsDisplayableOutsideMinorUnitRange() throws {
+    @Test func testFormatsETHBeyondMinorUnitRange() throws {
         let eth = try token(network: "test:1", reference: "native", code: "ETH", scale: 18)
         let money = try #require(Money(amount: Decimal(10), currency: eth))
 
@@ -126,7 +126,7 @@ struct CustomCurrencyTests {
         #expect(CustomCurrency(identifier: eth.identifier, code: "ETH", name: "Ether", minorUnits: 128) == nil)
     }
 
-    @Test func testISOParsingUsesTheRequestedLocaleAndRejectsTrailingText() throws {
+    @Test func testIsoParsingUsesLocaleAndConsumesInput() throws {
         let usd = try #require(LocaleCurrency(isoCurrencyCode: "usd"))
         let locale = Locale(identifier: "de_DE")
         let money = try #require(Money(amount: "1,25", currency: usd, locale: locale))
@@ -145,7 +145,7 @@ struct CustomCurrencyTests {
         }
     }
 
-    @Test func testMoneyRejectsInvalidExternalCurrencyScale() {
+    @Test func testRejectsInvalidExternalCurrencyScale() {
         let externalCurrency = LocaleCurrency(
             code: "USD", name: "US Dollar", minorUnits: -1, symbol: nil, separator: nil, delimiter: nil
         )

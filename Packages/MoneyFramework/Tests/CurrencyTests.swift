@@ -19,30 +19,30 @@ struct CurrencyTests {
     // MARK: - Test Initialization
     //
 
-    @Test func testDefaultConstructorShouldStoreAllPassedValues() {
+    @Test func testInitializerPreservesAllFields() {
         // Given
         let currencyCode = "EUR"
         let currencyName = "Euro"
         let currencyMinorUnits = 2
         let currencySymbol = "€"
-        let currencyDecimalSeparator = "."
-        let currencyGroupingDelimiter = " "
+        let decimalSeparator = "."
+        let groupingDelimiter = " "
         // When
         let currency = LocaleCurrency(
             code: currencyCode,
             name: currencyName,
             minorUnits: currencyMinorUnits,
             symbol: currencySymbol,
-            separator: currencyDecimalSeparator,
-            delimiter: currencyGroupingDelimiter
+            separator: decimalSeparator,
+            delimiter: groupingDelimiter
         )
         // Then
         #expect(currency.code == currencyCode, "Currency code should match")
         #expect(currency.name == currencyName, "Currency name should match")
         #expect(currency.minorUnits == currencyMinorUnits, "Currency minor units should match")
         #expect(currency.symbol == currencySymbol, "Currency symbol should match")
-        #expect(currency.separator == currencyDecimalSeparator, "Currency separator should match")
-        #expect(currency.delimiter == currencyGroupingDelimiter, "Currency delimiter should match")
+        #expect(currency.separator == decimalSeparator, "Currency separator should match")
+        #expect(currency.delimiter == groupingDelimiter, "Currency delimiter should match")
     }
 
     @Test func testCanCreateCurrencyFromCurrencyCode() {
@@ -54,7 +54,7 @@ struct CurrencyTests {
         #expect(currency != nil, "Could not create currency from currency code")
     }
 
-    @Test func testCanNotCreateCurrencyFromInvalidCurrencyCode() {
+    @Test func testRejectsInvalidCurrencyCode() {
         // Given
         let currencyCode = "BGR"
         // When
@@ -63,7 +63,7 @@ struct CurrencyTests {
         #expect(currency == nil, "Should not create currency from invalid currency code")
     }
 
-    @Test func testCanCreateCurrencyFromLocaleWithAssociatedCurrency() {
+    @Test func testCreatesCurrencyForLocaleWithCurrency() {
         // Given
         let locale = Locale(identifier: "fr_FR")
         // When
@@ -72,7 +72,7 @@ struct CurrencyTests {
         #expect(currency != nil, "Could not create currency from locale")
     }
 
-    @Test func testCanNotCreateCurrencFromLocaleWithoutAssociatedCurrency() {
+    @Test func testRejectsLocaleWithoutCurrency() {
         // Given
         let locale = Locale(identifier: "en")
         // When
@@ -81,7 +81,7 @@ struct CurrencyTests {
         #expect(currency == nil, "Should not create currency from locale")
     }
 
-    @Test func defaultCurrencyUsesCurrentLocale() {
+    @Test func testDefaultCurrencyUsesCurrentLocale() {
         #expect(LocaleCurrency() == LocaleCurrency(locale: .current))
     }
 
@@ -89,7 +89,7 @@ struct CurrencyTests {
         ("en_US", "USD", 2, ".", ","),
         ("de_DE", "EUR", 2, ",", "."),
     ])
-    func currencyMetadataMatchesLocale(
+    func testCurrencyMetadataMatchesLocale(
         _ localeID: String,
         _ code: String,
         _ scale: Int,
@@ -109,7 +109,7 @@ struct CurrencyTests {
         }
     }
 
-    @Test func euroMetadataMatchesISOCode() throws {
+    @Test func testEuroMetadataMatchesISOCode() throws {
         let currency = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
 
         #expect(currency.code == "EUR")
@@ -118,7 +118,7 @@ struct CurrencyTests {
         #expect(currency.minorUnits == 2)
     }
 
-    @Test func tunisianDinarHasThreeMinorUnitDigits() throws {
+    @Test func testTunisianDinarHasThreeMinorUnitDigits() throws {
         let currency = try #require(LocaleCurrency(localeIdentifier: "fr_TN"))
 
         #expect(currency.code == "TND")
@@ -149,7 +149,7 @@ struct CurrencyTests {
         #expect(result == false, "Currencies should not match")
     }
 
-    @Test func testCurrencyFormattersCanBeConfiguredIndependently() throws {
+    @Test func testConfiguresFormattersIndependently() throws {
         let currency = try #require(LocaleCurrency(isoCurrencyCode: "USD"))
         let locale = Locale(identifier: "en_US")
         let first = currency.currencyFormatter(with: locale)

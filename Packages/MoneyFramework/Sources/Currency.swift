@@ -270,10 +270,10 @@ extension LocaleCurrency {
             return nil
         }
 
-        let localeCanonicalIdentifier = Locale.canonicalIdentifier(
+        let canonicalIdentifier = Locale.canonicalIdentifier(
             from: localeIdentifier
         )
-        let locale = Locale(identifier: localeCanonicalIdentifier)
+        let locale = Locale(identifier: canonicalIdentifier)
 
         self.init(locale: locale)
     }

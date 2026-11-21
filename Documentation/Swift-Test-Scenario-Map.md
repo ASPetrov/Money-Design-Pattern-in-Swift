@@ -2,22 +2,22 @@
 
 ## Проследяване на миграцията
 
-Библиотечните тестове запазиха имената си при пренасянето, с изключение на следните групи:
+При миграцията библиотечните тестове запазиха имената си с изключение на групите по-долу. При въвеждането на лимита от 40 знака част от имената бяха съкратени със запазено покритие.
 
 | Изходни сценарии | Swift Testing или XCTest |
 | --- | --- |
-| `testCanCreateCurrencyFromCurrentLocale` | `defaultCurrencyUsesCurrentLocale` сравнява подразбиращия се и изричния locale, включително при липса на валута. |
-| Двойките за код, име, символ, мащаб и разделители в `CurrencyTests` | `currencyMetadataMatchesLocale` проверява en_US и de_DE. `euroMetadataMatchesISOCode` проверява конструиране по EUR. `tunisianDinarHasThreeMinorUnitDigits` пази случая с три позиции. |
-| `testUnaryMinusReversesTheSignAndPreservesCurrency` | `unaryMinusReversesSignAndPreservesCurrency` отчита отделни аргументи за положителна, отрицателна и нулева сума. |
-| Двете измервания за lookup | Преместени в `CurrencyPerformanceTests` със същите имена и XCTest. |
+| `testCanCreateCurrencyFromCurrentLocale` | `testDefaultCurrencyUsesCurrentLocale` сравнява подразбиращия се и изричния locale, включително при липса на валута. |
+| Двойките за код, име, символ, мащаб и разделители в `CurrencyTests` | `testCurrencyMetadataMatchesLocale` проверява en_US и de_DE. `testEuroMetadataMatchesISOCode` проверява конструиране по EUR. `testTunisianDinarHasThreeMinorUnitDigits` пази случая с три позиции. |
+| `testUnaryMinusReversesTheSignAndPreservesCurrency` | `testNegationFlipsSignAndKeepsCurrency` отчита отделни аргументи за положителна, отрицателна и нулева сума. |
+| Двете измервания за lookup | Преместени в `CurrencyPerformanceTests` с XCTest. Текущите имена са `testLookupByLocalePerformance` и `testLookupByISOCodePerformance`. |
 
 Допълнителните регресии от етапи 9 и 9.1 за независими formatter-и, проверена аритметика, скаларно парсиране и съвместимо сортиране са пренесени със съответните си тестове.
 
-В етап 12 четирите сценария в `ConversionModelTests` са пренесени към Swift Testing със същите проверки. Имената им започват с глагол и са без префикс `test`. UI сценарият остава в `OfflineConversionTests` с XCTest.
+В етап 12 четирите сценария в `ConversionModelTests` са пренесени към Swift Testing със същите проверки. Текущата политика изисква префикс `test` и за Swift Testing. UI сценарият остава в `OfflineConversionTests` с XCTest.
 
 ## База от етап 7
 
-База от етап 7. Обхваща 77 библиотечни, 4 приложни unit и 1 UI XCTest метода. Имената по-долу са текущите методи. При обединяване запази входовете и проверките, които пазят различен договор.
+База от етап 7. Обхваща 77 библиотечни, 4 приложни unit и 1 UI XCTest метода. Имената по-долу са от базовата ревизия. При обединяване запази входовете и проверките, които пазят различен договор.
 
 ## AmountTests
 

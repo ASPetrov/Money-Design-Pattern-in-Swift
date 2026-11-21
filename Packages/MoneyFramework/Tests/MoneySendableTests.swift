@@ -3,7 +3,7 @@ import MoneyFramework
 import Testing
 
 struct MoneySendableTests {
-    @Test func builtInCurrencyAmountsCrossActorIsolation() async throws {
+    @Test func testMoneyCrossesActorsWithBuiltInUnits() async throws {
         let currency = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
         let token = try #require(CustomCurrency(
             identifier: .asset(network: "example", reference: "native"),

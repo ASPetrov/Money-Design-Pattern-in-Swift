@@ -60,7 +60,7 @@ struct MoneyArithmeticTests {
         #expect(result.amount == Decimal(24), "Money amount should be $ 24.00")
     }
 
-    @Test func testSubtractOperatorWithMoneyOnEitherSide() throws {
+    @Test func testSubtractsWithMoneyOnEitherSide() throws {
         let currency = try #require(LocaleCurrency(localeIdentifier: "en_US"))
         let money = try #require(Money(amount: Decimal(10), currency: currency))
 
@@ -69,7 +69,7 @@ struct MoneyArithmeticTests {
         #expect((3 - money).currency == currency)
     }
 
-    @Test func testMultiplyOperatorWithMoneyOnEitherSide() throws {
+    @Test func testMultipliesWithMoneyOnEitherSide() throws {
         let currency = try #require(LocaleCurrency(localeIdentifier: "en_US"))
         let money = try #require(Money(amount: Decimal(10), currency: currency))
 
@@ -78,7 +78,7 @@ struct MoneyArithmeticTests {
         #expect((3 * money).currency == currency)
     }
 
-    @Test func testArithmeticRoundingIsSelectedPerOperation() throws {
+    @Test func testSelectsRoundingPerOperation() throws {
         let currency = try #require(LocaleCurrency(localeIdentifier: "en_US"))
         let initialAmount = try #require(Decimal(string: "1.01"))
         let money = try #require(Money(amount: initialAmount, currency: currency, roundingMode: .plain))
@@ -104,7 +104,7 @@ struct MoneyArithmeticTests {
         #expect(money.multiply(multiplier, roundingMode: .up).amount == Decimal(string: "0.13"))
     }
 
-    @Test func testCheckedArithmeticReportsFailuresWithoutThrowing() throws {
+    @Test func testCheckedArithmeticReturnsFailures() throws {
         let eur = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
         let usd = try #require(LocaleCurrency(isoCurrencyCode: "USD"))
         let money = try Money(validating: Amount(integer: 10), currency: eur)
@@ -125,7 +125,7 @@ struct MoneyArithmeticTests {
         #expect(large.multiplyingChecked(by: factor) == .failure(.unrepresentableResult))
     }
 
-    @Test func testCheckedDivisionHandlesZeroAndAppliesRequestedRounding() throws {
+    @Test func testCheckedDivisionWithZeroAndRounding() throws {
         let currency = try #require(LocaleCurrency(localeIdentifier: "en_US"))
         let zero = try #require(Money(currency: currency))
         let money = try #require(Money(amount: Decimal(1), currency: currency, roundingMode: .plain))
@@ -150,7 +150,7 @@ struct MoneyArithmeticTests {
     }
 
     @Test(arguments: [423, -423, 0])
-    func unaryMinusReversesSignAndPreservesCurrency(units: Int) throws {
+    func testNegationFlipsSignAndKeepsCurrency(units: Int) throws {
         let currency = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
         let value = try Amount(minorUnits: units, scale: currency.minorUnits)
         let money = try #require(Money(value: value, currency: currency))

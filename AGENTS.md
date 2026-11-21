@@ -41,7 +41,7 @@ Install SwiftLint with `brew install swiftlint` to check the 400-line limit. Ena
 ## Agent skills
 
 - Use `$swift-concurrency` for actor isolation, `Sendable`, and task cancellation work.
-- Use `$swift-testing-expert` for test design. Use Swift Testing for functional unit tests and XCTest for UI automation and performance measurements.
+- Use `$swift-testing-expert` for test design. Use Swift Testing for functional unit tests and XCTest for UI automation and performance measurements. Prefix test methods in both frameworks with `test` and keep the full name within 40 characters.
 
 ## Commit messages
 

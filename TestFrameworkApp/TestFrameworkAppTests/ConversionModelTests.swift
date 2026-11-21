@@ -4,7 +4,7 @@ import Testing
 
 struct ConversionModelTests {
     @MainActor
-    @Test func convertsSelectedCurrenciesUsingSampleRates() async {
+    @Test func testConvertsSelectedPairAtSampleRate() async {
         let model = ConversionModel(rateProvider: SampleRateProvider(), locale: Locale(identifier: "en_US"))
         model.amountText = "10.50"
         model.source = .usd
@@ -24,7 +24,7 @@ struct ConversionModelTests {
     }
 
     @MainActor
-    @Test func rejectsInvalidAmountBeforeConversion() async {
+    @Test func testRejectsInvalidAmountBeforeConversion() async {
         let provider = UnavailableRates()
         let model = ConversionModel(rateProvider: provider, locale: Locale(identifier: "en_US"))
         model.amountText = "10oops"
@@ -37,7 +37,7 @@ struct ConversionModelTests {
     }
 
     @MainActor
-    @Test func sameCurrencyUsesTheOriginalAmount() async {
+    @Test func testSameCurrencyUsesTheOriginalAmount() async {
         let provider = UnavailableRates()
         let model = ConversionModel(rateProvider: provider, locale: Locale(identifier: "de_DE"))
         model.amountText = "1,25"
@@ -56,7 +56,7 @@ struct ConversionModelTests {
 
     @MainActor
     @Test(.timeLimit(.minutes(1)))
-    func editingTheAmountCancelsThePendingRequest() async throws {
+    func testEditingAmountCancelsRequest() async throws {
         let provider = ControlledRates()
         let model = ConversionModel(
             rateProvider: provider,
@@ -78,7 +78,7 @@ struct ConversionModelTests {
 
     @MainActor
     @Test(.timeLimit(.minutes(1)))
-    func leavingTheScreenCancelsThePendingRequest() async throws {
+    func testLeavingScreenCancelsRequest() async throws {
         let provider = ControlledRates()
         let model = ConversionModel(
             rateProvider: provider,
@@ -99,7 +99,7 @@ struct ConversionModelTests {
 
     @MainActor
     @Test(.timeLimit(.minutes(1)), arguments: [false, true])
-    func supersededRequestCannotReplaceNewerResult(fails: Bool) async throws {
+    func testSupersededRequestKeepsNewerResult(fails: Bool) async throws {
         let provider = ControlledRates()
         let model = ConversionModel(
             rateProvider: provider,
@@ -131,7 +131,7 @@ struct ConversionModelTests {
     }
 
     @MainActor
-    @Test func reportsProviderFailure() async {
+    @Test func testReportsProviderFailure() async {
         let model = ConversionModel(
             rateProvider: UnavailableRates(),
             locale: Locale(identifier: "en_US")

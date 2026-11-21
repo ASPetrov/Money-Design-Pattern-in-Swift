@@ -46,7 +46,7 @@ struct MoneyTests {
         #expect(money != nil, "Could not create money with string amount")
     }
 
-    @Test func testCanCreateMoneyWithAmountAsFormattedString() throws {
+    @Test func testCreatesMoneyFromFormattedAmount() throws {
         // Given
         let currency = try #require(LocaleCurrency(isoCurrencyCode: "USD"))
         let amount = "$1"
@@ -222,7 +222,7 @@ struct MoneyTests {
     //
 
     // opertator == is using equals method (??? - no need to be tested)
-    @Test func testTwoMoneyObjectsWithSameAmountAndCurrencyAreEqual() throws {
+    @Test func testEqualAmountsAndCurrenciesAreEqual() throws {
         // Given
         let currency = try #require(LocaleCurrency(localeIdentifier: "en_US"))
         let moneyLHS = try #require(Money(amount: "0.0", currency: currency))
@@ -233,7 +233,7 @@ struct MoneyTests {
         #expect(result, "Money should match")
     }
 
-    @Test func testTwoMoneyObjectsWithDifferentAmountAndSameCurrencyAreNotEqual() throws {
+    @Test func testUnequalAmountsInTheSameCurrency() throws {
         // Given
         let currency = try #require(LocaleCurrency(localeIdentifier: "en_US"))
         let moneyLHS = try #require(Money(amount: "0.0", currency: currency))
@@ -244,7 +244,7 @@ struct MoneyTests {
         #expect(!(result), "Money should not match")
     }
 
-    @Test func testTwoMoneyObjectsWithSameAmountAndDifferentCurrencyAreNotEqual() throws {
+    @Test func testEqualAmountsInDifferentCurrencies() throws {
         // Given
         let currencyLHS = try #require(LocaleCurrency(localeIdentifier: "en_US"))
         let currencyRHS = try #require(LocaleCurrency(localeIdentifier: "fr_TN"))
@@ -256,7 +256,7 @@ struct MoneyTests {
         #expect(!(result), "Money should not match")
     }
 
-    @Test func testTwoMoneyObjectsWithDifferentAmountAndDifferentCurrencyAreNotEqual() throws {
+    @Test func testUnequalAmountsAndCurrencies() throws {
         // Given
         let currencyLHS = try #require(LocaleCurrency(localeIdentifier: "en_US"))
         let currencyRHS = try #require(LocaleCurrency(localeIdentifier: "fr_TN"))
@@ -272,7 +272,7 @@ struct MoneyTests {
     // MARK: - Comparable
     //
 
-    @Test func testLeftSideMoneyObjectAmountIsGreaterThanRightSideMoneyObjectAmount() throws {
+    @Test func testGreaterAmountSortsAfterSmallerAmount() throws {
         // Given
         let currency = try #require(LocaleCurrency(localeIdentifier: "en_US"))
         let moneyLHS = try #require(Money(amount: "15.0", currency: currency))
@@ -284,7 +284,7 @@ struct MoneyTests {
         #expect(result, "Money on the left side should have greater amount than  money on the right side")
     }
 
-    @Test func testLeftSideMoneyObjectAmmountIsLessThanRightSideMoneyObjectAmount() throws {
+    @Test func testSmallerAmountSortsFirst() throws {
         // Given
         let currency = try #require(LocaleCurrency(localeIdentifier: "en_US"))
         let moneyLHS = try #require(Money(amount: "2.0", currency: currency))
@@ -297,7 +297,7 @@ struct MoneyTests {
 
     // TODO: Test with different currencies
 
-    @Test func testConversionAppliesRequestedRoundingAtTargetCurrencyPrecision() throws {
+    @Test func testConversionRoundsAtTargetPrecision() throws {
         let usd = try #require(LocaleCurrency(localeIdentifier: "en_US"))
         let jpy = try #require(LocaleCurrency(localeIdentifier: "ja_JP"))
         let money = try #require(Money(amount: Decimal(1), currency: usd, roundingMode: .plain))
@@ -310,7 +310,7 @@ struct MoneyTests {
         #expect(try money.convertTo(jpy, usingExchangeRate: rate).amount == Decimal(2))
     }
 
-    @Test func testAmountBackedMoneyPreservesPublicDecimalAccessAndRounding() throws {
+    @Test func testExposesRoundedAmountAsDecimal() throws {
         let currency = try #require(LocaleCurrency(localeIdentifier: "en_US"))
         let value = try Amount(decimalString: "1.025")
         let money = try #require(Money(value: value, currency: currency, roundingMode: .plain))

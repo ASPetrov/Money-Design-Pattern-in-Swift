@@ -157,7 +157,7 @@ extension Money {
 
 extension Money {
     /// Maximum number of results produced by either checked allocation method.
-    public static var maximumAllocationRecipients: Int { 1_000_000 }
+    public static var maximumAllocationRecipients: Int { 1_000_000 } // swiftlint:disable:this identifier_name
 
     /// Allocates equally, assigning any remaining minor units in input order.
     public func allocate(recipientCount: Int) throws -> [Money] {

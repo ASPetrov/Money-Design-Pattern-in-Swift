@@ -3,7 +3,7 @@ import MoneyFramework
 import Testing
 
 struct AmountTests {
-    @Test func testSignedAndUnsignedScalarsPreserveTheirBoundaryValues() throws {
+    @Test func testScalarBoundsPreserveSignedness() throws {
         let locale = Locale(identifier: "en_US_POSIX")
         let cases: [(any DecimalRepresentable, String)] = [
             (Int64.min, "-9223372036854775808"),
@@ -16,7 +16,7 @@ struct AmountTests {
         }
     }
 
-    @Test func testCheckedDivisionUsesExactAmountScalarsAndRejectsInvalidStrings() throws {
+    @Test func testDivisionUsesExactScalarsAndFlagsText() throws {
         let currency = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
         let money = try #require(Money(amount: Decimal(1), currency: currency))
         let divisor = try Amount(decimalString: "0.125")
@@ -68,7 +68,7 @@ struct AmountTests {
         }
     }
 
-    @Test func testLocalizedParsingIsExactAndConsumesTheWholeInput() throws {
+    @Test func testLocalizedParsingConsumesExactInput() throws {
         let locale = Locale(identifier: "de_DE")
         #expect(try Amount(localizedString: "1.234,567890123456789", locale: locale)
             .decimalValue == Decimal(string: "1234.567890123456789"))

@@ -37,7 +37,7 @@ struct MoneyAllocationTests {
         #expect(array[1].amount == Decimal(string: "0.30"), "Second recepient should have 0.30")
     }
 
-    @Test func testCheckedEqualAllocationConservesPositiveNegativeAndZeroAmounts() throws {
+    @Test func testEqualSharesConserveSignedAmounts() throws {
         let currency = try #require(LocaleCurrency(localeIdentifier: "en_US"))
         for units in [3, -3, 0] {
             let value = try Amount(minorUnits: units, scale: 2)
@@ -49,7 +49,7 @@ struct MoneyAllocationTests {
         }
     }
 
-    @Test func testCheckedWeightedAllocationSkipsZeroWeightsAndHandlesIntMin() throws {
+    @Test func testWeightedSharesHandleZeroAndIntMin() throws {
         let currency = try #require(LocaleCurrency(localeIdentifier: "en_US"))
         let value = try Amount(minorUnits: Int.min, scale: 2)
         let money = try #require(Money(value: value, currency: currency))
@@ -62,7 +62,7 @@ struct MoneyAllocationTests {
         #expect(money.amount(from: Int.min) == value.decimalValue)
     }
 
-    @Test func testCheckedAllocationRejectsInvalidInputsAndUnrepresentableMinorUnits() throws {
+    @Test func testAllocationRejectsInvalidAndRange() throws {
         let currency = try #require(LocaleCurrency(localeIdentifier: "en_US"))
         let money = try #require(Money(amount: Decimal(1), currency: currency))
 
