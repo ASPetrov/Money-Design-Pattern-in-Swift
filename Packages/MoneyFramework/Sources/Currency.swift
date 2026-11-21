@@ -205,9 +205,13 @@ extension Currency {
         let numbers = decimalFormatter(locale: locale)
         numbers.decimalSeparator = formatter.currencyDecimalSeparator
         numbers.groupingSeparator = formatter.currencyGroupingSeparator
+        let positivePrefix = formatter.positivePrefix ?? ""
+        let positiveSuffix = formatter.positiveSuffix ?? ""
         for (prefix, suffix, negative) in [
             (formatter.negativePrefix ?? "", formatter.negativeSuffix ?? "", true),
-            (formatter.positivePrefix ?? "", formatter.positiveSuffix ?? "", false),
+            (positivePrefix, positiveSuffix, false),
+            ("-" + positivePrefix, positiveSuffix, true),
+            ("+" + positivePrefix, positiveSuffix, false),
         ] where !prefix.isEmpty || !suffix.isEmpty {
             guard
                 let digits = currencyDigits(in: string, prefix: prefix, suffix: suffix),

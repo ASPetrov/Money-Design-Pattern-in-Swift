@@ -25,6 +25,10 @@ When used as a scalar, a `Float` is widened to `Double` before its stored binary
 
 MoneyFramework’s `Amount(decimalString:)` accepts a decimal quantity. In this guide, `"12.03"` means **12.03 units of the currency**, not 12.03 cents. Keep values within the supported precision and range; decimal arithmetic still has limits and rounding rules.
 
+For machine-readable decimal text, use `Amount(decimalString: "1234.56")`. For a number entered by a user, pass the input locale. For example, `try Amount(localizedString: "-1.234,56", locale: Locale(identifier: "de_DE"))` gives −1234.56. An explicit locale determines whether a separator groups digits or marks the decimal point. `1.234` represents 1.234 in `en_US` and 1234 in `de_DE`.
+
+Use `Money(parsing:currency:locale:)` when the text includes a currency symbol, such as `" $21.09 "` with USD and `en_US`. Monetary parsing trims whitespace at the ends of the string. Localized parsing accepts a single ASCII sign as well as the locale’s sign. For ISO currency text, an ASCII sign can precede the complete positive form.
+
 A *minor unit* is the smallest unit used at the currency’s configured scale. For EUR, one minor unit is one cent, so 12.03 EUR corresponds to 1,203 minor units. Do not assume that every currency has two decimal places.
 
 The Tuts+ example passes integer minor units to its `Money` constructor: `100` represents 1 EUR. The Swift examples below start with decimal amounts and use `checkedMinorUnits()` when integer minor units are needed.

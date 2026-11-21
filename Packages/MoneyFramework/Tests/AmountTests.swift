@@ -23,6 +23,23 @@ private let nonfiniteFloats: [Float] = [.nan, .infinity, -.infinity]
 
 struct AmountTests {
 
+    @Test(arguments: ["sv_SE", "ar_EG", "fa_IR"])
+    func testLocalizedAmountAcceptsAsciiSigns(_ localeID: String) throws {
+        let locale = Locale(identifier: localeID)
+        let formatter = NumberFormatter()
+        formatter.locale = locale
+        formatter.numberStyle = .decimal
+        let positive = try #require(formatter.string(from: 21))
+        let negative = try #require(formatter.string(from: -21))
+
+        #expect(try Amount(localizedString: negative, locale: locale).decimalValue == -21)
+        #expect(try Amount(localizedString: "-" + positive, locale: locale).decimalValue == -21)
+        #expect(try Amount(localizedString: "+" + positive, locale: locale).decimalValue == 21)
+        #expect(throws: Amount.ValidationError.invalidFormat) {
+            _ = try Amount(localizedString: "+" + negative, locale: locale)
+        }
+    }
+
     @Test func testScalarBoundsPreserveSignedness() throws {
         let locale = Locale(identifier: "en_US_POSIX")
         let cases: [(any DecimalRepresentable, String)] = [

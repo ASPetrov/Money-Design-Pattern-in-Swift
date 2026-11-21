@@ -14,6 +14,29 @@ import Testing
 
 struct CurrencyTests {
 
+    @Test(arguments: ["sv_SE", "ar_EG", "fa_IR"])
+    func testAcceptsAsciiSignsWithIsoAffixes(_ localeID: String) throws {
+        let usd = try #require(LocaleCurrency(isoCurrencyCode: "USD"))
+        let locale = Locale(identifier: localeID)
+        let positive = try #require(usd.string(from: 21, locale: locale))
+        let negative = try #require(usd.string(from: -21, locale: locale))
+
+        #expect(usd.number(from: negative, locale: locale)?.decimalValue == -21)
+        #expect(usd.number(from: "-" + positive, locale: locale)?.decimalValue == -21)
+        #expect(usd.number(from: "+" + positive, locale: locale)?.decimalValue == 21)
+        #expect(usd.number(from: "+" + negative, locale: locale) == nil)
+        #expect(usd.number(from: "--" + positive, locale: locale) == nil)
+    }
+
+    @Test(arguments: [("en_US", "1.234", "1,234"), ("de_DE", "1,234", "1.234")])
+    func testLocaleDisambiguatesSeparators(example: (localeID: String, fraction: String, grouped: String)) throws {
+        let usd = try #require(LocaleCurrency(isoCurrencyCode: "USD"))
+        let locale = Locale(identifier: example.localeID)
+
+        #expect(usd.number(from: example.fraction, locale: locale)?.decimalValue == Decimal(1234) / 1000)
+        #expect(usd.number(from: example.grouped, locale: locale)?.decimalValue == 1234)
+    }
+
     @Test(arguments: ["USD", "usd", "uSd"])
     func testCanonicalizesIsoCode(_ code: String) throws {
         let canonical = try #require(LocaleCurrency(isoCurrencyCode: "USD"))

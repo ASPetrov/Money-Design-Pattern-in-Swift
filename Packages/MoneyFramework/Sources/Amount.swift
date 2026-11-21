@@ -47,7 +47,8 @@ public struct Amount: Equatable, Sendable {
         decimalValue = parsed
     }
 
-    /// Parses a localized decimal number with optional grouping and no currency symbol.
+    /// Parses a localized decimal number without a currency symbol.
+    /// Grouping and a single localized or ASCII sign are optional.
     public init(localizedString: String, locale: Locale) throws {
         let formatter = NumberFormatter()
         formatter.locale = locale
@@ -62,11 +63,11 @@ public struct Amount: Equatable, Sendable {
     ) throws {
         var input = localizedString[...]
         var sign = ""
-        if allowsSign, let minusSign = formatter.minusSign, !minusSign.isEmpty, input.hasPrefix(minusSign) {
-            input.removeFirst(minusSign.count)
-            sign = "-"
-        } else if allowsSign, let plusSign = formatter.plusSign, !plusSign.isEmpty, input.hasPrefix(plusSign) {
-            input.removeFirst(plusSign.count)
+        if
+            allowsSign,
+            let prefix = Self.signPrefix(in: input, formatter: formatter) {
+            input.removeFirst(prefix.text.count)
+            sign = prefix.ascii
         }
 
         let parts = input.components(separatedBy: formatter.decimalSeparator ?? ".")
@@ -75,11 +76,33 @@ public struct Amount: Equatable, Sendable {
         }
 
         let grouping = formatter.groupingSeparator ?? ""
-        let groups = grouping.isEmpty ? [parts[0]] : parts[0].components(separatedBy: grouping)
+        let groups = grouping.isEmpty
+            ? [parts[0]]
+            : parts[0].components(separatedBy: grouping)
         try Self.validateGrouping(groups, formatter: formatter)
         let whole = try Self.asciiDigits(groups.joined())
-        let fraction = parts.count == 2 ? "." + (try Self.asciiDigits(parts[1])) : ""
+        let fraction = parts.count == 2
+            ? "." + (try Self.asciiDigits(parts[1]))
+            : ""
         try self.init(decimalString: sign + whole + fraction)
+    }
+
+    private static func signPrefix(
+        in input: Substring,
+        formatter: NumberFormatter
+    ) -> (text: String, ascii: String)? {
+        let signs: [(String?, String)] = [
+            (formatter.minusSign, "-"),
+            (formatter.plusSign, "+"),
+            ("-", "-"),
+            ("+", "+"),
+        ]
+        for (text, ascii) in signs {
+            if let text, !text.isEmpty, input.hasPrefix(text) {
+                return (text, ascii)
+            }
+        }
+        return nil
     }
 
     /// Converts a signed count of minor units using a scale between 0 and 127.
@@ -100,7 +123,9 @@ public struct Amount: Equatable, Sendable {
             return
         }
         let primary = formatter.groupingSize
-        let secondary = formatter.secondaryGroupingSize > 0 ? formatter.secondaryGroupingSize : primary
+        let secondary = formatter.secondaryGroupingSize > 0
+            ? formatter.secondaryGroupingSize
+            : primary
         guard
             groups.last?.count == primary,
             let first = groups.first,
@@ -189,7 +214,9 @@ public struct Amount: Equatable, Sendable {
             fraction.removeLast()
         }
         let sign = negative && (!integral.isEmpty || !fraction.isEmpty) ? "-" : ""
-        return sign + (integral.isEmpty ? "0" : String(integral)) + (fraction.isEmpty ? "" : "." + fraction)
+        return sign
+            + (integral.isEmpty ? "0" : String(integral))
+            + (fraction.isEmpty ? "" : "." + fraction)
     }
 
     private static func decimalWholePart(_ parts: [Substring]) -> Substring? {
@@ -197,7 +224,9 @@ public struct Amount: Equatable, Sendable {
             let whole = parts.first,
             parts.count <= 2,
             !whole.isEmpty,
-            parts.allSatisfy({ !$0.isEmpty && $0.utf8.allSatisfy { (48 ... 57).contains($0) } })
+            parts.allSatisfy(
+                { !$0.isEmpty && $0.utf8.allSatisfy { (48 ... 57).contains($0) } }
+            )
         else {
             return nil
         }
