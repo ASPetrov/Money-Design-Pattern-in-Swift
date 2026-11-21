@@ -10,6 +10,8 @@ private let unsupportedDoubles: [Double] = [
     .leastNonzeroMagnitude,
 ]
 
+private let nonfiniteDoubles: [Double] = [.nan, .infinity, -.infinity]
+
 private let finiteFloats: [Float] = [
     0.1,
     0.125,
@@ -17,11 +19,7 @@ private let finiteFloats: [Float] = [
     .leastNonzeroMagnitude,
 ]
 
-private let nonfiniteFloats: [Float] = [
-    .nan,
-    .infinity,
-    -.infinity,
-]
+private let nonfiniteFloats: [Float] = [.nan, .infinity, -.infinity]
 
 struct AmountTests {
 
@@ -50,12 +48,25 @@ struct AmountTests {
         #expect(money.dividingChecked(by: scalar) == .failure(.invalidDivisor))
     }
 
+    @Test(arguments: nonfiniteDoubles)
+    func testRejectsNonfiniteDouble(_ value: Double) {
+        #expect(value.decimalNumber.isNaN)
+        #expect(throws: Amount.ValidationError.unrepresentableValue) {
+            _ = try value.decimalConversion.get()
+        }
+    }
+
     @Test func testFiniteDoubleKeepsRounding() throws {
         let currency = try #require(LocaleCurrency(isoCurrencyCode: "EUR"))
         let money = try #require(Money(amount: Decimal(5), currency: currency))
         let rounded = try #require(Money(amount: "0.62", currency: currency))
 
-        #expect(money.multiplyingChecked(by: 0.125) == .success(rounded))
+        let scalar: Double = 0.125
+        let expected = Decimal(125) / 1000
+
+        #expect(scalar.decimalNumber == expected)
+        #expect(try scalar.decimalConversion.get() == expected)
+        #expect(money.multiplyingChecked(by: scalar) == .success(rounded))
     }
 
     @Test(arguments: finiteFloats)

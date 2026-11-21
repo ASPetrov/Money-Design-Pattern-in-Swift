@@ -134,10 +134,12 @@ extension Float: DecimalRepresentable {
 
 extension Double: DecimalRepresentable {
 
+    /// Returns the decimal approximation, or Decimal.nan for a nonfinite value.
     public var decimalNumber: Decimal {
-        Decimal(self)
+        isFinite ? Decimal(self) : .nan
     }
 
+    /// Reports an unrepresentable value when the input is nonfinite or outside Decimal's range.
     public var decimalConversion: Result<Decimal, any Error> {
         guard isFinite else {
             return .failure(Amount.ValidationError.unrepresentableValue)
