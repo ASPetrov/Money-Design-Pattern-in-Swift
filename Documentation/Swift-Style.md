@@ -31,11 +31,11 @@ Review new APIs at the call site:
 
 Keep function and method names, test methods, variables, parameter names, and enum cases to 40 characters. SwiftLint's `identifier_name` enforces the limit for variables, parameters, and enum cases. The `function_name_length` rule checks function names composed of letters, combining marks, numbers, and underscores. Place declaration comments above the signature. The `test` prefix counts toward the limit. Type names use Swift's type naming conventions.
 
-Use lower camel case and established terms. Check that names read clearly at the call site. SwiftLint reports violations of its lowercase-start convention through `identifier_name`. Start every Swift Testing and XCTest test method with `test` followed by a descriptive upper-camel-case suffix, as in `testRejectsInvalidCurrencyCode`. This convention also applies to parameterized and UI tests. Use ordinary names for test helpers. In Swift Testing, use a display name when the scenario needs more context. [Identifier name specification](Swift-Function-Name-Length.md) · [SwiftLint identifier_name](https://realm.github.io/SwiftLint/identifier_name.html)
+Use lower camel case and established terms. Check that names read clearly at the call site. SwiftLint reports violations of its lowercase-start convention through `identifier_name`. Start every Swift Testing and XCTest test method with `test` followed by a descriptive upper-camel-case suffix, as in `testRejectsInvalidCurrencyCode`. This convention also applies to parameterized and UI tests. Use ordinary names for test helpers. In Swift Testing, use a display name when the scenario needs more context. [SwiftLint identifier_name](https://realm.github.io/SwiftLint/identifier_name.html)
 
 ## Function body length
 
-SwiftLint's `function_body_length` warns above 20 lines and reports an error above 50. The rule applies to production and test code, including initializers, deinitializers, and subscript bodies. SwiftLint counts the body and skips blank lines and comment-only lines. Extract a named step when a body grows past the limit. [Function body length specification](Swift-Function-Body-Length.md)
+SwiftLint's `function_body_length` warns above 20 lines and reports an error above 50. The rule applies to production and test code, including initializers, deinitializers, and subscript bodies. SwiftLint counts the body and skips blank lines and comment-only lines. Extract a named step when a body grows past the limit. [SwiftLint function_body_length](https://realm.github.io/SwiftLint/function_body_length.html)
 
 ## Instance and type methods
 
