@@ -144,18 +144,7 @@ extension Currency {
 extension Currency {
     func parseAmount(_ string: String, locale: Locale?) throws -> Amount {
         if usesCustomFormatting {
-            let suffix = " " + (symbol ?? code)
-            let codeSuffix = " " + code
-            var digits = string
-            if digits.hasSuffix(suffix) {
-                digits.removeLast(suffix.count)
-            } else if digits.hasSuffix(codeSuffix) {
-                digits.removeLast(codeSuffix.count)
-            }
-            return try Amount(
-                localizedString: digits,
-                locale: locale ?? .current
-            )
+            return try parseCustomAmount(string, locale: locale ?? .current)
         }
 
         let selectedLocale = locale ?? Locale.locale(for: code) ?? .current
@@ -199,6 +188,21 @@ extension Currency {
             }
         }
         return try Amount(localizedString: string, locale: selectedLocale)
+    }
+
+    private func parseCustomAmount(_ string: String, locale: Locale) throws -> Amount {
+        let suffix = " " + (symbol ?? code)
+        let codeSuffix = " " + code
+        var digits = string
+        if digits.hasSuffix(suffix) {
+            digits.removeLast(suffix.count)
+        } else if digits.hasSuffix(codeSuffix) {
+            digits.removeLast(codeSuffix.count)
+        }
+        return try Amount(
+            localizedString: digits,
+            locale: locale
+        )
     }
 
     private func formattingCurrency(

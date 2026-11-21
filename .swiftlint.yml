@@ -1,5 +1,6 @@
 only_rules:
   - file_length
+  - function_body_length
   - identifier_name
   - force_try
   - force_unwrapping
@@ -10,6 +11,10 @@ file_length:
   warning: 400
   error: 400
   ignore_comment_only_lines: false
+
+function_body_length:
+  warning: 20
+  error: 50
 
 identifier_name:
   min_length: 0

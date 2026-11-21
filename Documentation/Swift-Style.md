@@ -33,6 +33,10 @@ Keep function and method names, test methods, variables, parameter names, and en
 
 Use lower camel case and established terms. Check that names read clearly at the call site. SwiftLint reports violations of its lowercase-start convention through `identifier_name`. Start every Swift Testing and XCTest test method with `test` followed by a descriptive upper-camel-case suffix, as in `testRejectsInvalidCurrencyCode`. This convention also applies to parameterized and UI tests. Use ordinary names for test helpers. In Swift Testing, use a display name when the scenario needs more context. [Identifier name specification](Swift-Function-Name-Length.md) · [SwiftLint identifier_name](https://realm.github.io/SwiftLint/identifier_name.html)
 
+## Function body length
+
+SwiftLint's `function_body_length` warns above 20 lines and reports an error above 50. The rule applies to production and test code, including initializers, deinitializers, and subscript bodies. SwiftLint counts the body and skips blank lines and comment-only lines. Extract a named step when a body grows past the limit. [Function body length specification](Swift-Function-Body-Length.md)
+
 ## Instance and type methods
 
 Use instance methods for behavior that depends on a receiver or a supplied strategy. Prefer an initializer when constructing and configuring a new instance. Add a static helper only when the operation belongs to the type and has no natural receiver, such as a pure check used before initialization. Static operators follow Swift's operator declaration conventions.
