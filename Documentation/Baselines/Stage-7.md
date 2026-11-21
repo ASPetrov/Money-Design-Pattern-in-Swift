@@ -20,4 +20,4 @@ import Testing
 }
 ```
 
-С Xcode 27.2 и Swift 6.4.2 SwiftPM откри и изпълни 1/1 Swift Testing тест. Минималният Swift 6.0 / Xcode 16 остава непроверен. Локалната машина разполага с Xcode 27.2 на macOS 27.2.1. За минималната проверка използвай Mac или runner с Xcode 16 и поддържана версия на macOS. [Системни изисквания за Xcode](https://developer.apple.com/xcode/system-requirements/)
+С Xcode 27.2 и Swift 6.4.2 SwiftPM откри и изпълни 1/1 Swift Testing тест. Последвалата проверка със Swift 6.0 / Xcode 16.0 изпълни пълния библиотечен набор през двата SPM входа, включително теста за `Sendable`. [GitHub Actions](https://github.com/ASPetrov/Money-Design-Pattern-in-Swift/actions/runs/44870210365)

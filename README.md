@@ -19,6 +19,8 @@ The project includes the `MoneyFramework` library, an offline SwiftUI demo, and 
 
 ## Installation
 
+Version-based installation requires the published `2.0.0` Git tag. Until it is available, use [local installation](#local-installation).
+
 ### Xcode
 
 1. Select **File → Add Package Dependencies**.
@@ -57,13 +59,13 @@ Import the module in your Swift source files:
 import MoneyFramework
 ```
 
-Version-based installation requires the `2.0.0` tag to be available in the Git repository. For local development, clone this repository and add its root directory as a local Swift package.
+### Local installation
+
+Clone this repository. In Xcode, choose **File → Add Package Dependencies → Add Local** and select the repository root containing `Package.swift`. Add the **MoneyFramework** product to your application target.
 
 ### Migrating from CocoaPods
 
-1. Remove the `MoneyFramework` entry from your `Podfile` and run `pod install` to update the workspace. Keep any other pod declarations your project uses.
-2. Add the Swift package and link the `MoneyFramework` product to each target that imports it. Existing `import MoneyFramework` statements still use the same module name.
-3. Build and test your targets. Check the minimum platform versions above and migrate any currency conversions to the API shown in the walkthrough.
+See the [CocoaPods migration guide](Documentation/EN/CocoaPods-Migration.md).
 
 ## Documentation
 
@@ -73,6 +75,8 @@ The walkthrough explains the Money pattern and its implementation, including the
 | --- | --- |
 | English | [Money Pattern walkthrough](Documentation/EN/Money-Pattern.md) |
 | Български | [Ръководство за шаблона Money](Documentation/BG/Money-Pattern.md) |
+
+See [AGENTS.md](AGENTS.md) for repository conventions and development commands.
 
 ## License
 

@@ -56,14 +56,19 @@ else {
 
 ## Отхвърляне на несъвместими аритметични операции
 
-Директното събиране на 12.03 EUR и 10 USD би дало число без еднозначно определена валута. API с проверка на съвместимостта отхвърля тази операция:
+Когато валутата идва от потребителски вход, обработете `Result`, върнат от `addingChecked`. Събирането на касовата бележка в EUR със самата нея е успешно. При добавяне на бележката в USD първо е нужно превалутиране.
 
 ```swift
-do {
-    _ = try euroReceipt.adding(dollarReceipt)
-    preconditionFailure("Expected the currencies to be incompatible")
-} catch Money<LocaleCurrency>.ArithmeticError.incompatibleCurrencies {
-    // Expected: convert to a common currency before adding.
+for receipt in [euroReceipt, dollarReceipt] {
+    switch euroReceipt.addingChecked(receipt) {
+    case let .success(total):
+        let cents = try total.checkedMinorUnits()
+        precondition(cents == 2406)
+    case .failure(.incompatibleCurrencies):
+        print("Convert to EUR before adding.")
+    case let .failure(error):
+        throw error
+    }
 }
 ```
 
@@ -133,7 +138,7 @@ precondition(cents.reduce(0, +) == 2003)
 
 ## Изпълнение на тестовете
 
-Изберете **Product → Test** в Xcode. Можете също да изпълните следната команда от основната директория на хранилището, като замените целевото устройство със симулатор, наличен на вашия компютър:
+Изпълнете `swift test` от корена на хранилището за тестовете на библиотеката. Изберете **Product → Test** със споделената схема `TestFrameworkApp` за unit и UI тестовете на демото. Можете да изпълните и следната команда от корена с инсталиран симулатор.
 
 ```sh
 xcodebuild -project TestFrameworkApp/TestFrameworkApp.xcodeproj \

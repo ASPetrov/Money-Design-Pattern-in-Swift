@@ -56,14 +56,19 @@ else {
 
 ## Reject incompatible arithmetic
 
-Adding 12.03 EUR directly to 10 USD would produce a number without a meaningful currency. The checked API rejects that operation:
+When the currency comes from user input, handle the `Result` returned by `addingChecked`. Adding the EUR receipt to itself succeeds. Adding the USD receipt requires conversion first.
 
 ```swift
-do {
-    _ = try euroReceipt.adding(dollarReceipt)
-    preconditionFailure("Expected the currencies to be incompatible")
-} catch Money<LocaleCurrency>.ArithmeticError.incompatibleCurrencies {
-    // Expected: convert to a common currency before adding.
+for receipt in [euroReceipt, dollarReceipt] {
+    switch euroReceipt.addingChecked(receipt) {
+    case let .success(total):
+        let cents = try total.checkedMinorUnits()
+        precondition(cents == 2406)
+    case .failure(.incompatibleCurrencies):
+        print("Convert to EUR before adding.")
+    case let .failure(error):
+        throw error
+    }
 }
 ```
 
@@ -133,7 +138,7 @@ Open [the Xcode project](../../TestFrameworkApp/TestFrameworkApp.xcodeproj), sel
 
 ## Run the tests
 
-Choose **Product → Test** in Xcode. Alternatively, run the following command from the repository root, replacing the destination with a simulator available on your machine:
+Run `swift test` from the repository root to test the library. Choose **Product → Test** with the shared `TestFrameworkApp` scheme to run the demo’s unit and UI tests. You can also run the following command from the repository root with an installed simulator.
 
 ```sh
 xcodebuild -project TestFrameworkApp/TestFrameworkApp.xcodeproj \
