@@ -69,10 +69,12 @@ extension LocaleCurrency {
 /// LocaleCurrency factory methods
 extension LocaleCurrency {
 
+    @available(*, deprecated, message: "Use LocaleCurrency() instead.")
     public static func current() -> LocaleCurrency? {
         Self(locale: Locale.current)
     }
 
+    @available(*, deprecated, message: "Use LocaleCurrency(locale:) instead.")
     public static func currency(for locale: Locale) -> LocaleCurrency? {
         Self(locale: locale)
     }

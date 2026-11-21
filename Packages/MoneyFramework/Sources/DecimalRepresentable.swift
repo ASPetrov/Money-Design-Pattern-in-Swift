@@ -42,6 +42,7 @@ extension Amount: DecimalRepresentable {
 
 extension Money {
 
+    @available(*, deprecated, renamed: "amount")
     public var decimalNumber: Decimal {
         amount
     }
